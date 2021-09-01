@@ -18,21 +18,12 @@ class AuthController extends Controller
      * @api {get} /api/users Получить авторизированного пользователя
      * @apiName              GetUser
      * @apiGroup             User
-     * @apiHeaderExample     {"Authorization": "Bearer {token}"}
      */
 
     public function index(Request $request)
     {
         return auth()->user();
     }
-
-    /**
-     * @api {post} /api/users/login Авторизация
-     * @apiName                     LoginUser
-     * @apiGroup                    User
-     * @apiParam email              Email пользователя
-     * @apiParam password           Пароль пользователя
-     */
 
     public function login(Request $request)
     {
@@ -74,15 +65,6 @@ class AuthController extends Controller
         ], 200);
     }
 
-    /**
-     * @api {post} /api/users/register Регистрация
-     * @apiName                        RegisterUser
-     * @apiGroup                       User
-     * @apiParam name                  ФИО пользователя
-     * @apiParam email                 Email пользователя
-     * @apiParam password              Пароль пользователя
-     */
-
     public function register(Request $request)
     {
         $request->validate([
@@ -120,7 +102,6 @@ class AuthController extends Controller
      * @api {get} /api/users/logout Выйти из аккаунта
      * @apiName                     LogoutUser
      * @apiGroup                    User
-     * @apiHeaderExample            {"Authorization": "Bearer {token}"}
      */
 
     public function logout(Request $request)

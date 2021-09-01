@@ -7,26 +7,10 @@ use Illuminate\Http\Request;
 
 class ChildrenController extends Controller
 {
-    /**
-     * @api {get} /api/children Получить список детей
-     * @apiName                 GetChildren
-     * @apiGroup                Child
-     * @apiHeaderExample        {"Authorization": "Bearer {token}"}
-     */
-
     public function index()
     {
-        return Child::where('parent_id', auth()->user()->id)->get();
+        return Child::where('parent_id', auth()->user()->id)->get()->makeHidden(['created_at', 'column_two', 'column_n']);
     }
-
-    /**
-     * @api {post} /api/children Создать ребенка
-     * @apiName                  StoreChild
-     * @apiGroup                 Child
-     * @apiHeaderExample         {"Authorization": "Bearer {token}"}
-     * @apiParam name            Имя ребенка
-     * @apiParam year_of_birth   Год рождения ребенка
-     */
 
     public function store(Request $request)
     {
@@ -49,13 +33,6 @@ class ChildrenController extends Controller
             'data' => $child,
         ], 201);
     }
-
-    /**
-     * @api {delete} /api/children/:id Удалить ребенка
-     * @apiName                        DeleteChild
-     * @apiGroup                       Child
-     * @apiHeaderExample               {"Authorization": "Bearer {token}"}
-     */
 
     public function destroy(Request $request, $child)
     {
