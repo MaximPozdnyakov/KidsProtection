@@ -16,9 +16,9 @@ class AuthController extends Controller
 {
     /**
      * @api {get} /api/users Получить авторизированного пользователя
-     * @apiName GetUser
-     * @apiGroup User
-     * @apiHeaderExample {"Authorization": "Bearer {token}"}
+     * @apiName              GetUser
+     * @apiGroup             User
+     * @apiHeaderExample     {"Authorization": "Bearer {token}"}
      */
 
     public function index(Request $request)
@@ -28,10 +28,10 @@ class AuthController extends Controller
 
     /**
      * @api {post} /api/users/login Авторизация
-     * @apiName LoginUser
-     * @apiGroup User
-     * @apiParam email Email пользователя
-     * @apiParam password Пароль пользователя
+     * @apiName                     LoginUser
+     * @apiGroup                    User
+     * @apiParam email              Email пользователя
+     * @apiParam password           Пароль пользователя
      */
 
     public function login(Request $request)
@@ -76,11 +76,11 @@ class AuthController extends Controller
 
     /**
      * @api {post} /api/users/register Регистрация
-     * @apiName RegisterUser
-     * @apiGroup User
-     * @apiParam name ФИО пользователя
-     * @apiParam email Email пользователя
-     * @apiParam password Пароль пользователя
+     * @apiName                        RegisterUser
+     * @apiGroup                       User
+     * @apiParam name                  ФИО пользователя
+     * @apiParam email                 Email пользователя
+     * @apiParam password              Пароль пользователя
      */
 
     public function register(Request $request)
@@ -118,9 +118,9 @@ class AuthController extends Controller
 
     /**
      * @api {get} /api/users/logout Выйти из аккаунта
-     * @apiName LogoutUser
-     * @apiGroup User
-     * @apiHeaderExample {"Authorization": "Bearer {token}"}
+     * @apiName                     LogoutUser
+     * @apiGroup                    User
+     * @apiHeaderExample            {"Authorization": "Bearer {token}"}
      */
 
     public function logout(Request $request)
@@ -131,9 +131,9 @@ class AuthController extends Controller
 
     /**
      * @api {post} /api/users/forgot Отправка шестизначного кода для сброса пароля на почту
-     * @apiName ForgotUserPassword
-     * @apiGroup User
-     * @apiParam email Email пользователя
+     * @apiName                      ForgotUserPassword
+     * @apiGroup                     User
+     * @apiParam email               Email пользователя
      */
 
     public function forgot(Request $request)
@@ -181,10 +181,10 @@ class AuthController extends Controller
 
     /**
      * @api {post} /api/users/forgot Сброс пароля
-     * @apiName ResetUserPassword
-     * @apiGroup User
-     * @apiParam token Шестизначный код для сброса пароля
-     * @apiParam password Новый пароль
+     * @apiName                      ResetUserPassword
+     * @apiGroup                     User
+     * @apiParam token               Шестизначный код для сброса пароля
+     * @apiParam password            Новый пароль
      */
 
     public function reset(Request $request)
