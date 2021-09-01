@@ -218,6 +218,6 @@ class AuthController extends Controller
         DB::table('password_resets')->where('email', $user->email)->delete();
         return response()->json([
             "message" => 'Ваш пароль был успешно изменен',
-        ], 200);
+        ], 202);
     }
 }
