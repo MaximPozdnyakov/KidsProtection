@@ -9,7 +9,7 @@ class ChildrenController extends Controller
 {
     public function index()
     {
-        return Child::where('parent_id', auth()->user()->id)->get()->makeHidden(['created_at', 'column_two', 'column_n']);
+        return Child::where('parent_id', auth()->user()->id)->get();
     }
 
     public function store(Request $request)
@@ -32,6 +32,48 @@ class ChildrenController extends Controller
             'message' => 'Ребенок создан',
             'data' => $child,
         ], 201);
+    }
+
+    public function show(Request $request, $child)
+    {
+        $existedChild = Child::where('id', $child)->where("parent_id", auth()->user()->id)->first();
+        if (!$existedChild) {
+            return response()->json([
+                'message' => 'Forbidden',
+                'errors' => [
+                    'child' => 'Этот ребенок вам не принадлежит',
+                ],
+            ], 403);
+        }
+        return $existedChild;
+    }
+
+    public function update(Request $request, $child)
+    {
+        $existedChild = Child::where('id', $child)->where("parent_id", auth()->user()->id)->first();
+        if (!$existedChild) {
+            return response()->json([
+                'message' => 'Forbidden',
+                'errors' => [
+                    'child' => 'Этот ребенок вам не принадлежит',
+                ],
+            ], 403);
+        }
+        if ($request->name) {
+            $existedChild->name = $request->name;
+        }
+        if ($request->year_of_birth) {
+            $request->validate(
+                ['year_of_birth' => 'numeric'],
+                ['year_of_birth.numeric' => 'Год рождения должен быть числом']
+            );
+            $existedChild->year_of_birth = $request->year_of_birth;
+        }
+        $existedChild->update();
+        return response()->json([
+            'message' => 'Данные ребенка обновлены',
+            'data' => $existedChild,
+        ], 202);
     }
 
     public function destroy(Request $request, $child)
