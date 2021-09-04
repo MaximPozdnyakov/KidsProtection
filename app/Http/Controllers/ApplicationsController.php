@@ -2,153 +2,132 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\Child;
-use App\Models\MobileApplication;
 use Illuminate\Http\Request;
 
 class ApplicationsController extends Controller
 {
     public function index(Request $request, $child)
     {
-        return MobileApplication::where('parent_id', auth()->user()->id)
-            ->where('child_id', $child)->get();
+        $applications = Application::where('parent', auth()->user()->id)->where('user', $child)->get();
+        foreach ($applications as $application) {
+            $application->image = 'data:image/png;base64,' . base64_encode($application->image);
+        }
+        return $applications;
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'package' => 'required|string',
             'name' => 'required|string',
-            'display_name' => 'required|string',
-            'child_id' => 'required',
+            'image' => 'required|mimes:png,jpg,svg',
+            'user' => 'required|string',
         ],
             [
-                'name.required' => 'Укажите навание приложения',
-                'display_name.required' => 'Укажите отображаемое название приложения',
-                'child_id.required' => 'Укажите id ребенка, которому принадлежит приложение',
+                'package.required' => 'Параметр package обязателен',
+                'package.string' => 'Параметр package должен быть строкой',
+                'name.required' => 'Параметр name обязателен',
                 'name.string' => 'Параметр name должен быть строкой',
-                'display_name.string' => 'Параметр display_name должен быть строкой',
+                'image.required' => 'Параметр image обязателен',
+                'image.mimes' => 'Изображение не соответствует не одному из форматов: PNG, JPG, SVG',
+                'user.required' => 'Укажите id ребенка, которому принадлежит приложение',
+                'user.string' => 'Параметр user должен быть строкой',
             ]);
-        $existedChild = Child::where('id', $request->child_id)->where("parent_id", auth()->user()->id)->first();
+        $existedChild = Child::where('id', $request->user)->where("parent", auth()->user()->id)->first();
         if (!$existedChild) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        $existedApplication = MobileApplication::where('name', $request->name)->where("child_id", $request->child_id)->first();
+        $existedApplication = Application::where('package', $request->package)->where("user", $request->user)->first();
         if ($existedApplication) {
             return response()->json([
                 'message' => 'The given data was invalid.',
-                'errors' => ['name' => 'Приложение с таким названием уже существует в списке приложений указанного ребенка'],
+                'errors' => ['package' => 'Приложение с таким названием уже существует в списке приложений указанного ребенка'],
             ], 400);
         }
-        $icon_name = null;
-        if ($request->icon_name) {
-            $request->validate(['icon_name' => 'string'], ['icon_name.string' => 'Параметр icon_name должен быть строкой']);
-            if (file_exists(public_path() . '/icons/' . $request->icon_name)) {
-                $icon_name = $request->icon_name;
-            } else {
-                return response()->json([
-                    'message' => 'The given data was invalid.',
-                    'errors' => ['icon_name' => 'Иконки с названием ' . $request->icon_name . ' не существует'],
-                ], 400);
-            }
-        } elseif ($request->hasFile('icon')) {
-            $request->validate(
-                ['icon' => 'mimes:png,jpg,svg'],
-                ['icon.mimes' => 'Иконка не соответствует не одному из форматов: PNG, JPG, SVG']
-            );
-            $icon = $request->file('icon');
-            $icon->storeAs('', $icon->getClientOriginalName(), 'icons');
-            $icon_name = $icon->getClientOriginalName();
-        }
-        $application = MobileApplication::create([
+
+        $file = $request->file('image');
+        $contents = $file->openFile()->fread($file->getSize());
+
+        $application = Application::create([
+            'package' => $request->package,
             'name' => $request->name,
-            'display_name' => $request->display_name,
-            'icon_name' => $icon_name,
-            'parent_id' => auth()->user()->id,
-            'child_id' => $request->child_id,
+            'image' => $contents,
+            'parent' => auth()->user()->id,
+            'user' => $request->user,
         ]);
+        $application = Application::where('id', $application->id)->first();
+        $application->image = 'data:image/png;base64,' . base64_encode($application->image);
+
         return response()->json([
             'message' => 'Мобильное приложение добавлено',
-            'data' => MobileApplication::where('name', $request->name)
-                ->where("child_id", $request->child_id)->first(),
+            'data' => $application,
         ], 201);
     }
 
     public function show(Request $request, $child, $application)
     {
-        $existedChild = Child::where('id', $child)->where("parent_id", auth()->user()->id)->first();
+        $existedChild = Child::where('id', $child)->where("parent", auth()->user()->id)->first();
         if (!$existedChild) {
-            return response()->json([
-                'message' => 'Указанный ребенок вам не принадлежит',
-            ], 403);
+            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        return MobileApplication::where('id', $application)->where("child_id", $child)->first();
+        $application = Application::where('id', $application)->where("user", $child)->first();
+        if ($application) {
+            $application->image = 'data:image/png;base64,' . base64_encode($application->image);
+        }
+        return $application;
     }
 
     public function update(Request $request, $application)
     {
-        $existedApplication = MobileApplication::where('id', $application)
-            ->where("parent_id", auth()->user()->id)->first();
+        $existedApplication = Application::where('id', $application)->where("parent", auth()->user()->id)->first();
         if (!$existedApplication) {
-            return response()->json([
-                'message' => 'Не удалось найти приложение с указанным id',
-            ], 404);
+            return response()->json(['message' => 'Не удалось найти приложение с указанным id'], 404);
+        }
+        if ($request->package) {
+            $request->validate(['package' => 'string'], ['package.string' => 'Параметр package должен быть строкой']);
+            if (Application::where('package', $request->package)->where("user", $existedApplication->user)->first()) {
+                return response()->json([
+                    'message' => 'The given data was invalid.',
+                    'errors' => ['package' => 'Приложение с таким названием уже существует в списке приложений указанного ребенка'],
+                ], 400);
+            }
+            $existedApplication->package = $request->package;
         }
         if ($request->name) {
             $request->validate(['name' => 'string'], ['name.string' => 'Параметр name должен быть строкой']);
-            if (MobileApplication::where('name', $request->name)->where("child_id", $request->child_id)->first()) {
-                return response()->json([
-                    'message' => 'The given data was invalid.',
-                    'errors' => ['name' => 'Приложение с таким названием уже существует в списке приложений указанного ребенка'],
-                ], 400);
-            }
             $existedApplication->name = $request->name;
         }
-        if ($request->display_name) {
-            $request->validate(['display_name' => 'string'], ['display_name.string' => 'Параметр display_name должен быть строкой']);
-            $existedApplication->display_name = $request->display_name;
+        if ($request->hasFile('image')) {
+            $request->validate(['image' => 'mimes:png,jpg,svg'], ['image.mimes' => 'Изображение не соответствует не одному из форматов: PNG, JPG, SVG']);
+            $file = $request->file('image');
+            $contents = $file->openFile()->fread($file->getSize());
+            $existedApplication->image = $contents;
         }
-        if ($request->is_blocked) {
-            $request->validate(['is_blocked' => 'boolean'], ['is_blocked.boolean' => 'Параметр is_blocked должен быть булевым значением']);
-            $existedApplication->is_blocked = $request->is_blocked;
+        if ($request->locked) {
+            $request->validate(['locked' => 'boolean'], ['locked.boolean' => 'Параметр locked должен быть булевым значением']);
+            $existedApplication->locked = $request->locked;
         }
-        if ($request->has('time_use_start')) {
-            if (!is_null($request->time_use_start) && !preg_match('#^([01]?[0-9]|2[0-3]).[0-5][0-9]$#', $request->time_use_start)) {
-                return response()->json([
-                    'message' => 'The given data was invalid.',
-                    'errors' => ['time_use_start' => 'Время старта использования приложения не соответствует формату HH.MM'],
-                ], 400);
-            }
-            $existedApplication->time_use_start = $request->time_use_start;
+        if ($request->has('start_dt')) {
+            $request->validate(['start_dt' => 'date|date_format:d.m.Y H:i'],
+                [
+                    'start_dt.date' => 'Параметр start_dt должен быть датой',
+                    'start_dt.date_format' => 'Параметр start_dt не соответствует формату dd.MM.yyyy hh:mm',
+                ]);
+            $existedApplication->start_dt = $request->start_dt;
         }
-        if ($request->has('time_use_end')) {
-            if (!is_null($request->time_use_end) && !preg_match('#^([01]?[0-9]|2[0-3]).[0-5][0-9]$#', $request->time_use_end)) {
-                return response()->json([
-                    'message' => 'The given data was invalid.',
-                    'errors' => ['time_use_end' => 'Время конца использования приложения не соответствует формату HH.MM'],
-                ], 400);
-            }
-            $existedApplication->time_use_end = $request->time_use_end;
+        if ($request->has('end_dt')) {
+            $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i'],
+                [
+                    'end_dt.date' => 'Параметр end_dt должен быть датой',
+                    'end_dt.date_format' => 'Параметр end_dt не соответствует формату dd.MM.yyyy hh:mm',
+                ]);
+            $existedApplication->end_dt = $request->end_dt;
         }
-        if ($request->icon_name) {
-            $request->validate(['icon_name' => 'string'], ['icon_name.string' => 'Параметр icon_name должен быть строкой']);
-            if (file_exists(public_path() . '/icons/' . $request->icon_name)) {
-                $existedApplication->icon_name = $request->icon_name;
-            } else {
-                return response()->json([
-                    'message' => 'The given data was invalid.',
-                    'errors' => ['icon_name' => 'Иконки с названием ' . $request->icon_name . ' не существует'],
-                ], 400);
-            }
-        } elseif ($request->hasFile('icon')) {
-            $request->validate(
-                ['icon' => 'mimes:png,jpg,svg'],
-                ['icon.mimes' => 'Иконка не соответствует не одному из форматов: PNG, JPG, SVG']
-            );
-            $icon = $request->file('icon');
-            $icon->storeAs('', $icon->getClientOriginalName(), 'icons');
-            $existedApplication->icon_name = $icon->getClientOriginalName();
-        }
+
         $existedApplication->update();
+        $existedApplication->image = 'data:image/png;base64,' . base64_encode($existedApplication->image);
         return response()->json([
             'message' => 'Данные приложения обновлены',
             'data' => $existedApplication,
@@ -157,16 +136,11 @@ class ApplicationsController extends Controller
 
     public function destroy(Request $request, $application)
     {
-        $existedApplication = MobileApplication::where('id', $application)
-            ->where("parent_id", auth()->user()->id)->first();
+        $existedApplication = Application::where('id', $application)->where("parent", auth()->user()->id)->first();
         if (!$existedApplication) {
-            return response()->json([
-                'message' => 'Не удалось найти приложение с указанным id',
-            ], 404);
+            return response()->json(['message' => 'Не удалось найти приложение с указанным id'], 404);
         }
         $existedApplication->delete();
-        return response()->json([
-            'message' => 'Приложение убрано из списка приложений',
-        ], 200);
+        return response()->json(['message' => 'Приложение убрано из списка приложений'], 200);
     }
 }

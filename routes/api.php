@@ -18,9 +18,16 @@ Route::prefix('users')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
     Route::apiResource('children', ChildrenController::class);
+
     Route::get('/applications/{child}', [ApplicationsController::class, 'index']);
     Route::post('/applications', [ApplicationsController::class, 'store']);
     Route::get('/applications/{child}/{application}', [ApplicationsController::class, 'show']);
-    Route::patch('/applications/{application}', [ApplicationsController::class, 'update']);
+    Route::post('/applications/{application}', [ApplicationsController::class, 'update']);
     Route::delete('/applications/{application}', [ApplicationsController::class, 'destroy']);
+
+    // Route::get('/application_statistics/{application}', [ApplicationsController::class, 'index']);
+    // Route::post('/application_statistics', [ApplicationsController::class, 'store']);
+    // Route::get('/application_statistics/{application}/{date}', [ApplicationsController::class, 'show']);
+    // Route::patch('/application_statistics/{application}/{date}', [ApplicationsController::class, 'update']);
+    // Route::delete('/application_statistics/{application}/{date}', [ApplicationsController::class, 'destroy']);
 });
