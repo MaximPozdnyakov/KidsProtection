@@ -25,7 +25,7 @@ class AppStatisticsController extends Controller
         }
         if ($image) {
             return response()->json([
-                'data' => ['statistics' => $appStatistics, 'image' => $image],
+                'data' => ['history' => $appStatistics, 'image' => $image],
             ], 200);
         }
         return [];
@@ -71,7 +71,7 @@ class AppStatisticsController extends Controller
         $appStatistics->image = 'data:image/png;base64,' . base64_encode($appStatistics->image);
 
         return response()->json([
-            'message' => 'Статистика мобильного приложения создана',
+            'message' => 'История мобильного приложения создана',
             'data' => $appStatistics,
         ], 201);
     }
@@ -103,11 +103,11 @@ class AppStatisticsController extends Controller
         return [];
     }
 
-    public function update(Request $request, $application_statistics)
+    public function update(Request $request, $application_history)
     {
-        $existedAppStatistics = ApplicationStatistics::where('id', $application_statistics)->first();
+        $existedAppStatistics = ApplicationStatistics::where('id', $application_history)->first();
         if (!$existedAppStatistics) {
-            return response()->json(['message' => 'Не удалось найти статистику приложения с указанным id'], 404);
+            return response()->json(['message' => 'Не удалось найти историю приложения с указанным id'], 404);
         }
         if (!Child::where('id', $existedAppStatistics->user)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 403);
@@ -123,21 +123,21 @@ class AppStatisticsController extends Controller
         $existedAppStatistics->update();
         $existedAppStatistics->image = 'data:image/png;base64,' . base64_encode($existedAppStatistics->image);
         return response()->json([
-            'message' => 'Статистика приложения обновлена',
+            'message' => 'История приложения обновлена',
             'data' => $existedAppStatistics,
         ], 202);
     }
 
-    public function destroy(Request $request, $application_statistics)
+    public function destroy(Request $request, $application_history)
     {
-        $existedAppStatistics = ApplicationStatistics::where('id', $application_statistics)->first();
+        $existedAppStatistics = ApplicationStatistics::where('id', $application_history)->first();
         if (!$existedAppStatistics) {
-            return response()->json(['message' => 'Не удалось найти статистику приложения с указанным id'], 404);
+            return response()->json(['message' => 'Не удалось найти историю приложения с указанным id'], 404);
         }
         if (!Child::where('id', $existedAppStatistics->user)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 403);
         }
         $existedAppStatistics->delete();
-        return response()->json(['message' => 'Статистика была удалена'], 200);
+        return response()->json(['message' => 'История была удалена'], 200);
     }
 }

@@ -96,24 +96,28 @@ class ApplicationsController extends Controller
             $contents = $file->openFile()->fread($file->getSize());
             $existedApplication->image = $contents;
         }
-        if ($request->locked) {
+        if ($request->has('locked')) {
             $request->validate(['locked' => 'boolean'], ['locked.boolean' => 'Параметр locked должен быть булевым значением']);
             $existedApplication->locked = $request->locked;
         }
         if ($request->has('start_dt')) {
-            $request->validate(['start_dt' => 'date|date_format:d.m.Y H:i'],
-                [
-                    'start_dt.date' => 'Параметр start_dt должен быть датой',
-                    'start_dt.date_format' => 'Параметр start_dt не соответствует формату dd.MM.yyyy hh:mm',
-                ]);
+            if (!is_null($request->start_dt)) {
+                $request->validate(['start_dt' => 'date|date_format:d.m.Y H:i'],
+                    [
+                        'start_dt.date' => 'Параметр start_dt должен быть датой',
+                        'start_dt.date_format' => 'Параметр start_dt не соответствует формату dd.MM.yyyy hh:mm',
+                    ]);
+            }
             $existedApplication->start_dt = $request->start_dt;
         }
         if ($request->has('end_dt')) {
-            $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i'],
-                [
-                    'end_dt.date' => 'Параметр end_dt должен быть датой',
-                    'end_dt.date_format' => 'Параметр end_dt не соответствует формату dd.MM.yyyy hh:mm',
-                ]);
+            if (!is_null($request->end_dt)) {
+                $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i'],
+                    [
+                        'end_dt.date' => 'Параметр end_dt должен быть датой',
+                        'end_dt.date_format' => 'Параметр end_dt не соответствует формату dd.MM.yyyy hh:mm',
+                    ]);
+            }
             $existedApplication->end_dt = $request->end_dt;
         }
 

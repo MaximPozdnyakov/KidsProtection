@@ -4,6 +4,7 @@ use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\AppStatisticsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChildrenController;
+use App\Http\Controllers\SitesController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->group(function () {
@@ -26,9 +27,15 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/applications/{application}', [ApplicationsController::class, 'update']);
     Route::delete('/applications/{application}', [ApplicationsController::class, 'destroy']);
 
-    Route::get('/application_statistics/{child}/{package}', [AppStatisticsController::class, 'index']);
-    Route::post('/application_statistics', [AppStatisticsController::class, 'store']);
-    Route::get('/application_statistics/{child}/{package}/{date}', [AppStatisticsController::class, 'show']);
-    Route::patch('/application_statistics/{application_statistics}', [AppStatisticsController::class, 'update']);
-    Route::delete('/application_statistics/{application_statistics}', [AppStatisticsController::class, 'destroy']);
+    Route::get('/application_history/{child}/{package}', [AppStatisticsController::class, 'index']);
+    Route::post('/application_history', [AppStatisticsController::class, 'store']);
+    Route::get('/application_history/{child}/{package}/{date}', [AppStatisticsController::class, 'show']);
+    Route::patch('/application_history/{application_history}', [AppStatisticsController::class, 'update']);
+    Route::delete('/application_history/{application_history}', [AppStatisticsController::class, 'destroy']);
+
+    Route::get('/sites/{child}', [SitesController::class, 'index']);
+    Route::post('/sites', [SitesController::class, 'store']);
+    Route::get('/sites/{child}/{site}', [SitesController::class, 'show']);
+    Route::patch('/sites/{site}', [SitesController::class, 'update']);
+    Route::delete('/sites/{site}', [SitesController::class, 'destroy']);
 });
