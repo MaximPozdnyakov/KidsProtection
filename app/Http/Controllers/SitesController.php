@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Child;
 use App\Models\Site;
+use App\Models\SiteHistory;
 use Illuminate\Http\Request;
 
 class SitesController extends Controller
@@ -53,10 +54,9 @@ class SitesController extends Controller
             'start_dt' => $request->has('start_dt') ? $request->start_dt : null,
             'end_dt' => $request->has('end_dt') ? $request->end_dt : null,
         ]);
-        $site = Site::find($site->id);
         return response()->json([
             'message' => 'Сайт добавлен',
-            'data' => $site,
+            'data' => Site::find($site->id),
         ], 201);
     }
 
@@ -77,6 +77,8 @@ class SitesController extends Controller
         if ($request->has('locked')) {
             $request->validate(['locked' => 'boolean'], ['locked.boolean' => 'Параметр locked должен быть булевым значением']);
             $existedSite->locked = $request->locked;
+            SiteHistory::where('host', $existedSite->host)->where('user', $existedSite->user)
+                ->update('locked', $request->locked);
         }
         if ($request->has('start_dt')) {
             if (!is_null($request->start_dt)) {

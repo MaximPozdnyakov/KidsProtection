@@ -4,6 +4,7 @@ use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\AppStatisticsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChildrenController;
+use App\Http\Controllers\SiteHistoryController;
 use App\Http\Controllers\SitesController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +39,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/sites/{child}/{site}', [SitesController::class, 'show']);
     Route::patch('/sites/{site}', [SitesController::class, 'update']);
     Route::delete('/sites/{site}', [SitesController::class, 'destroy']);
+
+    Route::get('/site_history/{child}/{host}', [SiteHistoryController::class, 'index']);
+    Route::post('/site_history', [SiteHistoryController::class, 'store']);
+    Route::get('/site_history/{child}/{host}/{date}', [SiteHistoryController::class, 'show']);
+    Route::delete('/site_history/{site}', [SiteHistoryController::class, 'destroy']);
 });
