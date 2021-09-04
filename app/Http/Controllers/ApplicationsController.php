@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\ApplicationStatistics;
 use App\Models\Child;
 use Illuminate\Http\Request;
 
@@ -85,16 +86,6 @@ class ApplicationsController extends Controller
         if (!$existedApplication) {
             return response()->json(['message' => 'Не удалось найти приложение с указанным id'], 404);
         }
-        if ($request->package) {
-            $request->validate(['package' => 'string'], ['package.string' => 'Параметр package должен быть строкой']);
-            if (Application::where('package', $request->package)->where("user", $existedApplication->user)->first()) {
-                return response()->json([
-                    'message' => 'The given data was invalid.',
-                    'errors' => ['package' => 'Приложение с таким названием уже существует в списке приложений указанного ребенка'],
-                ], 400);
-            }
-            $existedApplication->package = $request->package;
-        }
         if ($request->name) {
             $request->validate(['name' => 'string'], ['name.string' => 'Параметр name должен быть строкой']);
             $existedApplication->name = $request->name;
@@ -127,6 +118,14 @@ class ApplicationsController extends Controller
         }
 
         $existedApplication->update();
+
+        ApplicationStatistics::where('user', $existedApplication->user)->where('package', $existedApplication->package)
+            ->update([
+                'name' => $existedApplication->name,
+                'image' => $existedApplication->image,
+                'locked' => $existedApplication->locked,
+            ]);
+
         $existedApplication->image = 'data:image/png;base64,' . base64_encode($existedApplication->image);
         return response()->json([
             'message' => 'Данные приложения обновлены',
