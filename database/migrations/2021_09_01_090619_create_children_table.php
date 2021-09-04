@@ -16,8 +16,12 @@ class CreateChildrenTable extends Migration
         Schema::create('children', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->integer('year_of_birth');
-            $table->string('parent_id');
+            $table->string('date');
+            $table->string('parent');
+            $table->boolean('block_all_apps')->default(0);
+            $table->boolean('block_all_phones')->default(0);
+            $table->boolean('block_all_site')->default(0);
+            $table->boolean('block_all_youtube')->default(0);
             $table->timestamps();
         });
     }

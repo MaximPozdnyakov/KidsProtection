@@ -11,7 +11,11 @@ class Child extends Model
     protected $table = 'children';
     protected $fillable = [
         'name',
-        'year_of_birth',
-        'parent_id',
+        'date',
+        'parent',
+        'block_all_apps',
+        'block_all_phones',
+        'block_all_site',
+        'block_all_youtube',
     ];
 }
