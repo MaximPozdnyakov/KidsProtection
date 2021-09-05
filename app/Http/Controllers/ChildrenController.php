@@ -20,10 +20,7 @@ class ChildrenController extends Controller
         ],
             [
                 'name.required' => 'Укажите имя ребенка',
-                'name.string' => 'Параметр name должен быть строкой',
                 'date.required' => 'Укажите день рождения ребенка',
-                'date.date' => 'Параметр date должен быть датой',
-                'date.date_format' => 'Параметр date не соответствует формату dd.MM.yyyy',
             ]);
         $child = Child::create([
             'name' => $request->name,
@@ -32,7 +29,7 @@ class ChildrenController extends Controller
         ]);
         return response()->json([
             'message' => 'Ребенок создан',
-            'data' => Child::where('id', $child->id)->first(),
+            'data' => Child::find($child->id),
         ], 201);
     }
 
@@ -52,33 +49,27 @@ class ChildrenController extends Controller
             return response()->json(['message' => 'Этот ребенок вам не принадлежит'], 403);
         }
         if ($request->name) {
-            $request->validate(['name' => 'string'], ['name.string' => 'Параметр name должен быть строкой']);
+            $request->validate(['name' => 'string']);
             $existedChild->name = $request->name;
         }
         if ($request->date) {
-            $request->validate([
-                'date' => 'date|date_format:d.m.Y',
-            ],
-                [
-                    'date.date' => 'Параметр date должен быть датой',
-                    'date.date_format' => 'Параметр date не соответствует формату dd.MM.yyyy',
-                ]);
+            $request->validate(['date' => 'date|date_format:d.m.Y']);
             $existedChild->date = $request->date;
         }
         if ($request->block_all_apps) {
-            $request->validate(['block_all_apps' => 'boolean'], ['block_all_apps.boolean' => 'Параметр block_all_apps должен быть булевым']);
+            $request->validate(['block_all_apps' => 'boolean']);
             $existedChild->block_all_apps = $request->block_all_apps;
         }
         if ($request->block_all_phones) {
-            $request->validate(['block_all_phones' => 'boolean'], ['block_all_phones.boolean' => 'Параметр block_all_phones должен быть булевым']);
+            $request->validate(['block_all_phones' => 'boolean']);
             $existedChild->block_all_phones = $request->block_all_phones;
         }
         if ($request->block_all_site) {
-            $request->validate(['block_all_site' => 'boolean'], ['block_all_site.boolean' => 'Параметр block_all_site должен быть булевым']);
+            $request->validate(['block_all_site' => 'boolean']);
             $existedChild->block_all_site = $request->block_all_site;
         }
         if ($request->block_all_youtube) {
-            $request->validate(['block_all_youtube' => 'boolean'], ['block_all_youtube.boolean' => 'Параметр block_all_youtube должен быть булевым']);
+            $request->validate(['block_all_youtube' => 'boolean']);
             $existedChild->block_all_youtube = $request->block_all_youtube;
         }
         $existedChild->update();

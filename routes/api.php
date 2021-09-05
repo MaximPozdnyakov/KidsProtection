@@ -5,6 +5,7 @@ use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CallHistoryController;
 use App\Http\Controllers\ChildrenController;
+use App\Http\Controllers\GeolocationController;
 use App\Http\Controllers\PhonesController;
 use App\Http\Controllers\SiteHistoryController;
 use App\Http\Controllers\SitesController;
@@ -67,13 +68,18 @@ Route::middleware('auth:api')->group(function () {
     Route::patch('/phones/{phone}', [PhonesController::class, 'update']);
     Route::delete('/phones/{phone}', [PhonesController::class, 'destroy']);
 
-    Route::get('/call_history/{child}/{phone}', [CallHistoryController::class, 'index']);
-    Route::post('/call_history', [CallHistoryController::class, 'store']);
-    Route::get('/call_history/{child}/{phone}/{date}', [CallHistoryController::class, 'show']);
-    Route::delete('/call_history/{call}', [CallHistoryController::class, 'destroy']);
+    Route::get('/calls/{child}/{phone}', [CallHistoryController::class, 'index']);
+    Route::post('/calls', [CallHistoryController::class, 'store']);
+    Route::get('/calls/{child}/{phone}/{date}', [CallHistoryController::class, 'show']);
+    Route::delete('/calls/{call}', [CallHistoryController::class, 'destroy']);
 
-    Route::get('/sms_history/{child}/{phone}', [SmsHistoryController::class, 'index']);
-    Route::post('/sms_history', [SmsHistoryController::class, 'store']);
-    Route::get('/sms_history/{child}/{phone}/{date}', [SmsHistoryController::class, 'show']);
-    Route::delete('/sms_history/{sms}', [SmsHistoryController::class, 'destroy']);
+    Route::get('/sms/{child}/{phone}', [SmsHistoryController::class, 'index']);
+    Route::post('/sms', [SmsHistoryController::class, 'store']);
+    Route::get('/sms/{child}/{phone}/{date}', [SmsHistoryController::class, 'show']);
+    Route::delete('/sms/{sms}', [SmsHistoryController::class, 'destroy']);
+
+    Route::get('/geolocation/{child}', [GeolocationController::class, 'index']);
+    Route::post('/geolocation', [GeolocationController::class, 'store']);
+    Route::get('/geolocation/{child}/{date}', [GeolocationController::class, 'show']);
+    Route::delete('/geolocation/{geolocation}', [GeolocationController::class, 'destroy']);
 });

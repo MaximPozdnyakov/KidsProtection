@@ -23,16 +23,7 @@ class SiteHistoryController extends Controller
             'host' => 'required|string',
             'user' => 'required|string',
             'date' => 'required|date|date_format:d.m.Y H:i',
-        ],
-            [
-                'host.required' => 'Параметр host обязателен',
-                'host.string' => 'Параметр host должен быть строкой',
-                'user.required' => 'Укажите id ребенка, которому принадлежит приложение',
-                'user.string' => 'Параметр user должен быть строкой',
-                'date.required' => 'Параметр date обязателен',
-                'date.date' => 'Параметр date должен быть датой',
-                'date.date_format' => 'Параметр date не соответствует формату dd.MM.yyyy hh:mm',
-            ]);
+        ]);
         if (!preg_match('/^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i', $request->host)) {
             $request->validate(['host' => 'ip'], ['host.ip' => 'Параметр host должен быть валидным хостом или IP-адресом']);
         }
@@ -73,7 +64,7 @@ class SiteHistoryController extends Controller
 
     public function destroy(Request $request, $site)
     {
-        $existedSiteHistory = SiteHistory::where('id', $site)->first();
+        $existedSiteHistory = SiteHistory::find($site);
         if (!$existedSiteHistory) {
             return response()->json(['message' => 'Не удалось найти историю сайта с указанным id'], 404);
         }

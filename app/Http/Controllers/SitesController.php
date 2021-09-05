@@ -22,18 +22,7 @@ class SitesController extends Controller
             'user' => 'required|string',
             'start_dt' => 'date|date_format:d.m.Y H:i',
             'end_dt' => 'date|date_format:d.m.Y H:i',
-        ],
-            [
-                'host.required' => 'Параметр host обязателен',
-                'host.string' => 'Параметр host должен быть строкой',
-                'locked.boolean' => 'Параметр locked должен быть булевым',
-                'user.required' => 'Укажите id ребенка, которому принадлежит приложение',
-                'user.string' => 'Параметр user должен быть строкой',
-                'start_dt.date' => 'Параметр start_dt должен быть датой',
-                'start_dt.date_format' => 'Параметр start_dt не соответствует формату dd.MM.yyyy hh:mm',
-                'end_dt.date' => 'Параметр end_dt должен быть датой',
-                'end_dt.date_format' => 'Параметр end_dt не соответствует формату dd.MM.yyyy hh:mm',
-            ]);
+        ]);
         if (!preg_match('/^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i', $request->host)) {
             $request->validate(['host' => 'ip'], ['host.ip' => 'Параметр host должен быть валидным хостом или IP-адресом']);
         }
@@ -50,9 +39,9 @@ class SitesController extends Controller
             'host' => $request->host,
             'parent' => auth()->user()->id,
             'user' => $request->user,
-            'locked' => $request->has('locked') ? $request->locked : 1,
-            'start_dt' => $request->has('start_dt') ? $request->start_dt : null,
-            'end_dt' => $request->has('end_dt') ? $request->end_dt : null,
+            'locked' => $request->get('locked', 1),
+            'start_dt' => $request->get('start_dt', null),
+            'end_dt' => $request->get('end_dt', null),
         ]);
         return response()->json([
             'message' => 'Сайт добавлен',
@@ -75,28 +64,20 @@ class SitesController extends Controller
             return response()->json(['message' => 'Не удалось найти приложение с указанным id'], 404);
         }
         if ($request->has('locked')) {
-            $request->validate(['locked' => 'boolean'], ['locked.boolean' => 'Параметр locked должен быть булевым значением']);
+            $request->validate(['locked' => 'boolean']);
             $existedSite->locked = $request->locked;
             SiteHistory::where('host', $existedSite->host)->where('user', $existedSite->user)
                 ->update(['locked' => $request->locked]);
         }
         if ($request->has('start_dt')) {
             if (!is_null($request->start_dt)) {
-                $request->validate(['start_dt' => 'date|date_format:d.m.Y H:i'],
-                    [
-                        'start_dt.date' => 'Параметр start_dt должен быть датой',
-                        'start_dt.date_format' => 'Параметр start_dt не соответствует формату dd.MM.yyyy hh:mm',
-                    ]);
+                $request->validate(['start_dt' => 'date|date_format:d.m.Y H:i']);
             }
             $existedSite->start_dt = $request->start_dt;
         }
         if ($request->has('end_dt')) {
             if (!is_null($request->end_dt)) {
-                $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i'],
-                    [
-                        'end_dt.date' => 'Параметр end_dt должен быть датой',
-                        'end_dt.date_format' => 'Параметр end_dt не соответствует формату dd.MM.yyyy hh:mm',
-                    ]);
+                $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i']);
             }
             $existedSite->end_dt = $request->end_dt;
         }

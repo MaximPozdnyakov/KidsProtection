@@ -20,25 +20,11 @@ class CallHistoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'phone' => 'required|string',
+            'phone' => 'required|string|regex:/^[0-9]{11}$/',
             'incoming' => 'required|boolean',
             'date' => 'required|date|date_format:d.m.Y H:i',
             'user' => 'required|string',
-        ],
-            [
-                'phone.required' => 'Параметр phone обязателен',
-                'phone.string' => 'Параметр phone должен быть строкой',
-                'incoming.required' => 'Параметр incoming обязателен',
-                'incoming.boolean' => 'Параметр incoming должен быть булевым значением',
-                'date.required' => 'Параметр date обязателен',
-                'date.date' => 'Параметр date должен быть датой',
-                'date.date_format' => 'Параметр date не соответствует формату dd.MM.yyyy hh:mm',
-                'user.required' => 'Укажите id ребенка, которому принадлежит приложение',
-                'user.string' => 'Параметр user должен быть строкой',
-            ]);
-        if (!preg_match('/^[0-9]{11}$/', $request->phone)) {
-            return response()->json(['message' => 'The given data was invalid.', 'errors' => ['phone' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']], 400);
-        }
+        ], ['phone' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
         if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
@@ -77,7 +63,7 @@ class CallHistoryController extends Controller
 
     public function destroy(Request $request, $call)
     {
-        $existedCallHistory = CallHistory::where('id', $call)->first();
+        $existedCallHistory = CallHistory::find($call);
         if (!$existedCallHistory) {
             return response()->json(['message' => 'Не удалось найти историю звонка с указанным id'], 404);
         }

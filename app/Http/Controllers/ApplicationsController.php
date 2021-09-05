@@ -25,17 +25,7 @@ class ApplicationsController extends Controller
             'name' => 'required|string',
             'image' => 'required|mimes:png,jpg,svg',
             'user' => 'required|string',
-        ],
-            [
-                'package.required' => 'Параметр package обязателен',
-                'package.string' => 'Параметр package должен быть строкой',
-                'name.required' => 'Параметр name обязателен',
-                'name.string' => 'Параметр name должен быть строкой',
-                'image.required' => 'Параметр image обязателен',
-                'image.mimes' => 'Изображение не соответствует не одному из форматов: PNG, JPG, SVG',
-                'user.required' => 'Укажите id ребенка, которому принадлежит приложение',
-                'user.string' => 'Параметр user должен быть строкой',
-            ]);
+        ]);
         $existedChild = Child::where('id', $request->user)->where("parent", auth()->user()->id)->first();
         if (!$existedChild) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
@@ -58,7 +48,7 @@ class ApplicationsController extends Controller
             'parent' => auth()->user()->id,
             'user' => $request->user,
         ]);
-        $application = Application::where('id', $application->id)->first();
+        $application = Application::find($application->id);
         $application->image = 'data:image/png;base64,' . base64_encode($application->image);
 
         return response()->json([
@@ -87,36 +77,28 @@ class ApplicationsController extends Controller
             return response()->json(['message' => 'Не удалось найти приложение с указанным id'], 404);
         }
         if ($request->name) {
-            $request->validate(['name' => 'string'], ['name.string' => 'Параметр name должен быть строкой']);
+            $request->validate(['name' => 'string']);
             $existedApplication->name = $request->name;
         }
         if ($request->hasFile('image')) {
-            $request->validate(['image' => 'mimes:png,jpg,svg'], ['image.mimes' => 'Изображение не соответствует не одному из форматов: PNG, JPG, SVG']);
+            $request->validate(['image' => 'mimes:png,jpg,svg']);
             $file = $request->file('image');
             $contents = $file->openFile()->fread($file->getSize());
             $existedApplication->image = $contents;
         }
         if ($request->has('locked')) {
-            $request->validate(['locked' => 'boolean'], ['locked.boolean' => 'Параметр locked должен быть булевым значением']);
+            $request->validate(['locked' => 'boolean']);
             $existedApplication->locked = $request->locked;
         }
         if ($request->has('start_dt')) {
             if (!is_null($request->start_dt)) {
-                $request->validate(['start_dt' => 'date|date_format:d.m.Y H:i'],
-                    [
-                        'start_dt.date' => 'Параметр start_dt должен быть датой',
-                        'start_dt.date_format' => 'Параметр start_dt не соответствует формату dd.MM.yyyy hh:mm',
-                    ]);
+                $request->validate(['start_dt' => 'date|date_format:d.m.Y H:i']);
             }
             $existedApplication->start_dt = $request->start_dt;
         }
         if ($request->has('end_dt')) {
             if (!is_null($request->end_dt)) {
-                $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i'],
-                    [
-                        'end_dt.date' => 'Параметр end_dt должен быть датой',
-                        'end_dt.date_format' => 'Параметр end_dt не соответствует формату dd.MM.yyyy hh:mm',
-                    ]);
+                $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i']);
             }
             $existedApplication->end_dt = $request->end_dt;
         }

@@ -18,20 +18,10 @@ class PhonesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'phone' => 'required|string',
+            'phone' => 'required|string|regex:/^[0-9]{11}$/',
             'locked' => 'boolean',
             'user' => 'required|string',
-        ],
-            [
-                'phone.required' => 'Параметр phone обязателен',
-                'phone.string' => 'Параметр phone должен быть строкой',
-                'locked.boolean' => 'Параметр locked должен быть булевым',
-                'user.required' => 'Укажите id ребенка, которому принадлежит приложение',
-                'user.string' => 'Параметр user должен быть строкой',
-            ]);
-        if (!preg_match('/^[0-9]{11}$/', $request->phone)) {
-            return response()->json(['message' => 'The given data was invalid.', 'errors' => ['phone' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']], 400);
-        }
+        ], ['phone.regex' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
         if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
@@ -45,7 +35,7 @@ class PhonesController extends Controller
             'phone' => $request->phone,
             'parent' => auth()->user()->id,
             'user' => $request->user,
-            'locked' => $request->has('locked') ? $request->locked : 1,
+            'locked' => $request->get('locked', 1),
         ]);
         return response()->json([
             'message' => 'Телефон добавлен',
@@ -68,7 +58,7 @@ class PhonesController extends Controller
             return response()->json(['message' => 'Не удалось найти телефон с указанным id'], 404);
         }
         if ($request->has('locked')) {
-            $request->validate(['locked' => 'boolean'], ['locked.boolean' => 'Параметр locked должен быть булевым значением']);
+            $request->validate(['locked' => 'boolean']);
             $existedPhone->locked = $request->locked;
             CallHistory::where('phone', $existedPhone->phone)->where('user', $existedPhone->user)
                 ->update(['locked' => $request->locked]);

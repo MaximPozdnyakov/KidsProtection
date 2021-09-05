@@ -34,9 +34,7 @@ class AuthController extends Controller
             [
                 'email.required' => 'Укажите email',
                 'email.email' => 'Укажите корректный email',
-                'email.string' => 'Параметр email должен быть строкой',
                 'password.required' => 'Укажите пароль',
-                'password.string' => 'Параметр password должен быть строкой',
             ]);
         $credentials = $request->only('email', 'password');
         $existedUser = User::whereEmail($credentials['email'])->first();
@@ -81,15 +79,10 @@ class AuthController extends Controller
         ],
             [
                 'fio.required' => 'Укажите ФИО',
-                'fio.string' => 'Параметр fio должен быть строкой',
                 'email.required' => 'Укажите email',
-                'email.string' => 'Параметр email должен быть строкой',
                 'email.email' => 'Укажите корректный email',
                 'email.unique' => 'Пользователь с такими email уже существует',
                 'password.required' => 'Укажите пароль',
-                'password.string' => 'Параметр password должен быть строкой',
-                'terms_agree.required' => 'Параметр terms_agree обязателен',
-                'terms_agree.boolean' => 'Параметр terms_agree должен быть булевым',
             ]);
         if (!$request->terms_agree) {
             return response()->json([
@@ -142,7 +135,6 @@ class AuthController extends Controller
         ],
             [
                 'email.required' => 'Укажите email',
-                'email.string' => 'Параметр email должен быть строкой',
                 'email.email' => 'Укажите корректный email',
             ]);
         $user = User::whereEmail($request->email)->first();
@@ -197,9 +189,7 @@ class AuthController extends Controller
         ],
             [
                 'token.required' => 'Укажите код для сброса пароля',
-                'token.string' => 'Параметр token должен быть строкой',
                 'password.required' => 'Укажите пароль',
-                'password.string' => 'Параметр password должен быть строкой',
             ]);
         $tokenData = DB::table('password_resets')->where('token', $request->token)->first();
         $user = null;

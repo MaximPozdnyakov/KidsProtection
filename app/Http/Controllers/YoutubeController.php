@@ -22,18 +22,7 @@ class YoutubeController extends Controller
             'user' => 'required|string',
             'start_dt' => 'date|date_format:d.m.Y H:i',
             'end_dt' => 'date|date_format:d.m.Y H:i',
-        ],
-            [
-                'channel.required' => 'Параметр channel обязателен',
-                'channel.string' => 'Параметр channel должен быть строкой',
-                'locked.boolean' => 'Параметр locked должен быть булевым',
-                'user.required' => 'Укажите id ребенка, которому принадлежит приложение',
-                'user.string' => 'Параметр user должен быть строкой',
-                'start_dt.date' => 'Параметр start_dt должен быть датой',
-                'start_dt.date_format' => 'Параметр start_dt не соответствует формату dd.MM.yyyy hh:mm',
-                'end_dt.date' => 'Параметр end_dt должен быть датой',
-                'end_dt.date_format' => 'Параметр end_dt не соответствует формату dd.MM.yyyy hh:mm',
-            ]);
+        ]);
         if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
@@ -47,9 +36,9 @@ class YoutubeController extends Controller
             'channel' => $request->channel,
             'parent' => auth()->user()->id,
             'user' => $request->user,
-            'locked' => $request->has('locked') ? $request->locked : 1,
-            'start_dt' => $request->has('start_dt') ? $request->start_dt : null,
-            'end_dt' => $request->has('end_dt') ? $request->end_dt : null,
+            'locked' => $request->get('locked', 1),
+            'start_dt' => $request->get('start_dt', null),
+            'end_dt' => $request->get('end_dt', null),
         ]);
         return response()->json([
             'message' => 'Youtube канал добавлен',
@@ -72,7 +61,7 @@ class YoutubeController extends Controller
             return response()->json(['message' => 'Не удалось найти youtube канал с указанным id'], 404);
         }
         if ($request->has('locked')) {
-            $request->validate(['locked' => 'boolean'], ['locked.boolean' => 'Параметр locked должен быть булевым значением']);
+            $request->validate(['locked' => 'boolean']);
             $existedYoutube->locked = $request->locked;
             YoutubeHistory::where('channel', 'LIKE', '%/' . $existedYoutube->channel)->where('user', $existedYoutube->user)
                 ->orWhere('channel', $existedYoutube->channel)->where('user', $existedYoutube->user)
@@ -80,21 +69,13 @@ class YoutubeController extends Controller
         }
         if ($request->has('start_dt')) {
             if (!is_null($request->start_dt)) {
-                $request->validate(['start_dt' => 'date|date_format:d.m.Y H:i'],
-                    [
-                        'start_dt.date' => 'Параметр start_dt должен быть датой',
-                        'start_dt.date_format' => 'Параметр start_dt не соответствует формату dd.MM.yyyy hh:mm',
-                    ]);
+                $request->validate(['start_dt' => 'date|date_format:d.m.Y H:i']);
             }
             $existedYoutube->start_dt = $request->start_dt;
         }
         if ($request->has('end_dt')) {
             if (!is_null($request->end_dt)) {
-                $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i'],
-                    [
-                        'end_dt.date' => 'Параметр end_dt должен быть датой',
-                        'end_dt.date_format' => 'Параметр end_dt не соответствует формату dd.MM.yyyy hh:mm',
-                    ]);
+                $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i']);
             }
             $existedYoutube->end_dt = $request->end_dt;
         }

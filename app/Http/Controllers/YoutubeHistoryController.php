@@ -25,16 +25,7 @@ class YoutubeHistoryController extends Controller
             'channel' => 'required|string',
             'user' => 'required|string',
             'date' => 'required|date|date_format:d.m.Y H:i',
-        ],
-            [
-                'channel.required' => 'Параметр channel обязателен',
-                'channel.string' => 'Параметр channel должен быть строкой',
-                'user.required' => 'Укажите id ребенка, которому принадлежит приложение',
-                'user.string' => 'Параметр user должен быть строкой',
-                'date.required' => 'Параметр date обязателен',
-                'date.date' => 'Параметр date должен быть датой',
-                'date.date_format' => 'Параметр date не соответствует формату dd.MM.yyyy hh:mm',
-            ]);
+        ]);
         if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
@@ -75,7 +66,7 @@ class YoutubeHistoryController extends Controller
 
     public function destroy(Request $request, $youtube)
     {
-        $existedYoutubeHistory = YoutubeHistory::where('id', $youtube)->first();
+        $existedYoutubeHistory = YoutubeHistory::find($youtube);
         if (!$existedYoutubeHistory) {
             return response()->json(['message' => 'Не удалось найти youtube канал с указанным id'], 404);
         }

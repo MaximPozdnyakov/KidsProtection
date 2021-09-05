@@ -37,16 +37,7 @@ class AppHistoryController extends Controller
             'package' => 'required|string',
             'user' => 'required|string',
             'start_dt' => 'required|date|date_format:d.m.Y H:i',
-        ],
-            [
-                'package.required' => 'Параметр package обязателен',
-                'package.string' => 'Параметр package должен быть строкой',
-                'user.required' => 'Укажите id ребенка, которому принадлежит приложение',
-                'user.string' => 'Параметр user должен быть строкой',
-                'start_dt.required' => 'Параметр start_dt обязателен',
-                'start_dt.date' => 'Параметр start_dt должен быть датой',
-                'start_dt.date_format' => 'Параметр start_dt не соответствует формату dd.MM.yyyy hh:mm',
-            ]);
+        ]);
         $existedChild = Child::where('id', $request->user)->where("parent", auth()->user()->id)->first();
         if (!$existedChild) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
@@ -67,7 +58,7 @@ class AppHistoryController extends Controller
             'start_dt' => $request->start_dt,
             'user' => $request->user,
         ]);
-        $appHistory = ApplicationHistory::where('id', $appHistory->id)->first();
+        $appHistory = ApplicationHistory::find($appHistory->id);
         $appHistory->image = 'data:image/png;base64,' . base64_encode($appHistory->image);
 
         return response()->json([
@@ -105,7 +96,7 @@ class AppHistoryController extends Controller
 
     public function update(Request $request, $application_history)
     {
-        $existedAppHistory = ApplicationHistory::where('id', $application_history)->first();
+        $existedAppHistory = ApplicationHistory::find($application_history);
         if (!$existedAppHistory) {
             return response()->json(['message' => 'Не удалось найти историю приложения с указанным id'], 404);
         }
@@ -113,11 +104,7 @@ class AppHistoryController extends Controller
             return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 403);
         }
         if ($request->end_dt) {
-            $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i'],
-                [
-                    'end_dt.date' => 'Параметр end_dt должен быть датой',
-                    'end_dt.date_format' => 'Параметр end_dt не соответствует формату dd.MM.yyyy hh:mm',
-                ]);
+            $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i']);
             $existedAppHistory->end_dt = $request->end_dt;
         }
         $existedAppHistory->update();
@@ -130,7 +117,7 @@ class AppHistoryController extends Controller
 
     public function destroy(Request $request, $application_history)
     {
-        $existedAppHistory = ApplicationHistory::where('id', $application_history)->first();
+        $existedAppHistory = ApplicationHistory::find($application_history);
         if (!$existedAppHistory) {
             return response()->json(['message' => 'Не удалось найти историю приложения с указанным id'], 404);
         }
