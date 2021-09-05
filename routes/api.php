@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\AppStatisticsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CallsController;
 use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\SiteHistoryController;
 use App\Http\Controllers\SitesController;
@@ -57,4 +58,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/youtube_history', [YoutubeHistoryController::class, 'store']);
     Route::get('/youtube_history/{child}/{channel}/{date}', [YoutubeHistoryController::class, 'show']);
     Route::delete('/youtube_history/{youtube}', [YoutubeHistoryController::class, 'destroy']);
+
+    Route::get('/calls/{child}', [CallsController::class, 'index']);
+    Route::post('/calls', [CallsController::class, 'store']);
+    Route::get('/calls/{child}/{call}', [CallsController::class, 'show']);
+    Route::patch('/calls/{call}', [CallsController::class, 'update']);
+    Route::delete('/calls/{call}', [CallsController::class, 'destroy']);
 });
