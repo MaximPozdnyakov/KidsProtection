@@ -10,10 +10,10 @@ class GeolocationController extends Controller
 {
     public function index(Request $request, $child)
     {
-        if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        return Geolocation::where('user', $child)->get();
+        return Geolocation::whereUser($child)->get();
     }
 
     public function store(Request $request)
@@ -29,7 +29,7 @@ class GeolocationController extends Controller
                 'latitude.regex' => 'Параметр latitude должен быть валидной широтой',
                 'longitude.regex' => 'Параметр longitude должен быть валидной долготой',
             ]);
-        if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
         $geolocation = Geolocation::create([
@@ -47,14 +47,14 @@ class GeolocationController extends Controller
 
     public function show(Request $request, $child, $date)
     {
-        if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
         $d = \DateTime::createFromFormat('d.m.Y', $date);
         if (!($d && $d->format('d.m.Y') === $date)) {
             return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);
         }
-        return Geolocation::where('user', $child)->where('date', 'LIKE', $date . '%')->get();
+        return Geolocation::whereUser($child)->where('date', 'LIKE', $date . '%')->get();
     }
 
     public function destroy(Request $request, $geolocation)
@@ -63,7 +63,7 @@ class GeolocationController extends Controller
         if (!$existedGeolocation) {
             return response()->json(['message' => 'Не удалось найти геолокацию с указанным id'], 404);
         }
-        if (!Child::where('id', $existedGeolocation->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($existedGeolocation->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Эта геолокация не принадлежит вашему ребенку'], 403);
         }
         $existedGeolocation->delete();

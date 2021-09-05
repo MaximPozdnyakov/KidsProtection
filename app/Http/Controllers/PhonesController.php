@@ -12,20 +12,20 @@ class PhonesController extends Controller
 {
     public function index(Request $request, $child)
     {
-        return Phone::where('parent', auth()->user()->id)->where('user', $child)->get();
+        return Phone::whereParent(auth()->user()->id)->whereUser($child)->get();
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'phone' => 'required|string|regex:/^[0-9]{11}$/',
+            'phone' => ['required', 'string', 'regex:/^[0-9]{11}$/'],
             'locked' => 'boolean',
             'user' => 'required|string',
         ], ['phone.regex' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
-        if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        if (Phone::where('phone', $request->phone)->where("user", $request->user)->first()) {
+        if (Phone::wherePhone($request->phone)->whereUser($request->user)->first()) {
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => ['phone' => 'Этот телефон уже добавлен в список телефонов указанного ребенка'],
@@ -45,24 +45,24 @@ class PhonesController extends Controller
 
     public function show(Request $request, $child, $phone)
     {
-        if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        return Phone::where('id', $phone)->where("user", $child)->first();
+        return Phone::whereId($phone)->whereUser($child)->first();
     }
 
     public function update(Request $request, $phone)
     {
-        $existedPhone = Phone::where('id', $phone)->where("parent", auth()->user()->id)->first();
+        $existedPhone = Phone::whereId($phone)->whereParent(auth()->user()->id)->first();
         if (!$existedPhone) {
             return response()->json(['message' => 'Не удалось найти телефон с указанным id'], 404);
         }
         if ($request->has('locked')) {
             $request->validate(['locked' => 'boolean']);
             $existedPhone->locked = $request->locked;
-            CallHistory::where('phone', $existedPhone->phone)->where('user', $existedPhone->user)
+            CallHistory::wherePhone($existedPhone->phone)->whereUser($existedPhone->user)
                 ->update(['locked' => $request->locked]);
-            SmsHistory::where('phone', $existedPhone->phone)->where('user', $existedPhone->user)
+            SmsHistory::wherePhone($existedPhone->phone)->whereUser($existedPhone->user)
                 ->update(['locked' => $request->locked]);
         }
         $existedPhone->update();
@@ -74,7 +74,7 @@ class PhonesController extends Controller
 
     public function destroy(Request $request, $phone)
     {
-        $existedPhone = Phone::where('id', $phone)->where("parent", auth()->user()->id)->first();
+        $existedPhone = Phone::whereId($phone)->whereParent(auth()->user()->id)->first();
         if (!$existedPhone) {
             return response()->json(['message' => 'Не удалось найти телефон с указанным id'], 404);
         }

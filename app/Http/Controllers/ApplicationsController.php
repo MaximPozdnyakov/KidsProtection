@@ -11,7 +11,7 @@ class ApplicationsController extends Controller
 {
     public function index(Request $request, $child)
     {
-        $applications = Application::where('parent', auth()->user()->id)->where('user', $child)->get();
+        $applications = Application::whereParent(auth()->user()->id)->whereUser($child)->get();
         foreach ($applications as $application) {
             $application->image = 'data:image/png;base64,' . base64_encode($application->image);
         }
@@ -26,11 +26,11 @@ class ApplicationsController extends Controller
             'image' => 'required|mimes:png,jpg,svg',
             'user' => 'required|string',
         ]);
-        $existedChild = Child::where('id', $request->user)->where("parent", auth()->user()->id)->first();
+        $existedChild = Child::whereId($request->user)->whereParent(auth()->user()->id)->first();
         if (!$existedChild) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        $existedApplication = Application::where('package', $request->package)->where("user", $request->user)->first();
+        $existedApplication = Application::wherePackage($request->package)->whereUser($request->user)->first();
         if ($existedApplication) {
             return response()->json([
                 'message' => 'The given data was invalid.',
@@ -59,11 +59,11 @@ class ApplicationsController extends Controller
 
     public function show(Request $request, $child, $application)
     {
-        $existedChild = Child::where('id', $child)->where("parent", auth()->user()->id)->first();
+        $existedChild = Child::whereId($child)->whereParent(auth()->user()->id)->first();
         if (!$existedChild) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        $application = Application::where('id', $application)->where("user", $child)->first();
+        $application = Application::whereId($application)->whereUser($child)->first();
         if ($application) {
             $application->image = 'data:image/png;base64,' . base64_encode($application->image);
         }
@@ -72,7 +72,7 @@ class ApplicationsController extends Controller
 
     public function update(Request $request, $application)
     {
-        $existedApplication = Application::where('id', $application)->where("parent", auth()->user()->id)->first();
+        $existedApplication = Application::whereId($application)->whereParent(auth()->user()->id)->first();
         if (!$existedApplication) {
             return response()->json(['message' => 'Не удалось найти приложение с указанным id'], 404);
         }
@@ -105,7 +105,7 @@ class ApplicationsController extends Controller
 
         $existedApplication->update();
 
-        ApplicationHistory::where('user', $existedApplication->user)->where('package', $existedApplication->package)
+        ApplicationHistory::whereUser($existedApplication->user)->wherePackage($existedApplication->package)
             ->update([
                 'name' => $existedApplication->name,
                 'image' => $existedApplication->image,
@@ -121,7 +121,7 @@ class ApplicationsController extends Controller
 
     public function destroy(Request $request, $application)
     {
-        $existedApplication = Application::where('id', $application)->where("parent", auth()->user()->id)->first();
+        $existedApplication = Application::whereId($application)->whereParent(auth()->user()->id)->first();
         if (!$existedApplication) {
             return response()->json(['message' => 'Не удалось найти приложение с указанным id'], 404);
         }

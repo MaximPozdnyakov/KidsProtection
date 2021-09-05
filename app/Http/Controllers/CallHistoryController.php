@@ -11,24 +11,24 @@ class CallHistoryController extends Controller
 {
     public function index(Request $request, $child, $phone)
     {
-        if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        return CallHistory::where('user', $child)->where('phone', $phone)->get();
+        return CallHistory::whereUser($child)->wherePhone($phone)->get();
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'phone' => 'required|string|regex:/^[0-9]{11}$/',
+            'phone' => ['required', 'string', 'regex:/^[0-9]{11}$/'],
             'incoming' => 'required|boolean',
             'date' => 'required|date|date_format:d.m.Y H:i',
             'user' => 'required|string',
         ], ['phone' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
-        if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        $existedCall = Phone::where('phone', $request->phone)->where("user", $request->user)->first();
+        $existedCall = Phone::wherePhone($request->phone)->whereUser($request->user)->first();
         if (!$existedCall) {
             return response()->json([
                 'message' => 'The given data was invalid.',
@@ -50,14 +50,14 @@ class CallHistoryController extends Controller
 
     public function show(Request $request, $child, $phone, $date)
     {
-        if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
         $d = \DateTime::createFromFormat('d.m.Y', $date);
         if (!($d && $d->format('d.m.Y') === $date)) {
             return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);
         }
-        return CallHistory::where('user', $child)->where('phone', $phone)
+        return CallHistory::whereUser($child)->wherePhone($phone)
             ->where('date', 'LIKE', $date . '%')->get();
     }
 
@@ -67,7 +67,7 @@ class CallHistoryController extends Controller
         if (!$existedCallHistory) {
             return response()->json(['message' => 'Не удалось найти историю звонка с указанным id'], 404);
         }
-        if (!Child::where('id', $existedCallHistory->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($existedCallHistory->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Этот звонок не принадлежит вашему ребенку'], 403);
         }
         $existedCallHistory->delete();

@@ -11,7 +11,7 @@ class SitesController extends Controller
 {
     public function index(Request $request, $child)
     {
-        return Site::where('parent', auth()->user()->id)->where('user', $child)->get();
+        return Site::whereParent(auth()->user()->id)->whereUser($child)->get();
     }
 
     public function store(Request $request)
@@ -26,10 +26,10 @@ class SitesController extends Controller
         if (!preg_match('/^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i', $request->host)) {
             $request->validate(['host' => 'ip'], ['host.ip' => 'Параметр host должен быть валидным хостом или IP-адресом']);
         }
-        if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        if (Site::where('host', $request->host)->where("user", $request->user)->first()) {
+        if (Site::whereHost($request->host)->whereUser($request->user)->first()) {
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => ['host' => 'Этот сайт уже добавлен в список сайтов указанного ребенка'],
@@ -51,22 +51,22 @@ class SitesController extends Controller
 
     public function show(Request $request, $child, $site)
     {
-        if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        return Site::where('id', $site)->where("user", $child)->first();
+        return Site::whereId($site)->whereUser($child)->first();
     }
 
     public function update(Request $request, $site)
     {
-        $existedSite = Site::where('id', $site)->where("parent", auth()->user()->id)->first();
+        $existedSite = Site::whereId($site)->whereParent(auth()->user()->id)->first();
         if (!$existedSite) {
             return response()->json(['message' => 'Не удалось найти приложение с указанным id'], 404);
         }
         if ($request->has('locked')) {
             $request->validate(['locked' => 'boolean']);
             $existedSite->locked = $request->locked;
-            SiteHistory::where('host', $existedSite->host)->where('user', $existedSite->user)
+            SiteHistory::whereHost($existedSite->host)->whereUser($existedSite->user)
                 ->update(['locked' => $request->locked]);
         }
         if ($request->has('start_dt')) {
@@ -90,7 +90,7 @@ class SitesController extends Controller
 
     public function destroy(Request $request, $site)
     {
-        $existedSite = Site::where('id', $site)->where("parent", auth()->user()->id)->first();
+        $existedSite = Site::whereId($site)->whereParent(auth()->user()->id)->first();
         if (!$existedSite) {
             return response()->json(['message' => 'Не удалось найти сайт с указанным id'], 404);
         }

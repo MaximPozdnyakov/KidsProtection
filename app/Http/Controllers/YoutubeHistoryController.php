@@ -11,11 +11,11 @@ class YoutubeHistoryController extends Controller
 {
     public function index(Request $request, $child, $channel)
     {
-        if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        return YoutubeHistory::where('channel', 'LIKE', '%/' . $channel)->where('user', $child)
-            ->orWhere('channel', $channel)->where('user', $child)
+        return YoutubeHistory::where('channel', 'LIKE', '%/' . $channel)->whereUser($child)
+            ->orWhere('channel', $channel)->whereUser($child)
             ->get();
     }
 
@@ -26,11 +26,11 @@ class YoutubeHistoryController extends Controller
             'user' => 'required|string',
             'date' => 'required|date|date_format:d.m.Y H:i',
         ]);
-        if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        $existedYoutube = Youtube::where('channel', 'LIKE', '%/' . $request->channel)->where("user", $request->user)
-            ->orWhere('channel', $request->channel)->where("user", $request->user)
+        $existedYoutube = Youtube::where('channel', 'LIKE', '%/' . $request->channel)->whereUser($request->user)
+            ->orWhere('channel', $request->channel)->whereUser($request->user)
             ->first();
         if (!$existedYoutube) {
             return response()->json([
@@ -52,15 +52,15 @@ class YoutubeHistoryController extends Controller
 
     public function show(Request $request, $child, $channel, $date)
     {
-        if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
         $d = \DateTime::createFromFormat('d.m.Y', $date);
         if (!($d && $d->format('d.m.Y') === $date)) {
             return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);
         }
-        return YoutubeHistory::where('user', $child)->where('date', 'LIKE', $date . '%')->where('channel', 'LIKE', '%/' . $channel)
-            ->orWhere('channel', $channel)->where('date', 'LIKE', $date . '%')->where('user', $child)
+        return YoutubeHistory::whereUser($child)->where('date', 'LIKE', $date . '%')->where('channel', 'LIKE', '%/' . $channel)
+            ->orWhere('channel', $channel)->where('date', 'LIKE', $date . '%')->whereUser($child)
             ->get();
     }
 
@@ -70,7 +70,7 @@ class YoutubeHistoryController extends Controller
         if (!$existedYoutubeHistory) {
             return response()->json(['message' => 'Не удалось найти youtube канал с указанным id'], 404);
         }
-        if (!Child::where('id', $existedYoutubeHistory->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($existedYoutubeHistory->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Этот сайт не принадлежит вашему ребенку'], 403);
         }
         $existedYoutubeHistory->delete();

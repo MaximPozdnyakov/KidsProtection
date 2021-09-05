@@ -11,25 +11,25 @@ class SmsHistoryController extends Controller
 {
     public function index(Request $request, $child, $phone)
     {
-        if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        return SmsHistory::where('user', $child)->where('phone', $phone)->get();
+        return SmsHistory::whereUser($child)->wherePhone($phone)->get();
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'phone' => 'required|string|regex:/^[0-9]{11}$/',
+            'phone' => ['required', 'string', 'regex:/^[0-9]{11}$/'],
             'msg' => 'string',
             'incoming' => 'required|boolean',
             'date' => 'required|date|date_format:d.m.Y H:i',
             'user' => 'required|string',
         ], ['phone.regex' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
-        if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        $existedSms = Phone::where('phone', $request->phone)->where("user", $request->user)->first();
+        $existedSms = Phone::wherePhone($request->phone)->whereUser($request->user)->first();
         if (!$existedSms) {
             return response()->json([
                 'message' => 'The given data was invalid.',
@@ -52,14 +52,14 @@ class SmsHistoryController extends Controller
 
     public function show(Request $request, $child, $phone, $date)
     {
-        if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
         $d = \DateTime::createFromFormat('d.m.Y', $date);
         if (!($d && $d->format('d.m.Y') === $date)) {
             return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);
         }
-        return SmsHistory::where('user', $child)->where('phone', $phone)
+        return SmsHistory::whereUser($child)->wherePhone($phone)
             ->where('date', 'LIKE', $date . '%')->get();
     }
 
@@ -69,7 +69,7 @@ class SmsHistoryController extends Controller
         if (!$existedSmsHistory) {
             return response()->json(['message' => 'Не удалось найти смс с указанным id'], 404);
         }
-        if (!Child::where('id', $existedSmsHistory->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::whereId($existedSmsHistory->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Это смс не принадлежит вашему ребенку'], 403);
         }
         $existedSmsHistory->delete();

@@ -10,6 +10,7 @@ use App\Http\Controllers\PhonesController;
 use App\Http\Controllers\SiteHistoryController;
 use App\Http\Controllers\SitesController;
 use App\Http\Controllers\SmsHistoryController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\YoutubeHistoryController;
 use Illuminate\Support\Facades\Route;
@@ -82,4 +83,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/geolocation', [GeolocationController::class, 'store']);
     Route::get('/geolocation/{child}/{date}', [GeolocationController::class, 'show']);
     Route::delete('/geolocation/{geolocation}', [GeolocationController::class, 'destroy']);
+
+    Route::post('/support', [SupportController::class, 'store']);
 });

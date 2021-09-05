@@ -191,10 +191,10 @@ class AuthController extends Controller
                 'token.required' => 'Укажите код для сброса пароля',
                 'password.required' => 'Укажите пароль',
             ]);
-        $tokenData = DB::table('password_resets')->where('token', $request->token)->first();
+        $tokenData = DB::table('password_resets')->whereToken($request->token)->first();
         $user = null;
         if ($tokenData) {
-            $user = User::where('email', $tokenData->email)->first();
+            $user = User::whereEmail($tokenData->email)->first();
         }
         if (!$user) {
             return response()->json([
@@ -206,7 +206,7 @@ class AuthController extends Controller
         }
         $user->password = Hash::make($request->password);
         $user->update();
-        DB::table('password_resets')->where('email', $user->email)->delete();
+        DB::table('password_resets')->whereEmail($user->email)->delete();
         return response()->json(["message" => 'Ваш пароль был успешно изменен'], 202);
     }
 }
