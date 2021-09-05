@@ -8,6 +8,7 @@ use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\PhonesController;
 use App\Http\Controllers\SiteHistoryController;
 use App\Http\Controllers\SitesController;
+use App\Http\Controllers\SmsHistoryController;
 use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\YoutubeHistoryController;
 use Illuminate\Support\Facades\Route;
@@ -70,4 +71,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/call_history', [CallHistoryController::class, 'store']);
     Route::get('/call_history/{child}/{phone}/{date}', [CallHistoryController::class, 'show']);
     Route::delete('/call_history/{call}', [CallHistoryController::class, 'destroy']);
+
+    Route::get('/sms_history/{child}/{phone}', [SmsHistoryController::class, 'index']);
+    Route::post('/sms_history', [SmsHistoryController::class, 'store']);
+    Route::get('/sms_history/{child}/{phone}/{date}', [SmsHistoryController::class, 'show']);
+    Route::delete('/sms_history/{sms}', [SmsHistoryController::class, 'destroy']);
 });
