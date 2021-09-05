@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Call;
+use App\Models\CallHistory;
 use App\Models\Child;
 use Illuminate\Http\Request;
 
@@ -68,8 +69,8 @@ class CallsController extends Controller
         if ($request->has('locked')) {
             $request->validate(['locked' => 'boolean'], ['locked.boolean' => 'Параметр locked должен быть булевым значением']);
             $existedCall->locked = $request->locked;
-            // CallHistory::where('phone', $existedCall->phone)->where('user', $existedCall->user)
-            //     ->update(['locked' => $request->locked]);
+            CallHistory::where('phone', $existedCall->phone)->where('user', $existedCall->user)
+                ->update(['locked' => $request->locked]);
         }
         $existedCall->update();
         return response()->json([

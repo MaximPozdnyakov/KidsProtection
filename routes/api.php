@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\AppStatisticsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CallHistoryController;
 use App\Http\Controllers\CallsController;
 use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\SiteHistoryController;
@@ -64,4 +65,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/calls/{child}/{call}', [CallsController::class, 'show']);
     Route::patch('/calls/{call}', [CallsController::class, 'update']);
     Route::delete('/calls/{call}', [CallsController::class, 'destroy']);
+
+    Route::get('/call_history/{child}/{phone}', [CallHistoryController::class, 'index']);
+    Route::post('/call_history', [CallHistoryController::class, 'store']);
+    Route::get('/call_history/{child}/{phone}/{date}', [CallHistoryController::class, 'show']);
+    Route::delete('/call_history/{call}', [CallHistoryController::class, 'destroy']);
 });
