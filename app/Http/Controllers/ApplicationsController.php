@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
-use App\Models\ApplicationStatistics;
+use App\Models\ApplicationHistory;
 use App\Models\Child;
 use Illuminate\Http\Request;
 
@@ -123,7 +123,7 @@ class ApplicationsController extends Controller
 
         $existedApplication->update();
 
-        ApplicationStatistics::where('user', $existedApplication->user)->where('package', $existedApplication->package)
+        ApplicationHistory::where('user', $existedApplication->user)->where('package', $existedApplication->package)
             ->update([
                 'name' => $existedApplication->name,
                 'image' => $existedApplication->image,

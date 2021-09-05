@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateApplicationStatisticsTable extends Migration
+class CreateApplicationHistoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateApplicationStatisticsTable extends Migration
      */
     public function up()
     {
-        Schema::create('application_statistics', function (Blueprint $table) {
+        Schema::create('application_history', function (Blueprint $table) {
             $table->id();
             $table->string('package');
             $table->string('name');
@@ -33,6 +33,6 @@ class CreateApplicationStatisticsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('application_statistics');
+        Schema::dropIfExists('application_history');
     }
 }

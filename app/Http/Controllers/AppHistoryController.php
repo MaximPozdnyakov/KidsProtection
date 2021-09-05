@@ -3,29 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
-use App\Models\ApplicationStatistics;
+use App\Models\ApplicationHistory;
 use App\Models\Child;
 use Illuminate\Http\Request;
 
-class AppStatisticsController extends Controller
+class AppHistoryController extends Controller
 {
     public function index(Request $request, $child, $package)
     {
         if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        $appStatistics = ApplicationStatistics::where('user', $child)->where('package', $package)->get();
+        $appHistory = ApplicationHistory::where('user', $child)->where('package', $package)->get();
         $image = null;
-        if (count($appStatistics)) {
-            $image = 'data:image/png;base64,' . base64_encode($appStatistics[0]->image);
+        if (count($appHistory)) {
+            $image = 'data:image/png;base64,' . base64_encode($appHistory[0]->image);
         }
-        foreach ($appStatistics as $index => $appStatistic) {
+        foreach ($appHistory as $index => $appStatistic) {
             $appStatistic->toArray();
             unset($appStatistic->image);
         }
         if ($image) {
             return response()->json([
-                'data' => ['history' => $appStatistics, 'image' => $image],
+                'data' => ['history' => $appHistory, 'image' => $image],
             ], 200);
         }
         return [];
@@ -59,7 +59,7 @@ class AppStatisticsController extends Controller
             ], 400);
         }
 
-        $appStatistics = ApplicationStatistics::create([
+        $appHistory = ApplicationHistory::create([
             'package' => $request->package,
             'name' => $existedApplication->name,
             'image' => $existedApplication->image,
@@ -67,12 +67,12 @@ class AppStatisticsController extends Controller
             'start_dt' => $request->start_dt,
             'user' => $request->user,
         ]);
-        $appStatistics = ApplicationStatistics::where('id', $appStatistics->id)->first();
-        $appStatistics->image = 'data:image/png;base64,' . base64_encode($appStatistics->image);
+        $appHistory = ApplicationHistory::where('id', $appHistory->id)->first();
+        $appHistory->image = 'data:image/png;base64,' . base64_encode($appHistory->image);
 
         return response()->json([
             'message' => 'История мобильного приложения создана',
-            'data' => $appStatistics,
+            'data' => $appHistory,
         ], 201);
     }
 
@@ -85,19 +85,19 @@ class AppStatisticsController extends Controller
         if (!($d && $d->format('d.m.Y') === $date)) {
             return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);
         }
-        $appStatistics = ApplicationStatistics::where('user', $child)->where('package', $package)
+        $appHistory = ApplicationHistory::where('user', $child)->where('package', $package)
             ->where('start_dt', 'LIKE', $date . '%')->get();
         $image = null;
-        if (count($appStatistics)) {
-            $image = 'data:image/png;base64,' . base64_encode($appStatistics[0]->image);
+        if (count($appHistory)) {
+            $image = 'data:image/png;base64,' . base64_encode($appHistory[0]->image);
         }
-        foreach ($appStatistics as $index => $appStatistic) {
+        foreach ($appHistory as $index => $appStatistic) {
             $appStatistic->toArray();
             unset($appStatistic->image);
         }
         if ($image) {
             return response()->json([
-                'data' => ['statistics' => $appStatistics, 'image' => $image],
+                'data' => ['History' => $appHistory, 'image' => $image],
             ], 200);
         }
         return [];
@@ -105,11 +105,11 @@ class AppStatisticsController extends Controller
 
     public function update(Request $request, $application_history)
     {
-        $existedAppStatistics = ApplicationStatistics::where('id', $application_history)->first();
-        if (!$existedAppStatistics) {
+        $existedAppHistory = ApplicationHistory::where('id', $application_history)->first();
+        if (!$existedAppHistory) {
             return response()->json(['message' => 'Не удалось найти историю приложения с указанным id'], 404);
         }
-        if (!Child::where('id', $existedAppStatistics->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::where('id', $existedAppHistory->user)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 403);
         }
         if ($request->end_dt) {
@@ -118,26 +118,26 @@ class AppStatisticsController extends Controller
                     'end_dt.date' => 'Параметр end_dt должен быть датой',
                     'end_dt.date_format' => 'Параметр end_dt не соответствует формату dd.MM.yyyy hh:mm',
                 ]);
-            $existedAppStatistics->end_dt = $request->end_dt;
+            $existedAppHistory->end_dt = $request->end_dt;
         }
-        $existedAppStatistics->update();
-        $existedAppStatistics->image = 'data:image/png;base64,' . base64_encode($existedAppStatistics->image);
+        $existedAppHistory->update();
+        $existedAppHistory->image = 'data:image/png;base64,' . base64_encode($existedAppHistory->image);
         return response()->json([
             'message' => 'История приложения обновлена',
-            'data' => $existedAppStatistics,
+            'data' => $existedAppHistory,
         ], 202);
     }
 
     public function destroy(Request $request, $application_history)
     {
-        $existedAppStatistics = ApplicationStatistics::where('id', $application_history)->first();
-        if (!$existedAppStatistics) {
+        $existedAppHistory = ApplicationHistory::where('id', $application_history)->first();
+        if (!$existedAppHistory) {
             return response()->json(['message' => 'Не удалось найти историю приложения с указанным id'], 404);
         }
-        if (!Child::where('id', $existedAppStatistics->user)->where("parent", auth()->user()->id)->first()) {
+        if (!Child::where('id', $existedAppHistory->user)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 403);
         }
-        $existedAppStatistics->delete();
+        $existedAppHistory->delete();
         return response()->json(['message' => 'История была удалена'], 200);
     }
 }

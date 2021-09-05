@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\AppHistoryController;
 use App\Http\Controllers\ApplicationsController;
-use App\Http\Controllers\AppStatisticsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CallHistoryController;
 use App\Http\Controllers\CallsController;
@@ -32,11 +32,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/applications/{application}', [ApplicationsController::class, 'update']);
     Route::delete('/applications/{application}', [ApplicationsController::class, 'destroy']);
 
-    Route::get('/application_history/{child}/{package}', [AppStatisticsController::class, 'index']);
-    Route::post('/application_history', [AppStatisticsController::class, 'store']);
-    Route::get('/application_history/{child}/{package}/{date}', [AppStatisticsController::class, 'show']);
-    Route::patch('/application_history/{application_history}', [AppStatisticsController::class, 'update']);
-    Route::delete('/application_history/{application_history}', [AppStatisticsController::class, 'destroy']);
+    Route::get('/application_history/{child}/{package}', [AppHistoryController::class, 'index']);
+    Route::post('/application_history', [AppHistoryController::class, 'store']);
+    Route::get('/application_history/{child}/{package}/{date}', [AppHistoryController::class, 'show']);
+    Route::patch('/application_history/{application_history}', [AppHistoryController::class, 'update']);
+    Route::delete('/application_history/{application_history}', [AppHistoryController::class, 'destroy']);
 
     Route::get('/sites/{child}', [SitesController::class, 'index']);
     Route::post('/sites', [SitesController::class, 'store']);
@@ -60,11 +60,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/youtube_history/{child}/{channel}/{date}', [YoutubeHistoryController::class, 'show']);
     Route::delete('/youtube_history/{youtube}', [YoutubeHistoryController::class, 'destroy']);
 
-    Route::get('/calls/{child}', [CallsController::class, 'index']);
-    Route::post('/calls', [CallsController::class, 'store']);
-    Route::get('/calls/{child}/{call}', [CallsController::class, 'show']);
-    Route::patch('/calls/{call}', [CallsController::class, 'update']);
-    Route::delete('/calls/{call}', [CallsController::class, 'destroy']);
+    Route::get('/phones/{child}', [CallsController::class, 'index']);
+    Route::post('/phones', [CallsController::class, 'store']);
+    Route::get('/phones/{child}/{call}', [CallsController::class, 'show']);
+    Route::patch('/phones/{call}', [CallsController::class, 'update']);
+    Route::delete('/phones/{call}', [CallsController::class, 'destroy']);
 
     Route::get('/call_history/{child}/{phone}', [CallHistoryController::class, 'index']);
     Route::post('/call_history', [CallHistoryController::class, 'store']);
