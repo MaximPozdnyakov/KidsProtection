@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\SiteHistoryController;
 use App\Http\Controllers\SitesController;
+use App\Http\Controllers\YoutubeController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->group(function () {
@@ -44,4 +45,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/site_history', [SiteHistoryController::class, 'store']);
     Route::get('/site_history/{child}/{host}/{date}', [SiteHistoryController::class, 'show']);
     Route::delete('/site_history/{site}', [SiteHistoryController::class, 'destroy']);
+
+    Route::get('/youtube/{child}', [YoutubeController::class, 'index']);
+    Route::post('/youtube', [YoutubeController::class, 'store']);
+    Route::get('/youtube/{child}/{youtube}', [YoutubeController::class, 'show']);
+    Route::patch('/youtube/{youtube}', [YoutubeController::class, 'update']);
+    Route::delete('/youtube/{youtube}', [YoutubeController::class, 'destroy']);
 });

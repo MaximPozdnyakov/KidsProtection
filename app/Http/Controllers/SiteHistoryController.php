@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Child;
+use App\Models\Site;
 use App\Models\SiteHistory;
 use Illuminate\Http\Request;
 
@@ -52,7 +53,7 @@ class SiteHistoryController extends Controller
             'date' => $request->date,
         ]);
         return response()->json([
-            'message' => 'История сайта добавлена',
+            'message' => 'История посещения сайта добавлена',
             'data' => SiteHistory::find($siteHistory->id),
         ], 201);
     }
