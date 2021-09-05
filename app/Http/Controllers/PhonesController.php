@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Call;
 use App\Models\CallHistory;
 use App\Models\Child;
+use App\Models\Phone;
 use Illuminate\Http\Request;
 
-class CallsController extends Controller
+class PhonesController extends Controller
 {
     public function index(Request $request, $child)
     {
-        return Call::where('parent', auth()->user()->id)->where('user', $child)->get();
+        return Phone::where('parent', auth()->user()->id)->where('user', $child)->get();
     }
 
     public function store(Request $request)
@@ -34,13 +34,13 @@ class CallsController extends Controller
         if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        if (Call::where('phone', $request->phone)->where("user", $request->user)->first()) {
+        if (Phone::where('phone', $request->phone)->where("user", $request->user)->first()) {
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => ['phone' => 'Этот телефон уже добавлен в список телефонов указанного ребенка'],
             ], 400);
         }
-        $call = Call::create([
+        $phone = Phone::create([
             'phone' => $request->phone,
             'parent' => auth()->user()->id,
             'user' => $request->user,
@@ -48,44 +48,44 @@ class CallsController extends Controller
         ]);
         return response()->json([
             'message' => 'Телефон добавлен',
-            'data' => Call::find($call->id),
+            'data' => Phone::find($phone->id),
         ], 201);
     }
 
-    public function show(Request $request, $child, $call)
+    public function show(Request $request, $child, $phone)
     {
         if (!Child::where('id', $child)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        return Call::where('id', $call)->where("user", $child)->first();
+        return Phone::where('id', $phone)->where("user", $child)->first();
     }
 
-    public function update(Request $request, $Call)
+    public function update(Request $request, $phone)
     {
-        $existedCall = Call::where('id', $Call)->where("parent", auth()->user()->id)->first();
-        if (!$existedCall) {
+        $existedPhone = Phone::where('id', $phone)->where("parent", auth()->user()->id)->first();
+        if (!$existedPhone) {
             return response()->json(['message' => 'Не удалось найти телефон с указанным id'], 404);
         }
         if ($request->has('locked')) {
             $request->validate(['locked' => 'boolean'], ['locked.boolean' => 'Параметр locked должен быть булевым значением']);
-            $existedCall->locked = $request->locked;
-            CallHistory::where('phone', $existedCall->phone)->where('user', $existedCall->user)
+            $existedPhone->locked = $request->locked;
+            CallHistory::where('phone', $existedPhone->phone)->where('user', $existedPhone->user)
                 ->update(['locked' => $request->locked]);
         }
-        $existedCall->update();
+        $existedPhone->update();
         return response()->json([
             'message' => 'Настройки телефона обновлены',
-            'data' => $existedCall,
+            'data' => $existedPhone,
         ], 202);
     }
 
-    public function destroy(Request $request, $call)
+    public function destroy(Request $request, $phone)
     {
-        $existedCall = Call::where('id', $call)->where("parent", auth()->user()->id)->first();
-        if (!$existedCall) {
+        $existedPhone = Phone::where('id', $Phone)->where("parent", auth()->user()->id)->first();
+        if (!$existedPhone) {
             return response()->json(['message' => 'Не удалось найти телефон с указанным id'], 404);
         }
-        $existedCall->delete();
+        $existedPhone->delete();
         return response()->json(['message' => 'Телефон удален из списка телефонов'], 200);
     }
 }

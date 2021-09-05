@@ -4,8 +4,8 @@ use App\Http\Controllers\AppHistoryController;
 use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CallHistoryController;
-use App\Http\Controllers\CallsController;
 use App\Http\Controllers\ChildrenController;
+use App\Http\Controllers\PhonesController;
 use App\Http\Controllers\SiteHistoryController;
 use App\Http\Controllers\SitesController;
 use App\Http\Controllers\YoutubeController;
@@ -60,11 +60,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/youtube_history/{child}/{channel}/{date}', [YoutubeHistoryController::class, 'show']);
     Route::delete('/youtube_history/{youtube}', [YoutubeHistoryController::class, 'destroy']);
 
-    Route::get('/phones/{child}', [CallsController::class, 'index']);
-    Route::post('/phones', [CallsController::class, 'store']);
-    Route::get('/phones/{child}/{call}', [CallsController::class, 'show']);
-    Route::patch('/phones/{call}', [CallsController::class, 'update']);
-    Route::delete('/phones/{call}', [CallsController::class, 'destroy']);
+    Route::get('/phones/{child}', [PhonesController::class, 'index']);
+    Route::post('/phones', [PhonesController::class, 'store']);
+    Route::get('/phones/{child}/{phone}', [PhonesController::class, 'show']);
+    Route::patch('/phones/{phone}', [PhonesController::class, 'update']);
+    Route::delete('/phones/{phone}', [PhonesController::class, 'destroy']);
 
     Route::get('/call_history/{child}/{phone}', [CallHistoryController::class, 'index']);
     Route::post('/call_history', [CallHistoryController::class, 'store']);

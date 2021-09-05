@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Call;
 use App\Models\CallHistory;
 use App\Models\Child;
+use App\Models\Phone;
 use Illuminate\Http\Request;
 
 class CallHistoryController extends Controller
@@ -42,7 +42,7 @@ class CallHistoryController extends Controller
         if (!Child::where('id', $request->user)->where("parent", auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
-        $existedCall = Call::where('phone', $request->phone)->where("user", $request->user)->first();
+        $existedCall = Phone::where('phone', $request->phone)->where("user", $request->user)->first();
         if (!$existedCall) {
             return response()->json([
                 'message' => 'The given data was invalid.',
