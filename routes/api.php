@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('users')->group(function () {
     Route::middleware('auth:api')->group(function () {
         Route::get('/', [AuthController::class, 'index']);
+        Route::patch('/', [AuthController::class, 'update']);
         Route::get('/logout', [AuthController::class, 'logout']);
     });
     Route::post('/login', [AuthController::class, 'login']);

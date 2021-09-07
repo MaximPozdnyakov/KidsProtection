@@ -209,4 +209,33 @@ class AuthController extends Controller
         DB::table('password_resets')->whereEmail($user->email)->delete();
         return response()->json(["message" => 'Ваш пароль был успешно изменен'], 202);
     }
+
+    public function update(Request $request)
+    {
+        $currentUser = User::find(auth()->user()->id);
+        if ($request->has('fio')) {
+            $request->validate(['fio' => 'required|string'], ['fio.required' => 'Укажите ФИО']);
+            $currentUser->fio = $request->fio;
+        }
+        if ($request->has('email')) {
+            $request->validate(['email' => 'required|string|email|unique:users'],
+                [
+                    'email.required' => 'Укажите email',
+                    'email.email' => 'Укажите корректный email',
+                    'email.unique' => 'Пользователь с такими email уже существует',
+                ]
+            );
+            $currentUser->email = $request->email;
+        }
+        if ($request->has('password')) {
+            $request->validate(['password' => ['required', 'string', new isValidPassword()]], ['password.required' => 'Укажите пароль']);
+            $currentUser->password = Hash::make($request->password);
+        }
+        $currentUser->update();
+        return response()->json([
+            'message' => 'Настройки профиля обновлены',
+            'data' => $currentUser,
+        ], 202);
+    }
+
 }
