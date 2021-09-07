@@ -20,6 +20,29 @@ class AuthController extends Controller
      * @apiGroup             User
      */
 
+    public function sendEmailVerificationCode($email, $userName)
+    {
+        $token = sprintf('%05d', rand(100000, 999999));
+        DB::table('password_resets')->insert([
+            'email' => $email,
+            'token' => $token,
+        ]);
+
+        $to_name = $userName;
+        $to_email = $email;
+        $data = [
+            'name' => $to_name,
+            'token' => $token,
+        ];
+        Mail::send('verify_email',
+            $data,
+            function ($message) use ($to_name, $to_email) {
+                $message->to($to_email, $to_name)->subject(\Config::get('mail.from.name') . ': ' . 'Запрос на смену пароля');
+                $message->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'));
+            },
+        );
+    }
+
     public function index(Request $request)
     {
         return auth()->user();
@@ -130,9 +153,7 @@ class AuthController extends Controller
 
     public function forgot(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-        ],
+        $request->validate(['email' => 'required|string|email'],
             [
                 'email.required' => 'Укажите email',
                 'email.email' => 'Укажите корректный email',
@@ -141,9 +162,7 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json([
                 'message' => 'The given data was invalid.',
-                'errors' => [
-                    'email' => 'Веденный вами электронный адрес не связан ни с одним аккаунтом',
-                ],
+                'errors' => ['email' => 'Веденный вами электронный адрес не связан ни с одним аккаунтом'],
             ], 400);
         }
 
@@ -153,17 +172,17 @@ class AuthController extends Controller
             'token' => $token,
         ]);
 
-        $to_name = $user->name;
+        $to_name = $user->fio;
         $to_email = $request->email;
         $data = [
             'name' => $to_name,
             'token' => $token,
         ];
-        Mail::send('mail',
+        Mail::send('reset_password',
             $data,
             function ($message) use ($to_name, $to_email) {
-                $message->to($to_email, $to_name)->subject('Kids Protection: Запрос на смену пароля');
-                $message->from('support@kidsprotection.ru', 'Kids Protection');
+                $message->to($to_email, $to_name)->subject(\Config::get('mail.from.name') . ': ' . 'Запрос на смену пароля');
+                $message->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'));
             },
         );
         return response()->json(["message" => 'Код для сброса пароля отправлен на вашу электронную почту'], 200);
@@ -213,11 +232,11 @@ class AuthController extends Controller
     public function update(Request $request)
     {
         $currentUser = User::find(auth()->user()->id);
-        if ($request->has('fio')) {
+        if ($request->has('fio') && $request->fio != $currentUser->fio) {
             $request->validate(['fio' => 'required|string'], ['fio.required' => 'Укажите ФИО']);
             $currentUser->fio = $request->fio;
         }
-        if ($request->has('email')) {
+        if ($request->has('email') && $request->email != $currentUser->email) {
             $request->validate(['email' => 'required|string|email|unique:users'],
                 [
                     'email.required' => 'Укажите email',
@@ -226,6 +245,8 @@ class AuthController extends Controller
                 ]
             );
             $currentUser->email = $request->email;
+            $currentUser->email_verified = 0;
+            $this->sendEmailVerificationCode($request->email, $currentUser->fio);
         }
         if ($request->has('password')) {
             $request->validate(['password' => ['required', 'string', new isValidPassword()]], ['password.required' => 'Укажите пароль']);
@@ -233,9 +254,28 @@ class AuthController extends Controller
         }
         $currentUser->update();
         return response()->json([
-            'message' => 'Настройки профиля обновлены',
+            'message' => $request->has('email') ? 'Настройки профиля обновлены. Код для подтверждения email отправлен на вашу электронную почту' : 'Настройки профиля обновлены',
             'data' => $currentUser,
         ], 202);
     }
 
+    public function verify_email(Request $request)
+    {
+        $request->validate(['token' => 'required|string'], ['token.required' => 'Укажите код для подтверждения email']);
+        $tokenData = DB::table('password_resets')->whereToken($request->token)->first();
+        $user = null;
+        if ($tokenData) {
+            $user = User::whereEmail($tokenData->email)->first();
+        }
+        if (!$user) {
+            return response()->json([
+                'message' => 'The given data was invalid.',
+                'errors' => ['token' => 'Веденный вами код для подтверждения email недействителен'],
+            ], 400);
+        }
+        $user->email_verified = 1;
+        $user->update();
+        DB::table('password_resets')->whereEmail($user->email)->delete();
+        return response()->json(["message" => 'Ваша электронная почта была подтверждена'], 202);
+    }
 }

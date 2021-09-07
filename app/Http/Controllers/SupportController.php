@@ -28,8 +28,8 @@ class SupportController extends Controller
             'date' => $request->date,
             'user' => auth()->user()->id,
         ]);
-        $to_name = 'Kids Protection';
-        $to_email = 'maximpozdnyakow@gmail.com';
+        $to_name = \Config::get('mail.from.name');
+        $to_email = \Config::get('mail.from.address');
         $data = [
             'description' => $request->description,
             'date' => $request->date,
@@ -39,8 +39,8 @@ class SupportController extends Controller
         Mail::send('support',
             $data,
             function ($message) use ($to_name, $to_email, $request) {
-                $message->to($to_email, $to_name)->subject('Kids Protection: ' . $request->theme);
-                $message->from('maximpozdnyakow@gmail.com', 'Kids Protection');
+                $message->to($to_email, $to_name)->subject(\Config::get('mail.from.name') . ': ' . $request->theme);
+                $message->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'));
             },
         );
         return response()->json(["message" => 'Спасибо, за обратную связь, мы ответим вам в ближайшее время'], 200);

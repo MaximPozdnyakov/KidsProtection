@@ -20,6 +20,7 @@ Route::prefix('users')->group(function () {
     Route::middleware('auth:api')->group(function () {
         Route::get('/', [AuthController::class, 'index']);
         Route::patch('/', [AuthController::class, 'update']);
+        Route::post('/verify', [AuthController::class, 'verify_email']);
         Route::get('/logout', [AuthController::class, 'logout']);
     });
     Route::post('/login', [AuthController::class, 'login']);
