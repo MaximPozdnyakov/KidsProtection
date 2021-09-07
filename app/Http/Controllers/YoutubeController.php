@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Child;
 use App\Models\Youtube;
 use App\Models\YoutubeHistory;
 use Illuminate\Http\Request;
@@ -23,9 +22,6 @@ class YoutubeController extends Controller
             'start_dt' => 'date|date_format:d.m.Y H:i',
             'end_dt' => 'date|date_format:d.m.Y H:i',
         ]);
-        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         if (Youtube::where('channel', 'LIKE', '%/' . $request->channel)->orWhere('channel', $request->channel)->whereUser($request->user)->first()) {
             return response()->json([
                 'message' => 'The given data was invalid.',
@@ -48,9 +44,6 @@ class YoutubeController extends Controller
 
     public function show(Request $request, $child, $youtube)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         return Youtube::whereId($youtube)->whereUser($child)->first();
     }
 

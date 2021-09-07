@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Child;
 use App\Models\Site;
 use App\Models\SiteHistory;
 use Illuminate\Http\Request;
@@ -26,9 +25,6 @@ class SitesController extends Controller
         if (!preg_match('/^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i', $request->host)) {
             $request->validate(['host' => 'ip'], ['host.ip' => 'Параметр host должен быть валидным хостом или IP-адресом']);
         }
-        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         if (Site::whereHost($request->host)->whereUser($request->user)->first()) {
             return response()->json([
                 'message' => 'The given data was invalid.',
@@ -51,9 +47,6 @@ class SitesController extends Controller
 
     public function show(Request $request, $child, $site)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         return Site::whereId($site)->whereUser($child)->first();
     }
 

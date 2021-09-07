@@ -11,9 +11,6 @@ class SiteHistoryController extends Controller
 {
     public function index(Request $request, $child, $host)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         return SiteHistory::whereUser($child)->whereHost($host)->get();
     }
 
@@ -26,9 +23,6 @@ class SiteHistoryController extends Controller
         ]);
         if (!preg_match('/^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$/i', $request->host)) {
             $request->validate(['host' => 'ip'], ['host.ip' => 'Параметр host должен быть валидным хостом или IP-адресом']);
-        }
-        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
         $existedSite = Site::whereHost($request->host)->whereUser($request->user)->first();
         if (!$existedSite) {
@@ -51,9 +45,6 @@ class SiteHistoryController extends Controller
 
     public function show(Request $request, $child, $host, $date)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $d = \DateTime::createFromFormat('d.m.Y', $date);
         if (!($d && $d->format('d.m.Y') === $date)) {
             return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);

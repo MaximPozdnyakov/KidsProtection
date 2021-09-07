@@ -10,9 +10,6 @@ class GeolocationController extends Controller
 {
     public function index(Request $request, $child)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         return Geolocation::whereUser($child)->get();
     }
 
@@ -29,9 +26,6 @@ class GeolocationController extends Controller
                 'latitude.regex' => 'Параметр latitude должен быть валидной широтой',
                 'longitude.regex' => 'Параметр longitude должен быть валидной долготой',
             ]);
-        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $geolocation = Geolocation::create([
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
@@ -47,9 +41,6 @@ class GeolocationController extends Controller
 
     public function show(Request $request, $child, $date)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $d = \DateTime::createFromFormat('d.m.Y', $date);
         if (!($d && $d->format('d.m.Y') === $date)) {
             return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\ApplicationHistory;
-use App\Models\Child;
 use Illuminate\Http\Request;
 
 class ApplicationsController extends Controller
@@ -26,10 +25,6 @@ class ApplicationsController extends Controller
             'image' => 'required|mimes:png,jpg,svg',
             'user' => 'required|string',
         ]);
-        $existedChild = Child::whereId($request->user)->whereParent(auth()->user()->id)->first();
-        if (!$existedChild) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $existedApplication = Application::wherePackage($request->package)->whereUser($request->user)->first();
         if ($existedApplication) {
             return response()->json([
@@ -59,10 +54,6 @@ class ApplicationsController extends Controller
 
     public function show(Request $request, $child, $application)
     {
-        $existedChild = Child::whereId($child)->whereParent(auth()->user()->id)->first();
-        if (!$existedChild) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $application = Application::whereId($application)->whereUser($child)->first();
         if ($application) {
             $application->image = 'data:image/png;base64,' . base64_encode($application->image);

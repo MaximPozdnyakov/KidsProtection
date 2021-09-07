@@ -22,9 +22,6 @@ class PhonesController extends Controller
             'locked' => 'boolean',
             'user' => 'required|string',
         ], ['phone.regex' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
-        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         if (Phone::wherePhone($request->phone)->whereUser($request->user)->first()) {
             return response()->json([
                 'message' => 'The given data was invalid.',

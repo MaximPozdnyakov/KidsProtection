@@ -26,7 +26,7 @@ Route::prefix('users')->group(function () {
     Route::post('/reset', [AuthController::class, 'reset'])->name('password.reset');
 });
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::apiResource('children', ChildrenController::class);
 
     Route::get('/applications/{child}', [ApplicationsController::class, 'index']);

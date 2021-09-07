@@ -11,9 +11,6 @@ class AppHistoryController extends Controller
 {
     public function index(Request $request, $child, $package)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $appHistory = ApplicationHistory::whereUser($child)->wherePackage($package)->get();
         $image = null;
         if (count($appHistory)) {
@@ -38,10 +35,6 @@ class AppHistoryController extends Controller
             'user' => 'required|string',
             'start_dt' => 'required|date|date_format:d.m.Y H:i',
         ]);
-        $existedChild = Child::whereId($request->user)->whereParent(auth()->user()->id)->first();
-        if (!$existedChild) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $existedApplication = Application::wherePackage($request->package)->whereUser($request->user)->first();
         if (!$existedApplication) {
             return response()->json([
@@ -69,9 +62,6 @@ class AppHistoryController extends Controller
 
     public function show(Request $request, $child, $package, $date)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $d = \DateTime::createFromFormat('d.m.Y', $date);
         if (!($d && $d->format('d.m.Y') === $date)) {
             return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);

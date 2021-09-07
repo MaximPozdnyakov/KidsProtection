@@ -35,19 +35,12 @@ class ChildrenController extends Controller
 
     public function show(Request $request, $child)
     {
-        $existedChild = Child::whereId($child)->whereParent(auth()->user()->id)->first();
-        if (!$existedChild) {
-            return response()->json(['message' => 'Этот ребенок вам не принадлежит'], 403);
-        }
-        return $existedChild;
+        return Child::whereId($child)->whereParent(auth()->user()->id)->first();
     }
 
     public function update(Request $request, $child)
     {
         $existedChild = Child::whereId($child)->whereParent(auth()->user()->id)->first();
-        if (!$existedChild) {
-            return response()->json(['message' => 'Этот ребенок вам не принадлежит'], 403);
-        }
         if ($request->name) {
             $request->validate(['name' => 'string']);
             $existedChild->name = $request->name;
@@ -82,9 +75,6 @@ class ChildrenController extends Controller
     public function destroy(Request $request, $child)
     {
         $existedChild = Child::whereId($child)->whereParent(auth()->user()->id)->first();
-        if (!$existedChild) {
-            return response()->json(['message' => 'Этот ребенок вам не принадлежит'], 403);
-        }
         $existedChild->delete();
         return response()->json(['message' => 'Ребенок удален'], 200);
     }

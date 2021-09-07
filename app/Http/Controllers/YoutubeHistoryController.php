@@ -11,9 +11,6 @@ class YoutubeHistoryController extends Controller
 {
     public function index(Request $request, $child, $channel)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         return YoutubeHistory::where('channel', 'LIKE', '%/' . $channel)->whereUser($child)
             ->orWhere('channel', $channel)->whereUser($child)
             ->get();
@@ -26,9 +23,6 @@ class YoutubeHistoryController extends Controller
             'user' => 'required|string',
             'date' => 'required|date|date_format:d.m.Y H:i',
         ]);
-        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $existedYoutube = Youtube::where('channel', 'LIKE', '%/' . $request->channel)->whereUser($request->user)
             ->orWhere('channel', $request->channel)->whereUser($request->user)
             ->first();

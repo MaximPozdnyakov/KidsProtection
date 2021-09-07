@@ -11,9 +11,6 @@ class CallHistoryController extends Controller
 {
     public function index(Request $request, $child, $phone)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         return CallHistory::whereUser($child)->wherePhone($phone)->get();
     }
 
@@ -25,9 +22,6 @@ class CallHistoryController extends Controller
             'date' => 'required|date|date_format:d.m.Y H:i',
             'user' => 'required|string',
         ], ['phone' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
-        if (!Child::whereId($request->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $existedCall = Phone::wherePhone($request->phone)->whereUser($request->user)->first();
         if (!$existedCall) {
             return response()->json([
@@ -50,9 +44,6 @@ class CallHistoryController extends Controller
 
     public function show(Request $request, $child, $phone, $date)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $d = \DateTime::createFromFormat('d.m.Y', $date);
         if (!($d && $d->format('d.m.Y') === $date)) {
             return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);
