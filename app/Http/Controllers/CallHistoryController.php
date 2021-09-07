@@ -24,10 +24,7 @@ class CallHistoryController extends Controller
         ], ['phone' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
         $existedCall = Phone::wherePhone($request->phone)->whereUser($request->user)->first();
         if (!$existedCall) {
-            return response()->json([
-                'message' => 'The given data was invalid.',
-                'errors' => ['phone' => 'Номер телефона ' . $request->phone . ' не существует в списке номеров указанного ребенка'],
-            ], 400);
+            return response()->json(['message' => 'Номер телефона ' . $request->phone . ' не существует в списке номеров указанного ребенка'], 404);
         }
         $callHistory = CallHistory::create([
             'phone' => $request->phone,
@@ -37,7 +34,7 @@ class CallHistoryController extends Controller
             'user' => $request->user,
         ]);
         return response()->json([
-            'message' => 'Звонок добавлена',
+            'message' => 'Звонок добавлен',
             'data' => CallHistory::find($callHistory->id),
         ], 201);
     }
@@ -56,12 +53,12 @@ class CallHistoryController extends Controller
     {
         $existedCallHistory = CallHistory::find($call);
         if (!$existedCallHistory) {
-            return response()->json(['message' => 'Не удалось найти историю звонка с указанным id'], 404);
+            return response()->json(['message' => 'Не удалось найти звонок с указанным id'], 404);
         }
         if (!Child::whereId($existedCallHistory->user)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Этот звонок не принадлежит вашему ребенку'], 403);
         }
         $existedCallHistory->delete();
-        return response()->json(['message' => 'Звонок была удалена'], 200);
+        return response()->json(['message' => 'Звонок был удалена'], 200);
     }
 }

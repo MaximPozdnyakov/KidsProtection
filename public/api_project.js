@@ -2,9 +2,9 @@ define({
   "name": "Kids Protection",
   "version": "1.0.0",
   "description": "Документация к API приложения Kids Protection",
-  "title": "Kids Protection",
-  "url": "http://localhost:8000",
-  "sampleUrl": "http://localhost:8000",
+  "title": "Kids Protection API",
+  "url": "http://localhost:3000",
+  "sampleUrl": "http://localhost:3000",
   "order": [
     "User",
     "Child"
@@ -13,7 +13,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-09-01T15:53:53.840Z",
+    "time": "2021-09-07T17:15:02.056Z",
     "url": "https://apidocjs.com",
     "version": "0.29.0"
   }

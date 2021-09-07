@@ -25,10 +25,7 @@ class SmsHistoryController extends Controller
         ], ['phone.regex' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
         $existedSms = Phone::wherePhone($request->phone)->whereUser($request->user)->first();
         if (!$existedSms) {
-            return response()->json([
-                'message' => 'The given data was invalid.',
-                'errors' => ['phone' => 'Номер телефона ' . $request->phone . ' не существует в списке номеров указанного ребенка'],
-            ], 400);
+            return response()->json(['message' => 'Номер телефона ' . $request->phone . ' не существует в списке номеров указанного ребенка'], 404);
         }
         $SmsHistory = SmsHistory::create([
             'phone' => $request->phone,
@@ -39,7 +36,7 @@ class SmsHistoryController extends Controller
             'user' => $request->user,
         ]);
         return response()->json([
-            'message' => 'История смс добавлена',
+            'message' => 'Смс добавлено',
             'data' => SmsHistory::find($SmsHistory->id),
         ], 201);
     }

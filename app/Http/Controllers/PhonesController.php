@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\CallHistory;
-use App\Models\Child;
 use App\Models\Phone;
 use App\Models\SmsHistory;
 use Illuminate\Http\Request;
@@ -42,9 +41,6 @@ class PhonesController extends Controller
 
     public function show(Request $request, $child, $phone)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         return Phone::whereId($phone)->whereUser($child)->first();
     }
 
