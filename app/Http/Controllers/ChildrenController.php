@@ -2,14 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActiveSubscription;
 use App\Models\Child;
+use App\Models\Subscription;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ChildrenController extends Controller
 {
+    public function getDevices()
+    {
+        $activeSubscriptions = ActiveSubscription::whereUser(auth()->user()->id)->get()->toArray();
+        $activeSubscriptions = array_filter($activeSubscriptions, function ($subscription) {
+            return Carbon::createFromFormat('d.m.Y H:i', $subscription['end_dt'])->gt(Carbon::now());
+        });
+        $maxNumOfChildren = 0;
+        foreach ($activeSubscriptions as $i => $subscription) {
+            $device = Subscription::whereName($subscription['name'])->first()->device;
+            if ($device > $maxNumOfChildren) {
+                $maxNumOfChildren = $device;
+            }
+        }
+        return $maxNumOfChildren;
+    }
+
     public function index()
     {
-        return Child::whereParent(auth()->user()->id)->get();
+        return Child::whereParent(auth()->user()->id)->limit($this->getDevices())->get();
     }
 
     public function store(Request $request)
@@ -22,6 +41,10 @@ class ChildrenController extends Controller
                 'name.required' => 'Укажите имя ребенка',
                 'date.required' => 'Укажите день рождения ребенка',
             ]);
+        $devices = $this->getDevices();
+        if (count(Child::whereParent(auth()->user()->id)->get()->toArray()) >= $devices) {
+            return response()->json(['message' => 'Вам можно подключить не более ' . $devices . ' устройств'], 403);
+        }
         $child = Child::create([
             'name' => $request->name,
             'date' => $request->date,
@@ -49,19 +72,19 @@ class ChildrenController extends Controller
             $request->validate(['date' => 'date|date_format:d.m.Y']);
             $existedChild->date = $request->date;
         }
-        if ($request->block_all_apps) {
+        if ($request->has('block_all_apps')) {
             $request->validate(['block_all_apps' => 'boolean']);
             $existedChild->block_all_apps = $request->block_all_apps;
         }
-        if ($request->block_all_phones) {
+        if ($request->has('block_all_phones')) {
             $request->validate(['block_all_phones' => 'boolean']);
             $existedChild->block_all_phones = $request->block_all_phones;
         }
-        if ($request->block_all_site) {
+        if ($request->has('block_all_site')) {
             $request->validate(['block_all_site' => 'boolean']);
             $existedChild->block_all_site = $request->block_all_site;
         }
-        if ($request->block_all_youtube) {
+        if ($request->has('block_all_youtube')) {
             $request->validate(['block_all_youtube' => 'boolean']);
             $existedChild->block_all_youtube = $request->block_all_youtube;
         }

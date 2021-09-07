@@ -10,6 +10,7 @@ use App\Http\Controllers\PhonesController;
 use App\Http\Controllers\SiteHistoryController;
 use App\Http\Controllers\SitesController;
 use App\Http\Controllers\SmsHistoryController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\YoutubeHistoryController;
@@ -26,7 +27,7 @@ Route::prefix('users')->group(function () {
     Route::post('/reset', [AuthController::class, 'reset'])->name('password.reset');
 });
 
-Route::middleware(['auth:api', 'checkChild'])->group(function () {
+Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(function () {
     Route::apiResource('children', ChildrenController::class);
 
     Route::get('/applications/{child}', [ApplicationsController::class, 'index']);
@@ -84,5 +85,8 @@ Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::get('/geolocation/{child}/{date}', [GeolocationController::class, 'show']);
     Route::delete('/geolocation/{geolocation}', [GeolocationController::class, 'destroy']);
 
-    Route::post('/support', [SupportController::class, 'store']);
+    Route::post('/support', [SupportController::class, 'store'])->withoutMiddleware('checkSubscription');
+
+    Route::get('/subscriptions', [SubscriptionController::class, 'index'])->withoutMiddleware('checkSubscription');
+    Route::post('/subscriptions', [SubscriptionController::class, 'store'])->withoutMiddleware('checkSubscription');
 });

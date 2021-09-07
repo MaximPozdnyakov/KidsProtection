@@ -29,7 +29,7 @@ class YoutubeHistoryController extends Controller
         if (!$existedYoutube) {
             return response()->json([
                 'message' => 'The given data was invalid.',
-                'errors' => ['package' => 'Youtube канала ' . $request->channel . ' не существует в списке youtube каналов указанного ребенка'],
+                'errors' => ['channel' => 'Youtube канала ' . $request->channel . ' не существует в списке youtube каналов указанного ребенка'],
             ], 400);
         }
         $youtubeHistory = YoutubeHistory::create([
