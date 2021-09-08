@@ -16,6 +16,7 @@ define({
     "Phone",
     "Call",
     "Sms",
+    "Application",
     "Geolocation",
     "Support"
   ],
@@ -23,7 +24,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-09-08T13:00:28.600Z",
+    "time": "2021-09-08T13:26:27.092Z",
     "url": "https://apidocjs.com",
     "version": "0.29.0"
   }

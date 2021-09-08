@@ -1,7 +1,730 @@
 [
   {
     "type": "delete",
-    "url": "/calls/:call",
+    "url": "/api/applications/:application",
+    "title": "5. Удалить приложение",
+    "name": "DeleteApplication",
+    "group": "Application",
+    "version": "1.0.0",
+    "description": "<p>application - Id приложения</p>",
+    "error": {
+      "fields": {
+        "Not Found 404": [
+          {
+            "group": "Not Found 404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Приложение не найден или не принадлежит ребенку пользователя</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Not Found 404:",
+          "content": "{\n   \"message\": \"Не удалось найти приложений с указанным id\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Пользователь, ребенку которого принадлежит приложение |"
+      },
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение об удалении приложения</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Приложение удален\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/applications.php",
+    "groupTitle": "Application",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/applications/:application"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/applications/:child",
+    "title": "1. Получить список приложений указанного ребенка",
+    "name": "GetApplication",
+    "group": "Application",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array[applications]",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Массив приложений</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "/api/applications/1\n[\n    {\n        \"id\": 1,\n        \"package\": \"whatsapp\",\n        \"name\": \"Whatsapp\",\n        \"image\": \"data:image/png;base64,iVBORw0KG ...\",\n        \"locked\": \"0\",\n        \"start_dt\": null,\n        \"end_dt\": null,\n        \"parent\": \"1\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-08T13:14:56.000000Z\",\n        \"updated_at\": \"2021-09-08T13:14:56.000000Z\"\n    },\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/applications.php",
+    "groupTitle": "Application",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/applications/:child"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/applications/:child/:application",
+    "title": "3. Получить приложение",
+    "name": "GetApplicationById",
+    "group": "Application",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка; application - Id приложения</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Приложение</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "/api/applications/1/1\n{\n    \"id\": 1,\n    \"package\": \"whatsapp\",\n    \"name\": \"Whatsapp\",\n    \"image\": \"data:image/png;base64,iVBORw0KG ...\",\n    \"locked\": \"0\",\n    \"start_dt\": null,\n    \"end_dt\": null,\n    \"parent\": \"1\",\n    \"user\": \"1\",\n    \"created_at\": \"2021-09-08T13:14:56.000000Z\",\n    \"updated_at\": \"2021-09-08T13:14:56.000000Z\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/applications.php",
+    "groupTitle": "Application",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/applications/:child/:application"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/applications",
+    "title": "2. Добавить приложение",
+    "name": "PostApplication",
+    "group": "Application",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "package",
+            "description": "<p>Идентификатор приложения. Должен быть уникальным для ребенка. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "File",
+            "optional": false,
+            "field": "image",
+            "description": "<p>Изображение приложения в формате png, jpg или svg. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Наименование приложения. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Id ребенка. Обязательный.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n   \"package\": \"whatsapp\",\n   \"name\": WhatsApp,\n   \"user\": \"1\",\n   \"image\": Иконка WhatsApp\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Bad request 400": [
+          {
+            "group": "Bad request 400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некоторые параметры не прошли валидацию</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 400:",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"package\": [\n           \"Параметр package обязателен\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Приложение и сообщение о его добавлении</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Мобильное приложение добавлено\",\n    \"data\": {\n        \"id\": 1,\n        \"package\": \"whatsapp\",\n        \"name\": \"Whatsapp\",\n        \"image\": \"data:image/png;base64,iVBORw0KG ...\",\n        \"locked\": \"0\",\n        \"start_dt\": null,\n        \"end_dt\": null,\n        \"parent\": \"1\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-08T13:14:56.000000Z\",\n        \"updated_at\": \"2021-09-08T13:14:56.000000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/applications.php",
+    "groupTitle": "Application",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/applications"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "patch",
+    "url": "/api/applications/:application",
+    "title": "4. Обновить настройки приложения",
+    "name": "UpdateApplication",
+    "group": "Application",
+    "version": "1.0.0",
+    "description": "<p>application - Id приложения</p>",
+    "error": {
+      "fields": {
+        "Not Found 404": [
+          {
+            "group": "Not Found 404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Приложение не найден или не принадлежит ребенку пользователя</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Not Found 404:",
+          "content": "{\n   \"message\": \"Не удалось найти приложение с указанным id\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "File",
+            "optional": false,
+            "field": "image",
+            "description": "<p>Изображение приложения в формате png, jpg или svg.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Наименование приложения.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "locked",
+            "description": "<p>Является ли приложение заблокированным.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|null",
+            "optional": false,
+            "field": "start_dt",
+            "description": "<p>Время начала доступа к приложениеу в формате d.m.Y H:i.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|null",
+            "optional": false,
+            "field": "end_dt",
+            "description": "<p>Время конца доступа к приложениеу в формате d.m.Y H:i.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n    \"locked\": true,\n    \"start_dt\": null,\n    \"end_dt\": \"07.09.2021 19:13\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Пользователь, ребенку которого принадлежит приложение |"
+      },
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Приложение и сообщение о его обновлении</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Настройки приложения обновлены\",\n    \"data\": {\n         \"id\": 1,\n         \"package\": \"whatsapp\",\n         \"name\": \"Whatsapp\",\n         \"image\": \"data:image/png;base64,iVBORw0KG...\",\n         \"locked\": \"1\",\n         \"start_dt\": null,\n         \"end_dt\": \"07.09.2021 19:13\",\n         \"parent\": \"1\",\n         \"user\": \"1\",\n         \"created_at\": \"2021-09-08T13:14:56.000000Z\",\n         \"updated_at\": \"2021-09-08T13:14:56.000000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/applications.php",
+    "groupTitle": "Application",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/applications/:application"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete",
+    "url": "/api/calls/:call",
     "title": "4. Удалить звонок",
     "name": "DeleteCall",
     "group": "Call",
@@ -112,7 +835,7 @@
     "groupTitle": "Call",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/calls/:call"
+        "url": "http://localhost:3000/api/calls/:call"
       }
     ],
     "header": {
@@ -263,7 +986,7 @@
   },
   {
     "type": "get",
-    "url": "/calls/:child/:phone/:date",
+    "url": "/api/calls/:child/:phone/:date",
     "title": "3. Получить список звонков для указанного ребенка по дате",
     "name": "GetCallByDate",
     "group": "Call",
@@ -364,7 +1087,7 @@
     "groupTitle": "Call",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/calls/:child/:phone/:date"
+        "url": "http://localhost:3000/api/calls/:child/:phone/:date"
       }
     ],
     "permission": [
@@ -401,7 +1124,7 @@
   },
   {
     "type": "post",
-    "url": "/api/calls",
+    "url": "/api/api/calls",
     "title": "2. Добавить звонок",
     "name": "PostCall",
     "group": "Call",
@@ -554,7 +1277,7 @@
     "groupTitle": "Call",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/calls"
+        "url": "http://localhost:3000/api/api/calls"
       }
     ],
     "permission": [
@@ -591,7 +1314,7 @@
   },
   {
     "type": "delete",
-    "url": "/children/:child",
+    "url": "/api/children/:child",
     "title": "5. Удалить ребенка",
     "name": "DeleteChild",
     "group": "Child",
@@ -620,7 +1343,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/children/:child"
+        "url": "http://localhost:3000/api/children/:child"
       }
     ],
     "permission": [
@@ -823,7 +1546,7 @@
   },
   {
     "type": "get",
-    "url": "/children/:child",
+    "url": "/api/children/:child",
     "title": "3. Получить ребенка",
     "name": "GetOneChild",
     "group": "Child",
@@ -853,7 +1576,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/children/:child"
+        "url": "http://localhost:3000/api/children/:child"
       }
     ],
     "permission": [
@@ -1108,7 +1831,7 @@
   },
   {
     "type": "patch",
-    "url": "/children/:child",
+    "url": "/api/children/:child",
     "title": "4. Обновить настройки и данные ребенка",
     "name": "UpdateChild",
     "group": "Child",
@@ -1192,7 +1915,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/children/:child"
+        "url": "http://localhost:3000/api/children/:child"
       }
     ],
     "permission": [
@@ -1287,7 +2010,7 @@
   },
   {
     "type": "delete",
-    "url": "/geolocation/:geolocation",
+    "url": "/api/geolocation/:geolocation",
     "title": "4. Удалить геолокацию",
     "name": "DeleteGeolocation",
     "group": "Geolocation",
@@ -1398,7 +2121,7 @@
     "groupTitle": "Geolocation",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/geolocation/:geolocation"
+        "url": "http://localhost:3000/api/geolocation/:geolocation"
       }
     ],
     "header": {
@@ -1549,7 +2272,7 @@
   },
   {
     "type": "get",
-    "url": "/geolocation/:child/:date",
+    "url": "/api/geolocation/:child/:date",
     "title": "3. Получить список геолокация для указанного ребенка по дате",
     "name": "GetGeolocationByDate",
     "group": "Geolocation",
@@ -1650,7 +2373,7 @@
     "groupTitle": "Geolocation",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/geolocation/:child/:date"
+        "url": "http://localhost:3000/api/geolocation/:child/:date"
       }
     ],
     "permission": [
@@ -1871,7 +2594,7 @@
   },
   {
     "type": "delete",
-    "url": "/phones/:phone",
+    "url": "/api/phones/:phone",
     "title": "5. Удалить телефон",
     "name": "DeletePhone",
     "group": "Phone",
@@ -1958,7 +2681,7 @@
     "groupTitle": "Phone",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/phones/:phone"
+        "url": "http://localhost:3000/api/phones/:phone"
       }
     ],
     "permission": [
@@ -2117,7 +2840,7 @@
   },
   {
     "type": "get",
-    "url": "/phones/:child/:phone",
+    "url": "/api/phones/:child/:phone",
     "title": "3. Получить телефон",
     "name": "GetPhoneByDate",
     "group": "Phone",
@@ -2147,7 +2870,7 @@
     "groupTitle": "Phone",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/phones/:child/:phone"
+        "url": "http://localhost:3000/api/phones/:child/:phone"
       }
     ],
     "permission": [
@@ -2412,7 +3135,7 @@
   },
   {
     "type": "patch",
-    "url": "/phones/:phone",
+    "url": "/api/phones/:phone",
     "title": "4. Обновить телефон",
     "name": "UpdatePhone",
     "group": "Phone",
@@ -2546,7 +3269,7 @@
     "groupTitle": "Phone",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/phones/:phone"
+        "url": "http://localhost:3000/api/phones/:phone"
       }
     ],
     "header": {
@@ -2572,7 +3295,7 @@
   },
   {
     "type": "delete",
-    "url": "/sites/:site",
+    "url": "/api/sites/:site",
     "title": "5. Удалить сайт",
     "name": "DeleteSite",
     "group": "Site",
@@ -2659,7 +3382,7 @@
     "groupTitle": "Site",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/sites/:site"
+        "url": "http://localhost:3000/api/sites/:site"
       }
     ],
     "permission": [
@@ -2818,7 +3541,7 @@
   },
   {
     "type": "get",
-    "url": "/sites/:child/:site",
+    "url": "/api/sites/:child/:site",
     "title": "3. Получить сайт",
     "name": "GetSiteById",
     "group": "Site",
@@ -2848,7 +3571,7 @@
     "groupTitle": "Site",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/sites/:child/:site"
+        "url": "http://localhost:3000/api/sites/:child/:site"
       }
     ],
     "permission": [
@@ -2943,7 +3666,7 @@
   },
   {
     "type": "delete",
-    "url": "/site_history/:site_history",
+    "url": "/api/site_history/:site_history",
     "title": "4. Удалить историю посещения сайта",
     "name": "DeleteSiteHistory",
     "group": "SiteHistory",
@@ -3054,7 +3777,7 @@
     "groupTitle": "SiteHistory",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/site_history/:site_history"
+        "url": "http://localhost:3000/api/site_history/:site_history"
       }
     ],
     "header": {
@@ -3205,7 +3928,7 @@
   },
   {
     "type": "get",
-    "url": "/site_history/:child/:host/:date",
+    "url": "/api/site_history/:child/:host/:date",
     "title": "3. Получить список посещений сайта для указанного ребенка по дате",
     "name": "GetSiteHistoryByDate",
     "group": "SiteHistory",
@@ -3306,7 +4029,7 @@
     "groupTitle": "SiteHistory",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/site_history/:child/:host/:date"
+        "url": "http://localhost:3000/api/site_history/:child/:host/:date"
       }
     ],
     "permission": [
@@ -3710,7 +4433,7 @@
   },
   {
     "type": "patch",
-    "url": "/sites/:site",
+    "url": "/api/sites/:site",
     "title": "4. Обновить настройки сайта",
     "name": "UpdateSite",
     "group": "Site",
@@ -3842,7 +4565,7 @@
     "groupTitle": "Site",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/sites/:site"
+        "url": "http://localhost:3000/api/sites/:site"
       }
     ],
     "header": {
@@ -3868,7 +4591,7 @@
   },
   {
     "type": "delete",
-    "url": "/sms/:sms",
+    "url": "/api/sms/:sms",
     "title": "4. Удалить смс",
     "name": "DeleteSms",
     "group": "Sms",
@@ -3979,7 +4702,7 @@
     "groupTitle": "Sms",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/sms/:sms"
+        "url": "http://localhost:3000/api/sms/:sms"
       }
     ],
     "header": {
@@ -4130,7 +4853,7 @@
   },
   {
     "type": "get",
-    "url": "/sms/:child/:phone/:date",
+    "url": "/api/sms/:child/:phone/:date",
     "title": "3. Получить список смс для указанного ребенка по дате",
     "name": "GetSmsByDate",
     "group": "Sms",
@@ -4231,7 +4954,7 @@
     "groupTitle": "Sms",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/sms/:child/:phone/:date"
+        "url": "http://localhost:3000/api/sms/:child/:phone/:date"
       }
     ],
     "permission": [
@@ -5855,7 +6578,7 @@
   },
   {
     "type": "delete",
-    "url": "/youtube_history/:youtube_history",
+    "url": "/api/youtube_history/:youtube_history",
     "title": "4. Удалить историю посещения youtube канала",
     "name": "DeleteYoutubeHistory",
     "group": "YoutubeHistory",
@@ -5966,7 +6689,7 @@
     "groupTitle": "YoutubeHistory",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/youtube_history/:youtube_history"
+        "url": "http://localhost:3000/api/youtube_history/:youtube_history"
       }
     ],
     "header": {
@@ -6117,7 +6840,7 @@
   },
   {
     "type": "get",
-    "url": "/youtube_history/:child/:channel/:date",
+    "url": "/api/youtube_history/:child/:channel/:date",
     "title": "3. Получить список посещений youtube для указанного ребенка по дате",
     "name": "GetYoutubeHistoryByDate",
     "group": "YoutubeHistory",
@@ -6218,7 +6941,7 @@
     "groupTitle": "YoutubeHistory",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/youtube_history/:child/:channel/:date"
+        "url": "http://localhost:3000/api/youtube_history/:child/:channel/:date"
       }
     ],
     "permission": [

@@ -30,7 +30,7 @@
  */
 
 /**
- * @api {post} /api/calls 2. Добавить звонок
+ * @api {post} /api/api/calls 2. Добавить звонок
  * @apiName PostCall
  * @apiGroup Call
  * @apiVersion 1.0.0
@@ -87,7 +87,7 @@
  */
 
 /**
- * @api {get} /calls/:child/:phone/:date 3. Получить список звонков для указанного ребенка по дате
+ * @api {get} /api/calls/:child/:phone/:date 3. Получить список звонков для указанного ребенка по дате
  * @apiName GetCallByDate
  * @apiGroup Call
  * @apiVersion 1.0.0
@@ -125,7 +125,7 @@
  */
 
 /**
- * @api {delete} /calls/:call 4. Удалить звонок
+ * @api {delete} /api/calls/:call 4. Удалить звонок
  * @apiName DeleteCall
  * @apiGroup Call
  * @apiVersion 1.0.0

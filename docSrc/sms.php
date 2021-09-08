@@ -91,7 +91,7 @@
  */
 
 /**
- * @api {get} /sms/:child/:phone/:date 3. Получить список смс для указанного ребенка по дате
+ * @api {get} /api/sms/:child/:phone/:date 3. Получить список смс для указанного ребенка по дате
  * @apiName GetSmsByDate
  * @apiGroup Sms
  * @apiVersion 1.0.0
@@ -129,7 +129,7 @@
  */
 
 /**
- * @api {delete} /sms/:sms 4. Удалить смс
+ * @api {delete} /api/sms/:sms 4. Удалить смс
  * @apiName DeleteSms
  * @apiGroup Sms
  * @apiVersion 1.0.0

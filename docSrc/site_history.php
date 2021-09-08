@@ -83,7 +83,7 @@
  */
 
 /**
- * @api {get} /site_history/:child/:host/:date 3. Получить список посещений сайта для указанного ребенка по дате
+ * @api {get} /api/site_history/:child/:host/:date 3. Получить список посещений сайта для указанного ребенка по дате
  * @apiName GetSiteHistoryByDate
  * @apiGroup SiteHistory
  * @apiVersion 1.0.0
@@ -119,7 +119,7 @@
  */
 
 /**
- * @api {delete} /site_history/:site_history 4. Удалить историю посещения сайта
+ * @api {delete} /api/site_history/:site_history 4. Удалить историю посещения сайта
  * @apiName DeleteSiteHistory
  * @apiGroup SiteHistory
  * @apiVersion 1.0.0

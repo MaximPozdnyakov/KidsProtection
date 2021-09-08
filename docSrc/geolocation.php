@@ -82,7 +82,7 @@
  */
 
 /**
- * @api {get} /geolocation/:child/:date 3. Получить список геолокация для указанного ребенка по дате
+ * @api {get} /api/geolocation/:child/:date 3. Получить список геолокация для указанного ребенка по дате
  * @apiName GetGeolocationByDate
  * @apiGroup Geolocation
  * @apiVersion 1.0.0
@@ -118,7 +118,7 @@
  */
 
 /**
- * @api {delete} /geolocation/:geolocation 4. Удалить геолокацию
+ * @api {delete} /api/geolocation/:geolocation 4. Удалить геолокацию
  * @apiName DeleteGeolocation
  * @apiGroup Geolocation
  * @apiVersion 1.0.0

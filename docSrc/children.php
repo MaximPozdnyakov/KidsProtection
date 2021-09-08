@@ -82,7 +82,7 @@
  */
 
 /**
- * @api {get} /children/:child 3. Получить ребенка
+ * @api {get} /api/children/:child 3. Получить ребенка
  * @apiName GetOneChild
  * @apiGroup Child
  * @apiVersion 1.0.0
@@ -111,7 +111,7 @@
  */
 
 /**
- * @api {patch} /children/:child 4. Обновить настройки и данные ребенка
+ * @api {patch} /api/children/:child 4. Обновить настройки и данные ребенка
  * @apiName UpdateChild
  * @apiGroup Child
  * @apiVersion 1.0.0
@@ -158,7 +158,7 @@
  */
 
 /**
- * @api {delete} /children/:child 5. Удалить ребенка
+ * @api {delete} /api/children/:child 5. Удалить ребенка
  * @apiName DeleteChild
  * @apiGroup Child
  * @apiVersion 1.0.0

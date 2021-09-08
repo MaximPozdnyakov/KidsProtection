@@ -83,7 +83,7 @@
  */
 
 /**
- * @api {get} /youtube_history/:child/:channel/:date 3. Получить список посещений youtube для указанного ребенка по дате
+ * @api {get} /api/youtube_history/:child/:channel/:date 3. Получить список посещений youtube для указанного ребенка по дате
  * @apiName GetYoutubeHistoryByDate
  * @apiGroup YoutubeHistory
  * @apiVersion 1.0.0
@@ -119,7 +119,7 @@
  */
 
 /**
- * @api {delete} /youtube_history/:youtube_history 4. Удалить историю посещения youtube канала
+ * @api {delete} /api/youtube_history/:youtube_history 4. Удалить историю посещения youtube канала
  * @apiName DeleteYoutubeHistory
  * @apiGroup YoutubeHistory
  * @apiVersion 1.0.0

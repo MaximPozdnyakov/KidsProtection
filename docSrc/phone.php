@@ -75,7 +75,7 @@
  */
 
 /**
- * @api {get} /phones/:child/:phone 3. Получить телефон
+ * @api {get} /api/phones/:child/:phone 3. Получить телефон
  * @apiName GetPhoneByDate
  * @apiGroup Phone
  * @apiVersion 1.0.0
@@ -101,7 +101,7 @@
  */
 
 /**
- * @api {patch} /phones/:phone 4. Обновить телефон
+ * @api {patch} /api/phones/:phone 4. Обновить телефон
  * @apiName UpdatePhone
  * @apiGroup Phone
  * @apiVersion 1.0.0
@@ -143,7 +143,7 @@
  */
 
 /**
- * @api {delete} /phones/:phone 5. Удалить телефон
+ * @api {delete} /api/phones/:phone 5. Удалить телефон
  * @apiName DeletePhone
  * @apiGroup Phone
  * @apiVersion 1.0.0

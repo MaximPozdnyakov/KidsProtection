@@ -84,7 +84,7 @@
  */
 
 /**
- * @api {get} /sites/:child/:site 3. Получить сайт
+ * @api {get} /api/sites/:child/:site 3. Получить сайт
  * @apiName GetSiteById
  * @apiGroup Site
  * @apiVersion 1.0.0
@@ -113,7 +113,7 @@
  */
 
 /**
- * @api {patch} /sites/:site 4. Обновить настройки сайта
+ * @api {patch} /api/sites/:site 4. Обновить настройки сайта
  * @apiName UpdateSite
  * @apiGroup Site
  * @apiVersion 1.0.0
@@ -160,7 +160,7 @@
  */
 
 /**
- * @api {delete} /sites/:site 5. Удалить сайт
+ * @api {delete} /api/sites/:site 5. Удалить сайт
  * @apiName DeleteSite
  * @apiGroup Site
  * @apiVersion 1.0.0
