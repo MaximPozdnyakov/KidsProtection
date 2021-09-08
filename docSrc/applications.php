@@ -117,7 +117,7 @@
  */
 
 /**
- * @api {patch} /api/applications/:application 4. Обновить настройки приложения
+ * @api {post} /api/applications/:application 4. Обновить настройки приложения
  * @apiName UpdateApplication
  * @apiGroup Application
  * @apiVersion 1.0.0

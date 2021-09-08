@@ -16,8 +16,9 @@
         "Phone",
         "Call",
         "Sms",
-        "Application",
         "Geolocation",
+        "Application",
+        "ApplicationHistory",
         "Support"
     ]
 }

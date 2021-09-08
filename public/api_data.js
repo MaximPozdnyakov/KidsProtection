@@ -374,6 +374,759 @@ define({ "api": [
     }
   },
   {
+    "type": "delete",
+    "url": "/api/youtube_history/:youtube_history",
+    "title": "5. Удалить историю использования приложения",
+    "name": "DeleteApplicationHistory",
+    "group": "ApplicationHistory",
+    "version": "1.0.0",
+    "description": "<p>youtube_history - Id истории использования приложения</p>",
+    "error": {
+      "fields": {
+        "Not Found 404": [
+          {
+            "group": "Not Found 404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>История использования приложения не найдена</p>"
+          }
+        ],
+        "Not belong to your child 403": [
+          {
+            "group": "Not belong to your child 403",
+            "optional": false,
+            "field": "NotBelongToYourChild",
+            "description": "<p>Попытка удалить историю использования приложения, не принадлежащую ребенку родителя</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Not Found 404:",
+          "content": "{\n   \"message\": \"Не удалось найти историю использования приложения с указанным id\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not belong to your child 403:",
+          "content": "{\n  \"message\": \"Эта история использования приложения не принадлежит вашему ребенку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Пользователь, ребенку которого принадлежит история использования приложения |"
+      },
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение об удалении истории использования приложения</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"История использования приложения была удалена\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/application_history.php",
+    "groupTitle": "ApplicationHistory",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/youtube_history/:youtube_history"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/application_history/:child/:package",
+    "title": "1. Получить историю использования приложения для указанного ребенка",
+    "name": "GetApplicationHistory",
+    "group": "ApplicationHistory",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка; package - Идентификатор приложения.</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array[youtube_history]",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Массив с историей использования приложения и изображение приложения</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "/api/youtube_history/1/whatsapp\n{\n    \"data\": {\n        \"history\": [\n            {\n                \"id\": 1,\n                \"package\": \"whatsapp\",\n                \"name\": \"Whatsapp\",\n                \"locked\": \"0\",\n                \"start_dt\": \"07.09.2021 19:13\",\n                \"end_dt\": \"07.09.2021 20:13\",\n                \"user\": \"1\",\n                \"created_at\": \"2021-09-08T13:57:22.000000Z\",\n                \"updated_at\": \"2021-09-08T13:57:22.000000Z\"\n            }\n        ],\n        \"image\": \"data:image/png;base64,iVBORw0KG...\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/application_history.php",
+    "groupTitle": "ApplicationHistory",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/application_history/:child/:package"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/youtube_history/:child/:package/:date",
+    "title": "3. Получить историю использования приложения для указанного ребенка по дате",
+    "name": "GetApplicationHistoryByDate",
+    "group": "ApplicationHistory",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка; package - Идентификатор приложения; date - дата использования приложения в формате d.m.Y</p>",
+    "error": {
+      "fields": {
+        "Bad request 400": [
+          {
+            "group": "Bad request 400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некорректная дата</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 400:",
+          "content": "{\n   \"message\": \"Параметр date должен быть датой формата d.m.Y\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array[youtube_history]",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Массив с историей использования приложения в указанный день и изображение приложения</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "/api/youtube_history/1/whatsapp/07.09.2021\n{\n    \"data\": {\n        \"history\": [\n            {\n                \"id\": 1,\n                \"package\": \"whatsapp\",\n                \"name\": \"Whatsapp\",\n                \"locked\": \"0\",\n                \"start_dt\": \"07.09.2021 19:13\",\n                \"end_dt\": \"07.09.2021 20:13\",\n                \"user\": \"1\",\n                \"created_at\": \"2021-09-08T13:57:22.000000Z\",\n                \"updated_at\": \"2021-09-08T13:57:22.000000Z\"\n            }\n        ],\n        \"image\": \"data:image/png;base64,iVBORw0KG...\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/application_history.php",
+    "groupTitle": "ApplicationHistory",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/youtube_history/:child/:package/:date"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/youtube_history",
+    "title": "2. Добавить историю использования приложения",
+    "name": "PostApplicationHistory",
+    "group": "ApplicationHistory",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "package",
+            "description": "<p>Идентификатор канала или ссылка на него. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Id ребенка. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "start_dt",
+            "description": "<p>Дата начала использования приложения в формате d.m.Y H:i. Обязательный.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n   \"package\": \"whatsapp\",\n   \"user\": \"1\",\n   \"start_dt\": \"07.09.2021 19:13\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Bad request 400": [
+          {
+            "group": "Bad request 400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некоторые параметры не прошли валидацию</p>"
+          }
+        ],
+        "Not Found 404": [
+          {
+            "group": "Not Found 404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Приложение не найдено в списке приложений ребенка</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 400:",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"package\": [\n           \"Параметр package обязателен\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not Found 404:",
+          "content": "{\n   \"message\": \"Приложение не существует в списке приложений указанного ребенка\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>История использования приложения и сообщение о ее создании</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"История использования приложения добавлена\",\n    \"data\": {\n        \"id\": 1,\n        \"package\": \"whatsapp\",\n        \"name\": \"Whatsapp\",\n        \"image\": \"data:image/png;base64,iVBORw0...\",\n        \"locked\": \"0\",\n        \"start_dt\": \"07.09.2021 19:13\",\n        \"end_dt\": null,\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-08T13:57:22.000000Z\",\n        \"updated_at\": \"2021-09-08T13:57:22.000000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/application_history.php",
+    "groupTitle": "ApplicationHistory",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/youtube_history"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "patch",
+    "url": "/api/youtube_history/:youtube_history",
+    "title": "4. Обновить историю использования приложения",
+    "name": "UpdateApplicationHistory",
+    "group": "ApplicationHistory",
+    "version": "1.0.0",
+    "description": "<p>youtube_history - Id истории использования приложения</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "end_dt",
+            "description": "<p>Дата окончания использования приложения в формате d.m.Y H:i.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n   \"end_dt\": \"07.09.2021 20:13\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Bad request 400": [
+          {
+            "group": "Bad request 400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некоторые параметры не прошли валидацию</p>"
+          }
+        ],
+        "Not Found 404": [
+          {
+            "group": "Not Found 404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Приложение не найдено в списке приложений ребенка</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 400:",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"end_dt\": [\n           \"Параметр end_dt должен быть датой формата d.m.Y H:i\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not Found 404:",
+          "content": "{\n   \"message\": \"Приложение не существует в списке приложений указанного ребенка\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>История использования приложения и сообщение о ее обновлении</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"История использования приложения обновлена\",\n    \"data\": {\n        \"id\": 1,\n        \"package\": \"whatsapp\",\n        \"name\": \"Whatsapp\",\n        \"image\": \"data:image/png;base64,iVBORw0...\",\n        \"locked\": \"0\",\n        \"start_dt\": \"07.09.2021 19:13\",\n        \"end_dt\": \"07.09.2021 20:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-08T13:57:22.000000Z\",\n        \"updated_at\": \"2021-09-08T13:57:22.000000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/application_history.php",
+    "groupTitle": "ApplicationHistory",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/youtube_history/:youtube_history"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "post",
     "url": "/api/applications",
     "title": "2. Добавить приложение",
@@ -551,7 +1304,7 @@ define({ "api": [
     }
   },
   {
-    "type": "patch",
+    "type": "post",
     "url": "/api/applications/:application",
     "title": "4. Обновить настройки приложения",
     "name": "UpdateApplication",

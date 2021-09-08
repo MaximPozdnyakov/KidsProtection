@@ -55,7 +55,7 @@ class AppHistoryController extends Controller
         $appHistory->image = 'data:image/png;base64,' . base64_encode($appHistory->image);
 
         return response()->json([
-            'message' => 'История мобильного приложения создана',
+            'message' => 'История использования приложения добавлена',
             'data' => $appHistory,
         ], 201);
     }
@@ -78,7 +78,7 @@ class AppHistoryController extends Controller
         }
         if ($image) {
             return response()->json([
-                'data' => ['History' => $appHistory, 'image' => $image],
+                'data' => ['history' => $appHistory, 'image' => $image],
             ], 200);
         }
         return [];

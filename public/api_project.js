@@ -16,15 +16,16 @@ define({
     "Phone",
     "Call",
     "Sms",
-    "Application",
     "Geolocation",
+    "Application",
+    "ApplicationHistory",
     "Support"
   ],
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-09-08T13:26:27.092Z",
+    "time": "2021-09-08T14:11:16.177Z",
     "url": "https://apidocjs.com",
     "version": "0.29.0"
   }
