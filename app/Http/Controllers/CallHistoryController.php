@@ -59,6 +59,6 @@ class CallHistoryController extends Controller
             return response()->json(['message' => 'Этот звонок не принадлежит вашему ребенку'], 403);
         }
         $existedCallHistory->delete();
-        return response()->json(['message' => 'Звонок был удалена'], 200);
+        return response()->json(['message' => 'Звонок был удален'], 200);
     }
 }

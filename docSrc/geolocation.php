@@ -11,8 +11,9 @@
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
- * @apiSuccess (Success 200) {Array[geolocation]} Success Массив со списком геолокаций
+ * @apiSuccess (Success 200) {Array[geolocation]} Success Массив геолокаций
  * @apiSuccessExample {json} Success 200:
+ * /api/geolocation/1
  * [
  *    {
  *        "id": 1,
@@ -28,7 +29,7 @@
  */
 
 /**
- * @api {post} /api/geolocation 2. Записать геолокацию ребенка
+ * @api {post} /api/geolocation 2. Добавить геолокацию ребенка
  * @apiName PostGeolocation
  * @apiGroup Geolocation
  * @apiVersion 1.0.0
@@ -63,7 +64,7 @@
  *    }
  * }
  *
- * @apiSuccess (Success 200) Success Сообщение с созданной геолокацией
+ * @apiSuccess (Success 200) Success Геолокация и сообщение о ее создании
  * @apiSuccessExample {json} Success 200:
  * {
  *     "message": "Геолокация добавлена",
@@ -99,7 +100,7 @@
  *    "message": "Параметр date должен быть датой формата d.m.Y",
  * }
  *
- * @apiSuccess (Success 200) {Array[geolocation]} Success Массив со списком геолокаций по указанной дате
+ * @apiSuccess (Success 200) {Array[geolocation]} Success Массив геолокаций по указанной дате
  * @apiSuccessExample {json} Success 200:
  * /api/geolocation/1/05.09.2021
  * [

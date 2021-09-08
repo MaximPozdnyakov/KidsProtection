@@ -12,8 +12,9 @@
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
- * @apiSuccess (Success 200) {Array[sms]} Success Массив со списком смс
+ * @apiSuccess (Success 200) {Array[sms]} Success Массив смс
  * @apiSuccessExample {json} Success 200:
+ * /api/sms/1/79998887766
  * [
  *     {
  *         "id": 7,
@@ -71,7 +72,7 @@
  *    "message": "Номер телефона 79998887766 не существует в списке номеров указанного ребенка",
  * }
  *
- * @apiSuccess (Success 200) Success Смс с сообщением
+ * @apiSuccess (Success 200) Success Смс и сообщение о его добавлении
  * @apiSuccessExample {json} Success 200:
  * {
  *     "message": "Смс добавлено",
@@ -97,7 +98,7 @@
  *
  * @apiDescription child - Id ребенка;
  * phone - Валидный номер телефона без спец символов, начинающийся с кода страны. Состоит из ровно 11 цифр.;
- * date - дата записи смс в формате d.m.Y
+ * date - дата смс в формате d.m.Y
  *
  * @apiUse Authorization
  * @apiUse WithChild
@@ -109,9 +110,9 @@
  *    "message": "Параметр date должен быть датой формата d.m.Y",
  * }
  *
- * @apiSuccess (Success 200) {Array[sms]} Success Массив со списком смс по указанной дате
+ * @apiSuccess (Success 200) {Array[sms]} Success Массив смс по указанной дате
  * @apiSuccessExample {json} Success 200:
- * /api/sms/1/79998887766/05.09.2021
+ * /api/sms/1/79998887766/07.09.2021
  * [
  *     {
  *         "id": 7,

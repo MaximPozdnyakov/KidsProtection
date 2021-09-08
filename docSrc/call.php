@@ -94,7 +94,7 @@
  *
  * @apiDescription child - Id ребенка;
  * phone - Валидный номер телефона без спец символов, начинающийся с кода страны. Состоит из ровно 11 цифр.;
- * date - дата записи звонков в формате d.m.Y
+ * date - дата звонка в формате d.m.Y
  *
  * @apiUse Authorization
  * @apiUse WithChild
@@ -106,9 +106,9 @@
  *    "message": "Параметр date должен быть датой формата d.m.Y",
  * }
  *
- * @apiSuccess (Success 200) {Array[calls]} Success Массив со списком звонков по указанной дате
+ * @apiSuccess (Success 200) {Array[calls]} Success Массив звонков по указанной дате
  * @apiSuccessExample {json} Success 200:
- * /api/calls/1/79998887766/05.09.2021
+ * /api/calls/1/79998887766/07.09.2021
  * [
  *     {
  *         "id": 7,
@@ -152,6 +152,6 @@
  * @apiSuccess (Success 200) Success Сообщение об удалении звонка
  * @apiSuccessExample {json} Success 200:
  * {
- *     "message": "Звонок было удалено"
+ *     "message": "Звонок был удален"
  * }
  */

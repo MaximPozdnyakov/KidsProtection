@@ -13,6 +13,7 @@
  *
  * @apiSuccess (Success 200) {Array[youtube]} Success Массив со списком youtube каналов
  * @apiSuccessExample {json} Success 200:
+ * /api/youtube/1
  * [
  *     {
  *         "id": 1,
@@ -29,7 +30,7 @@
  */
 
 /**
- * @api {post} /api/youtube 2. Записать youtube канал ребенка
+ * @api {post} /api/youtube 2. Добавить youtube канал
  * @apiName PostYoutube
  * @apiGroup Youtube
  * @apiVersion 1.0.0
@@ -38,7 +39,7 @@
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
- * @apiParam {String} channel Идентификатор канала или ссылка на него. Должен быть уникальным для ребенка. Обязательный.
+ * @apiParam {String} channel Идентификатор канала или ссылка на него. Должен быть уникальным для ребенка. Обязательный. Нельзя добавить идентификатор канала и ссылку, относящиеся к одному каналу. К примеру, если в базе уже создана сущность с channel=https://www.youtube.com/c/maxkatz1 , то при добавлении сущности с channel=maxkatz1 , метод выдаст ошибку.
  * @apiParam {Boolean} locked Является ли youtube канал заблокированным. Необязательный. По умолчанию true.
  * @apiParam {String} user Id ребенка. Обязательный.
  * @apiParam {String} start_dt Время начала доступа к каналу в формате d.m.Y H:i. Необязательный. По умолчанию null.
@@ -64,7 +65,7 @@
  *    }
  * }
  *
- * @apiSuccess (Success 200) Success Сообщение с созданным youtube каналом
+ * @apiSuccess (Success 200) Success Youtube канал и сообщение о его создании
  * @apiSuccessExample {json} Success 200:
  * {
  *     "message": "Youtube канал добавлен",
@@ -84,7 +85,7 @@
 
 /**
  * @api {get} /youtube/:child/:youtube 3. Получить youtube канал
- * @apiName GetYoutubeByDate
+ * @apiName GetYoutubeById
  * @apiGroup Youtube
  * @apiVersion 1.0.0
  *

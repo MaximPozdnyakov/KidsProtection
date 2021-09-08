@@ -1,18 +1,18 @@
 <?php
 /**
- * @api {get} /api/youtube_history/:child/:channel 1. Получить список посещений ютуба для указанного ребенка и канала
+ * @api {get} /api/youtube_history/:child/:channel 1. Получить историю посещений youtube для указанного ребенка и канала
  * @apiName GetYoutubeHistory
  * @apiGroup YoutubeHistory
  * @apiVersion 1.0.0
  *
  * @apiDescription child - Id ребенка;
- * channel - Идентификатор канала или ссылка на него.
+ * channel - Название канала или ссылка на него.
  *
  * @apiUse Authorization
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
- * @apiSuccess (Success 200) {Array[youtube_history]} Success Массив со списком посещений ютуба
+ * @apiSuccess (Success 200) {Array[youtube_history]} Success Массив с историей посещения youtube
  * @apiSuccessExample {json} Success 200:
  * /api/youtube_history/1/maxkatz1
  * [
@@ -29,7 +29,7 @@
  */
 
 /**
- * @api {post} /api/youtube_history 2. Добавить историю посещения ютуба
+ * @api {post} /api/youtube_history 2. Добавить историю посещения youtube
  * @apiName PostYoutubeHistory
  * @apiGroup YoutubeHistory
  * @apiVersion 1.0.0
@@ -66,7 +66,7 @@
  *    "message": "Youtube канала не существует в списке youtube каналов указанного ребенка",
  * }
  *
- * @apiSuccess (Success 200) Success История посещения ютуба и сообщение о ее создании
+ * @apiSuccess (Success 200) Success История посещения youtube и сообщение о ее создании
  * @apiSuccessExample {json} Success 200:
  * {
  *     "message": "История посещения youtube канала добавлена",
@@ -83,14 +83,14 @@
  */
 
 /**
- * @api {get} /youtube_history/:child/:channel/:date 3. Получить список посещений ютуба для указанного ребенка по дате
+ * @api {get} /youtube_history/:child/:channel/:date 3. Получить список посещений youtube для указанного ребенка по дате
  * @apiName GetYoutubeHistoryByDate
  * @apiGroup YoutubeHistory
  * @apiVersion 1.0.0
  *
  * @apiDescription child - Id ребенка;
  * channel - Идентификатор канала или ссылка на него;
- * date - дата посещения ютуба в формате d.m.Y
+ * date - дата посещения youtube в формате d.m.Y
  *
  * @apiUse Authorization
  * @apiUse WithChild
@@ -102,7 +102,7 @@
  *    "message": "Параметр date должен быть датой формата d.m.Y",
  * }
  *
- * @apiSuccess (Success 200) {Array[youtube_history]} Success Массив со списком посещений ютуба по указанной дате
+ * @apiSuccess (Success 200) {Array[youtube_history]} Success Массив с историей посещения youtube канала в указанный день
  * @apiSuccessExample {json} Success 200:
  * /api/youtube_history/1/maxkatz1/06.09.2021
  * [
@@ -119,33 +119,33 @@
  */
 
 /**
- * @api {delete} /youtube_history/:youtube_history 4. Удалить историю посещения ютуба
+ * @api {delete} /youtube_history/:youtube_history 4. Удалить историю посещения youtube канала
  * @apiName DeleteYoutubeHistory
  * @apiGroup YoutubeHistory
  * @apiVersion 1.0.0
  *
- * @apiDescription youtube_history - Id истории посещения ютуба
+ * @apiDescription youtube_history - Id истории посещения youtube канала
  *
  * @apiUse Authorization
  * @apiUse WithSubscription
  *
- * @apiError (Not Found 404) NotFound История посещения ютуба не найдена
+ * @apiError (Not Found 404) NotFound История посещения youtube канала не найдена
  * @apiErrorExample {json} Not Found 404:
  * {
- *    "message": "Не удалось найти историю посещения ютуба с указанным id",
+ *    "message": "Не удалось найти историю посещения youtube канала с указанным id",
  * }
  *
- * @apiPermission Пользователь, ребенку которого принадлежит история посещение ютуба |
+ * @apiPermission Пользователь, ребенку которого принадлежит история посещения youtube канала |
  *
- * @apiError (Not belong to your child 403) NotBelongToYourChild Попытка удалить историю посещения ютуба, не принадлежащую ребенку родителя
+ * @apiError (Not belong to your child 403) NotBelongToYourChild Попытка удалить историю посещения youtube канала, не принадлежащую ребенку родителя
  * @apiErrorExample {json} Not belong to your child 403:
  * {
- *   "message": "Эта история посещения ютуба не принадлежит вашему ребенку"
+ *   "message": "Эта история посещения youtube канала не принадлежит вашему ребенку"
  * }
  *
- * @apiSuccess (Success 200) Success Сообщение об удалении истории посещения
+ * @apiSuccess (Success 200) Success Сообщение об удалении истории посещения youtube канала
  * @apiSuccessExample {json} Success 200:
  * {
- *     "message": "История посещения ютуба была удалена"
+ *     "message": "История посещения youtube канала была удалена"
  * }
  */

@@ -103,7 +103,7 @@
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Звонок было удалено\"\n}",
+          "content": "{\n    \"message\": \"Звонок был удален\"\n}",
           "type": "json"
         }
       ]
@@ -268,7 +268,7 @@
     "name": "GetCallByDate",
     "group": "Call",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка; phone - Валидный номер телефона без спец символов, начинающийся с кода страны. Состоит из ровно 11 цифр.; date - дата записи звонков в формате d.m.Y</p>",
+    "description": "<p>child - Id ребенка; phone - Валидный номер телефона без спец символов, начинающийся с кода страны. Состоит из ровно 11 цифр.; date - дата звонка в формате d.m.Y</p>",
     "error": {
       "fields": {
         "Bad request 400": [
@@ -348,14 +348,14 @@
             "type": "Array[calls]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив со списком звонков по указанной дате</p>"
+            "description": "<p>Массив звонков по указанной дате</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "/api/calls/1/79998887766/05.09.2021\n[\n    {\n        \"id\": 7,\n        \"phone\": \"79998887766\",\n        \"msg\": \"Текст сообщения\",\n        \"locked\": \"1\",\n        \"incoming\": \"1\",\n        \"date\": \"07.09.2021 17:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T16:26:52.000000Z\",\n        \"updated_at\": \"2021-09-07T16:26:52.000000Z\"\n    }\n]",
+          "content": "/api/calls/1/79998887766/07.09.2021\n[\n    {\n        \"id\": 7,\n        \"phone\": \"79998887766\",\n        \"msg\": \"Текст сообщения\",\n        \"locked\": \"1\",\n        \"incoming\": \"1\",\n        \"date\": \"07.09.2021 17:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T16:26:52.000000Z\",\n        \"updated_at\": \"2021-09-07T16:26:52.000000Z\"\n    }\n]",
           "type": "json"
         }
       ]
@@ -1438,14 +1438,14 @@
             "type": "Array[geolocation]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив со списком геолокаций</p>"
+            "description": "<p>Массив геолокаций</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "[\n   {\n       \"id\": 1,\n       \"latitude\": \"59.837271\",\n       \"longitude\": \"30.312033\",\n       \"address\": null,\n       \"date\": \"05.09.2021 17:40\",\n       \"user\": \"1\",\n       \"created_at\": \"2021-09-05T14:46:06.000000Z\",\n       \"updated_at\": \"2021-09-05T14:46:06.000000Z\"\n   },\n]",
+          "content": "/api/geolocation/1\n[\n   {\n       \"id\": 1,\n       \"latitude\": \"59.837271\",\n       \"longitude\": \"30.312033\",\n       \"address\": null,\n       \"date\": \"05.09.2021 17:40\",\n       \"user\": \"1\",\n       \"created_at\": \"2021-09-05T14:46:06.000000Z\",\n       \"updated_at\": \"2021-09-05T14:46:06.000000Z\"\n   },\n]",
           "type": "json"
         }
       ]
@@ -1634,7 +1634,7 @@
             "type": "Array[geolocation]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив со списком геолокаций по указанной дате</p>"
+            "description": "<p>Массив геолокаций по указанной дате</p>"
           }
         ]
       },
@@ -1688,7 +1688,7 @@
   {
     "type": "post",
     "url": "/api/geolocation",
-    "title": "2. Записать геолокацию ребенка",
+    "title": "2. Добавить геолокацию ребенка",
     "name": "PostGeolocation",
     "group": "Geolocation",
     "version": "1.0.0",
@@ -1818,7 +1818,7 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Сообщение с созданной геолокацией</p>"
+            "description": "<p>Геолокация и сообщение о ее создании</p>"
           }
         ]
       },
@@ -2006,7 +2006,7 @@
             "type": "Array[Phones]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив со списком телефонов</p>"
+            "description": "<p>Массив телефонов</p>"
           }
         ]
       },
@@ -2243,7 +2243,7 @@
   {
     "type": "post",
     "url": "/api/phones",
-    "title": "2. Записать телефон ребенка",
+    "title": "2. Добавить телефон ребенка",
     "name": "PostPhone",
     "group": "Phone",
     "version": "1.0.0",
@@ -2359,7 +2359,7 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Сообщение с созданным телефоном</p>"
+            "description": "<p>Телефон и сообщение о его добавлении</p>"
           }
         ]
       },
@@ -2723,14 +2723,14 @@
             "type": "Array[sms]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив со списком смс</p>"
+            "description": "<p>Массив смс</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "[\n    {\n        \"id\": 7,\n        \"phone\": \"79998887766\",\n        \"msg\": \"Текст сообщения\",\n        \"locked\": \"1\",\n        \"incoming\": \"1\",\n        \"date\": \"07.09.2021 17:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T16:26:52.000000Z\",\n        \"updated_at\": \"2021-09-07T16:26:52.000000Z\"\n    }\n]",
+          "content": "/api/sms/1/79998887766\n[\n    {\n        \"id\": 7,\n        \"phone\": \"79998887766\",\n        \"msg\": \"Текст сообщения\",\n        \"locked\": \"1\",\n        \"incoming\": \"1\",\n        \"date\": \"07.09.2021 17:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T16:26:52.000000Z\",\n        \"updated_at\": \"2021-09-07T16:26:52.000000Z\"\n    }\n]",
           "type": "json"
         }
       ]
@@ -2839,7 +2839,7 @@
     "name": "GetSmsByDate",
     "group": "Sms",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка; phone - Валидный номер телефона без спец символов, начинающийся с кода страны. Состоит из ровно 11 цифр.; date - дата записи смс в формате d.m.Y</p>",
+    "description": "<p>child - Id ребенка; phone - Валидный номер телефона без спец символов, начинающийся с кода страны. Состоит из ровно 11 цифр.; date - дата смс в формате d.m.Y</p>",
     "error": {
       "fields": {
         "Bad request 400": [
@@ -2919,14 +2919,14 @@
             "type": "Array[sms]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив со списком смс по указанной дате</p>"
+            "description": "<p>Массив смс по указанной дате</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "/api/sms/1/79998887766/05.09.2021\n[\n    {\n        \"id\": 7,\n        \"phone\": \"79998887766\",\n        \"msg\": \"Текст сообщения\",\n        \"locked\": \"1\",\n        \"incoming\": \"1\",\n        \"date\": \"07.09.2021 17:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T16:26:52.000000Z\",\n        \"updated_at\": \"2021-09-07T16:26:52.000000Z\"\n    }\n]",
+          "content": "/api/sms/1/79998887766/07.09.2021\n[\n    {\n        \"id\": 7,\n        \"phone\": \"79998887766\",\n        \"msg\": \"Текст сообщения\",\n        \"locked\": \"1\",\n        \"incoming\": \"1\",\n        \"date\": \"07.09.2021 17:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T16:26:52.000000Z\",\n        \"updated_at\": \"2021-09-07T16:26:52.000000Z\"\n    }\n]",
           "type": "json"
         }
       ]
@@ -3116,7 +3116,7 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Смс с сообщением</p>"
+            "description": "<p>Смс и сообщение о его добавлении</p>"
           }
         ]
       },
@@ -4330,7 +4330,7 @@
       "examples": [
         {
           "title": "Success 200:",
-          "content": "[\n    {\n        \"id\": 1,\n        \"channel\": \"maxkatz1\",\n        \"locked\": \"1\",\n        \"start_dt\": \"07.09.2021 17:13\",\n        \"end_dt\": \"07.09.2021 19:13\",\n        \"user\": \"1\",\n        \"parent\": \"1\",\n        \"created_at\": \"2021-09-08T07:46:56.000000Z\",\n        \"updated_at\": \"2021-09-08T07:46:56.000000Z\"\n    },\n]",
+          "content": "/api/youtube/1\n[\n    {\n        \"id\": 1,\n        \"channel\": \"maxkatz1\",\n        \"locked\": \"1\",\n        \"start_dt\": \"07.09.2021 17:13\",\n        \"end_dt\": \"07.09.2021 19:13\",\n        \"user\": \"1\",\n        \"parent\": \"1\",\n        \"created_at\": \"2021-09-08T07:46:56.000000Z\",\n        \"updated_at\": \"2021-09-08T07:46:56.000000Z\"\n    },\n]",
           "type": "json"
         }
       ]
@@ -4436,7 +4436,7 @@
     "type": "get",
     "url": "/youtube/:child/:youtube",
     "title": "3. Получить youtube канал",
-    "name": "GetYoutubeByDate",
+    "name": "GetYoutubeById",
     "group": "Youtube",
     "version": "1.0.0",
     "description": "<p>child - Id ребенка; youtube - Id youtube канала</p>",
@@ -4560,11 +4560,11 @@
   {
     "type": "delete",
     "url": "/youtube_history/:youtube_history",
-    "title": "4. Удалить историю посещения ютуба",
+    "title": "4. Удалить историю посещения youtube канала",
     "name": "DeleteYoutubeHistory",
     "group": "YoutubeHistory",
     "version": "1.0.0",
-    "description": "<p>youtube_history - Id истории посещения ютуба</p>",
+    "description": "<p>youtube_history - Id истории посещения youtube канала</p>",
     "error": {
       "fields": {
         "Not Found 404": [
@@ -4572,7 +4572,7 @@
             "group": "Not Found 404",
             "optional": false,
             "field": "NotFound",
-            "description": "<p>История посещения ютуба не найдена</p>"
+            "description": "<p>История посещения youtube канала не найдена</p>"
           }
         ],
         "Not belong to your child 403": [
@@ -4580,7 +4580,7 @@
             "group": "Not belong to your child 403",
             "optional": false,
             "field": "NotBelongToYourChild",
-            "description": "<p>Попытка удалить историю посещения ютуба, не принадлежащую ребенку родителя</p>"
+            "description": "<p>Попытка удалить историю посещения youtube канала, не принадлежащую ребенку родителя</p>"
           }
         ],
         "Unauthenticated 401": [
@@ -4611,12 +4611,12 @@
       "examples": [
         {
           "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти историю посещения ютуба с указанным id\",\n}",
+          "content": "{\n   \"message\": \"Не удалось найти историю посещения youtube канала с указанным id\",\n}",
           "type": "json"
         },
         {
           "title": "Not belong to your child 403:",
-          "content": "{\n  \"message\": \"Эта история посещения ютуба не принадлежит вашему ребенку\"\n}",
+          "content": "{\n  \"message\": \"Эта история посещения youtube канала не принадлежит вашему ребенку\"\n}",
           "type": "json"
         },
         {
@@ -4638,7 +4638,7 @@
     },
     "permission": [
       {
-        "name": "Пользователь, ребенку которого принадлежит история посещение ютуба |"
+        "name": "Пользователь, ребенку которого принадлежит история посещения youtube канала |"
       },
       {
         "name": "Авторизованный пользователь |"
@@ -4654,14 +4654,14 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Сообщение об удалении истории посещения</p>"
+            "description": "<p>Сообщение об удалении истории посещения youtube канала</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"История посещения ютуба была удалена\"\n}",
+          "content": "{\n    \"message\": \"История посещения youtube канала была удалена\"\n}",
           "type": "json"
         }
       ]
@@ -4697,11 +4697,11 @@
   {
     "type": "get",
     "url": "/api/youtube_history/:child/:channel",
-    "title": "1. Получить список посещений ютуба для указанного ребенка и канала",
+    "title": "1. Получить историю посещений youtube для указанного ребенка и канала",
     "name": "GetYoutubeHistory",
     "group": "YoutubeHistory",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка; channel - Идентификатор канала или ссылка на него.</p>",
+    "description": "<p>child - Id ребенка; channel - Название канала или ссылка на него.</p>",
     "success": {
       "fields": {
         "Success 200": [
@@ -4710,7 +4710,7 @@
             "type": "Array[youtube_history]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив со списком посещений ютуба</p>"
+            "description": "<p>Массив с историей посещения youtube</p>"
           }
         ]
       },
@@ -4822,11 +4822,11 @@
   {
     "type": "get",
     "url": "/youtube_history/:child/:channel/:date",
-    "title": "3. Получить список посещений ютуба для указанного ребенка по дате",
+    "title": "3. Получить список посещений youtube для указанного ребенка по дате",
     "name": "GetYoutubeHistoryByDate",
     "group": "YoutubeHistory",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка; channel - Идентификатор канала или ссылка на него; date - дата посещения ютуба в формате d.m.Y</p>",
+    "description": "<p>child - Id ребенка; channel - Идентификатор канала или ссылка на него; date - дата посещения youtube в формате d.m.Y</p>",
     "error": {
       "fields": {
         "Bad request 400": [
@@ -4906,7 +4906,7 @@
             "type": "Array[youtube_history]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив со списком посещений ютуба по указанной дате</p>"
+            "description": "<p>Массив с историей посещения youtube канала в указанный день</p>"
           }
         ]
       },
@@ -4960,7 +4960,7 @@
   {
     "type": "post",
     "url": "/api/youtube_history",
-    "title": "2. Добавить историю посещения ютуба",
+    "title": "2. Добавить историю посещения youtube",
     "name": "PostYoutubeHistory",
     "group": "YoutubeHistory",
     "version": "1.0.0",
@@ -5089,7 +5089,7 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>История посещения ютуба и сообщение о ее создании</p>"
+            "description": "<p>История посещения youtube и сообщение о ее создании</p>"
           }
         ]
       },
@@ -5143,7 +5143,7 @@
   {
     "type": "post",
     "url": "/api/youtube",
-    "title": "2. Записать youtube канал ребенка",
+    "title": "2. Добавить youtube канал",
     "name": "PostYoutube",
     "group": "Youtube",
     "version": "1.0.0",
@@ -5155,7 +5155,7 @@
             "type": "String",
             "optional": false,
             "field": "channel",
-            "description": "<p>Идентификатор канала или ссылка на него. Должен быть уникальным для ребенка. Обязательный.</p>"
+            "description": "<p>Идентификатор канала или ссылка на него. Должен быть уникальным для ребенка. Обязательный. Нельзя добавить идентификатор канала и ссылку, относящиеся к одному каналу. К примеру, если в базе уже создана сущность с channel=https://www.youtube.com/c/maxkatz1 , то при добавлении сущности с channel=maxkatz1 , метод выдаст ошибку.</p>"
           },
           {
             "group": "Parameter",
@@ -5273,7 +5273,7 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Сообщение с созданным youtube каналом</p>"
+            "description": "<p>Youtube канал и сообщение о его создании</p>"
           }
         ]
       },

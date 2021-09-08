@@ -11,7 +11,7 @@
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
- * @apiSuccess (Success 200) {Array[Phones]} Success Массив со списком телефонов
+ * @apiSuccess (Success 200) {Array[Phones]} Success Массив телефонов
  * @apiSuccessExample {json} Success 200:
  * [
  *     {
@@ -27,7 +27,7 @@
  */
 
 /**
- * @api {post} /api/phones 2. Записать телефон ребенка
+ * @api {post} /api/phones 2. Добавить телефон ребенка
  * @apiName PostPhone
  * @apiGroup Phone
  * @apiVersion 1.0.0
@@ -58,7 +58,7 @@
  *    }
  * }
  *
- * @apiSuccess (Success 200) Success Сообщение с созданным телефоном
+ * @apiSuccess (Success 200) Success Телефон и сообщение о его добавлении
  * @apiSuccessExample {json} Success 200:
  * {
  *     "message": "Телефон добавлен",
