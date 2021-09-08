@@ -591,6 +591,702 @@ define({ "api": [
   },
   {
     "type": "delete",
+    "url": "/children/:child",
+    "title": "5. Удалить ребенка",
+    "name": "DeleteChild",
+    "group": "Child",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение об удалении ребенка</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Ребенок удален\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/children.php",
+    "groupTitle": "Child",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/children/:child"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/children",
+    "title": "1. Получить список детей",
+    "name": "GetChild",
+    "group": "Child",
+    "version": "1.0.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array[children]",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Список детей авторизированного пользователя. Их число ограничено текущей подпиской. К примеру, у пользователя была подключена подписка с 5 устройствами, и он зарегистрировал 5 детей. Но потом она истекла, и он подключил подписку дешевле, на 3 устройства. Тогда этот метод вернет первых трех детей из пяти.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"Юля\",\n        \"date\": \"05.09.2010\",\n        \"parent\": \"1\",\n        \"block_all_apps\": \"0\",\n        \"block_all_phones\": \"0\",\n        \"block_all_site\": \"0\",\n        \"block_all_youtube\": \"0\",\n        \"created_at\": \"2021-09-05T12:09:56.000000Z\",\n        \"updated_at\": \"2021-09-05T12:09:56.000000Z\"\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/children.php",
+    "groupTitle": "Child",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/children"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/children/:child",
+    "title": "3. Получить ребенка",
+    "name": "GetOneChild",
+    "group": "Child",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка;</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Ребенок</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "/api/children/1\n{\n   \"id\": 1,\n   \"name\": \"Юля\",\n   \"date\": \"05.09.2010\",\n   \"parent\": \"1\",\n   \"block_all_apps\": \"0\",\n   \"block_all_phones\": \"0\",\n   \"block_all_site\": \"0\",\n   \"block_all_youtube\": \"0\",\n   \"created_at\": \"2021-09-05T12:09:56.000000Z\",\n   \"updated_at\": \"2021-09-05T12:09:56.000000Z\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/children.php",
+    "groupTitle": "Child",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/children/:child"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/children",
+    "title": "2. Добавить ребенка",
+    "name": "PostChild",
+    "group": "Child",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Имя ребенка. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>День рождения ребенка в формате d.m.Y. Обязательный.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n    \"name\": \"Юля\",\n    \"date\": \"05.09.2010\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Bad request 400": [
+          {
+            "group": "Bad request 400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некоторые параметры не прошли валидацию</p>"
+          }
+        ],
+        "Devices Limit Reached 403": [
+          {
+            "group": "Devices Limit Reached 403",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Возникает при попытке добавить больше устройств, чем позволяет подписка</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 400:",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"name\": [\n           \"Параметр name обязателен\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Devices Limit Reached 403:",
+          "content": "{\n   \"message\": \"Вам можно подключить не более 3 устройств\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Новый ребенок и сообщение о его создании</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Ребенок добавлен\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Юля\",\n        \"date\": \"05.09.2010\",\n        \"parent\": \"1\",\n        \"block_all_apps\": \"0\",\n        \"block_all_phones\": \"0\",\n        \"block_all_site\": \"0\",\n        \"block_all_youtube\": \"0\",\n        \"created_at\": \"2021-09-05T12:09:56.000000Z\",\n        \"updated_at\": \"2021-09-05T12:09:56.000000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/children.php",
+    "groupTitle": "Child",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/children"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "patch",
+    "url": "/children/:child",
+    "title": "4. Обновить настройки и данные ребенка",
+    "name": "UpdateChild",
+    "group": "Child",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка;</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Имя ребенка.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>День рождения ребенка в формате d.m.Y.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "block_all_apps",
+            "description": "<p>Нужно ли блокировать все приложении.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "block_all_phones",
+            "description": "<p>Нужно ли блокировать все телефоны.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "block_all_site",
+            "description": "<p>Нужно ли блокировать все сайты.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "block_all_youtube",
+            "description": "<p>Нужно ли блокировать все youtube каналы.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n    \"name\": \"Антон\",\n    \"date\": \"07.01.2012\",\n    \"block_all_apps\": true,\n    \"block_all_phones\": true,\n    \"block_all_site\": true,\n    \"block_all_youtube\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 202": [
+          {
+            "group": "Success 202",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Ребенок и сообщение о обновлении его данных</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 202:",
+          "content": "{\n    \"message\": \"Данные ребенка обновлены\",\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Антон\",\n        \"date\": \"07.01.2012\",\n        \"parent\": \"1\",\n        \"block_all_apps\": true,\n        \"block_all_phones\": true,\n        \"block_all_site\": true,\n        \"block_all_youtube\": true,\n        \"created_at\": \"2021-09-07T12:07:47.000000Z\",\n        \"updated_at\": \"2021-09-08T10:25:20.000000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/children.php",
+    "groupTitle": "Child",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/children/:child"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete",
     "url": "/geolocation/:geolocation",
     "title": "4. Удалить геолокацию",
     "name": "DeleteGeolocation",

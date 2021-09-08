@@ -51,7 +51,7 @@ class ChildrenController extends Controller
             'parent' => auth()->user()->id,
         ]);
         return response()->json([
-            'message' => 'Ребенок создан',
+            'message' => 'Ребенок добавлен',
             'data' => Child::find($child->id),
         ], 201);
     }
