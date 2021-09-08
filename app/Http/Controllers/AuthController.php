@@ -123,6 +123,7 @@ class AuthController extends Controller
             'terms_agree' => $data['terms_agree'],
         ]);
         $token = $user->createToken('API Token')->accessToken;
+        $this->sendEmailVerificationCode($data['email'], $data['fio']);
         return response()->json([
             'message' => 'Вы успешно зарегистрировались',
             'data' => [
@@ -132,24 +133,11 @@ class AuthController extends Controller
         ], 201);
     }
 
-    /**
-     * @api {get} /api/users/logout Выйти из аккаунта
-     * @apiName                     LogoutUser
-     * @apiGroup                    User
-     */
-
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
         return response()->json(['message' => 'Вы вышли из аккаунта'], 200);
     }
-
-    /**
-     * @api {post} /api/users/forgot Отправка шестизначного кода для сброса пароля на почту
-     * @apiName                      ForgotUserPassword
-     * @apiGroup                     User
-     * @apiParam email               Email пользователя
-     */
 
     public function forgot(Request $request)
     {
@@ -187,14 +175,6 @@ class AuthController extends Controller
         );
         return response()->json(["message" => 'Код для сброса пароля отправлен на вашу электронную почту'], 200);
     }
-
-    /**
-     * @api {post} /api/users/forgot Сброс пароля
-     * @apiName                      ResetUserPassword
-     * @apiGroup                     User
-     * @apiParam token               Шестизначный код для сброса пароля
-     * @apiParam password            Новый пароль
-     */
 
     public function reset(Request $request)
     {
