@@ -46,9 +46,6 @@ class YoutubeHistoryController extends Controller
 
     public function show(Request $request, $child, $channel, $date)
     {
-        if (!Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
-        }
         $d = \DateTime::createFromFormat('d.m.Y', $date);
         if (!($d && $d->format('d.m.Y') === $date)) {
             return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);
@@ -62,10 +59,10 @@ class YoutubeHistoryController extends Controller
     {
         $existedYoutubeHistory = YoutubeHistory::find($youtube);
         if (!$existedYoutubeHistory) {
-            return response()->json(['message' => 'Не удалось найти youtube канал с указанным id'], 404);
+            return response()->json(['message' => 'Не удалось найти историю посещения ютуба с указанным id'], 404);
         }
         if (!Child::whereId($existedYoutubeHistory->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Этот сайт не принадлежит вашему ребенку'], 403);
+            return response()->json(['message' => 'Эта история посещения ютуба не принадлежит вашему ребенку'], 403);
         }
         $existedYoutubeHistory->delete();
         return response()->json(['message' => 'История посещения youtube канала была удалена'], 200);

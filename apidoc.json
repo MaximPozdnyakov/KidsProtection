@@ -5,5 +5,14 @@
     "title": "Kids Protection API",
     "url": "http://localhost:3000",
     "sampleUrl": "http://localhost:3000",
-    "order": ["User", "Child"]
+    "order": [
+        "User",
+        "Youtube",
+        "YoutubeHistory",
+        "Phone",
+        "Call",
+        "Sms",
+        "Geolocation",
+        "Support"
+    ]
 }

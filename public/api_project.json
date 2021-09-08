@@ -7,13 +7,19 @@
   "sampleUrl": "http://localhost:3000",
   "order": [
     "User",
-    "Child"
+    "Youtube",
+    "YoutubeHistory",
+    "Phone",
+    "Call",
+    "Sms",
+    "Geolocation",
+    "Support"
   ],
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-09-07T17:15:02.056Z",
+    "time": "2021-09-08T09:11:45.070Z",
     "url": "https://apidocjs.com",
     "version": "0.29.0"
   }

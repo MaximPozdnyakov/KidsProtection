@@ -1,5 +1,1 @@
-docker-compose build app <br/>
-docker-compose up -d <br/>
-docker-compose exec app composer install <br/>
-docker-compose exec app php artisan key:generate <br/>
-docker-compose exec app php artisan migrate
+docker-compose build app && docker-compose up -d && docker-compose exec app composer install && docker-compose exec app touch projects/database.sqlite && docker-compose exec app cp .env.example .env && docker-compose exec app php artisan key:generate && docker-compose exec app php artisan migrate && docker-compose exec app php artisan passport:install && php artisan db:seed
