@@ -7,6 +7,7 @@ define({
   "sampleUrl": "http://localhost:3000",
   "order": [
     "User",
+    "Subscription",
     "Child",
     "Youtube",
     "YoutubeHistory",
@@ -20,7 +21,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-09-08T10:38:16.826Z",
+    "time": "2021-09-08T11:07:38.537Z",
     "url": "https://apidocjs.com",
     "version": "0.29.0"
   }

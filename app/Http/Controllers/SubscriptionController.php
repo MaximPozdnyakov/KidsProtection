@@ -25,7 +25,7 @@ class SubscriptionController extends Controller
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => ['name' => 'Не существует подписки с названием ' . $request->name],
-            ], 400);
+            ], 404);
         }
         $activeSubscriptions = ActiveSubscription::whereUser(auth()->user()->id)->get()->toArray();
         $latestSubscriptionDate = Carbon::now();
@@ -46,7 +46,7 @@ class SubscriptionController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Подписка добавлен',
+            'message' => 'Подписка добавлена',
             'data' => ActiveSubscription::find($newSubscription->id),
         ], 201);
     }

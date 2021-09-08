@@ -7,6 +7,7 @@
     "sampleUrl": "http://localhost:3000",
     "order": [
         "User",
+        "Subscription",
         "Child",
         "Youtube",
         "YoutubeHistory",
