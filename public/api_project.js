@@ -9,6 +9,8 @@ define({
     "User",
     "Subscription",
     "Child",
+    "Site",
+    "SiteHistory",
     "Youtube",
     "YoutubeHistory",
     "Phone",
@@ -21,7 +23,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-09-08T11:50:55.426Z",
+    "time": "2021-09-08T13:00:28.600Z",
     "url": "https://apidocjs.com",
     "version": "0.29.0"
   }

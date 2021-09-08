@@ -9,6 +9,8 @@
         "User",
         "Subscription",
         "Child",
+        "Site",
+        "SiteHistory",
         "Youtube",
         "YoutubeHistory",
         "Phone",

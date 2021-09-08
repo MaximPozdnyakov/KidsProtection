@@ -28,7 +28,7 @@ class SiteHistoryController extends Controller
         if (!$existedSite) {
             return response()->json([
                 'message' => 'The given data was invalid.',
-                'errors' => ['package' => 'Сайта ' . $request->host . ' не существует в списке сайтов указанного ребенка'],
+                'errors' => ['host' => 'Сайта ' . $request->host . ' не существует в списке сайтов указанного ребенка'],
             ], 400);
         }
         $siteHistory = SiteHistory::create([

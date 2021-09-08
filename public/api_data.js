@@ -2572,6 +2572,1302 @@ define({ "api": [
   },
   {
     "type": "delete",
+    "url": "/sites/:site",
+    "title": "5. Удалить сайт",
+    "name": "DeleteSite",
+    "group": "Site",
+    "version": "1.0.0",
+    "description": "<p>site - Id сайта</p>",
+    "error": {
+      "fields": {
+        "Not Found 404": [
+          {
+            "group": "Not Found 404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Сайт не найден или не принадлежит ребенку пользователя</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Not Found 404:",
+          "content": "{\n   \"message\": \"Не удалось найти сайтов с указанным id\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение об удалении сайта</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Сайт удален\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/sites.php",
+    "groupTitle": "Site",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/sites/:site"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/sites/:child",
+    "title": "1. Получить список сайтов указанного ребенка",
+    "name": "GetSite",
+    "group": "Site",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array[sites]",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Массив сайтов</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "/api/sites/1\n[\n    {\n        \"id\": 1,\n        \"host\": \"google.com\",\n        \"locked\": \"0\",\n        \"start_dt\": \"07.09.2021 17:13\",\n        \"end_dt\": \"07.09.2021 19:13\",\n        \"user\": \"1\",\n        \"parent\": \"1\",\n        \"created_at\": \"2021-09-08T12:09:35.000000Z\",\n        \"updated_at\": \"2021-09-08T12:09:35.000000Z\"\n    },\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/sites.php",
+    "groupTitle": "Site",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/sites/:child"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/sites/:child/:site",
+    "title": "3. Получить сайт",
+    "name": "GetSiteById",
+    "group": "Site",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка; site - Id сайта</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сайт</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "/api/sites/1/1\n{\n   \"id\": 1,\n   \"host\": \"google.com\",\n   \"locked\": \"0\",\n   \"start_dt\": \"07.09.2021 17:13\",\n   \"end_dt\": \"07.09.2021 19:13\",\n   \"user\": \"1\",\n   \"parent\": \"1\",\n   \"created_at\": \"2021-09-08T12:09:35.000000Z\",\n   \"updated_at\": \"2021-09-08T12:09:35.000000Z\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/sites.php",
+    "groupTitle": "Site",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/sites/:child/:site"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete",
+    "url": "/site_history/:site_history",
+    "title": "4. Удалить историю посещения сайта",
+    "name": "DeleteSiteHistory",
+    "group": "SiteHistory",
+    "version": "1.0.0",
+    "description": "<p>site_history - Id истории посещения сайта</p>",
+    "error": {
+      "fields": {
+        "Not Found 404": [
+          {
+            "group": "Not Found 404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>История посещения сайта не найдена</p>"
+          }
+        ],
+        "Not belong to your child 403": [
+          {
+            "group": "Not belong to your child 403",
+            "optional": false,
+            "field": "NotBelongToYourChild",
+            "description": "<p>Попытка удалить историю посещения сайта, не принадлежащую ребенку родителя</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Not Found 404:",
+          "content": "{\n   \"message\": \"Не удалось найти историю посещения сайта с указанным id\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not belong to your child 403:",
+          "content": "{\n  \"message\": \"Эта история посещения сайта не принадлежит вашему ребенку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Пользователь, ребенку которого принадлежит история посещения сайта |"
+      },
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение об удалении истории посещения сайта</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"История посещения сайта была удалена\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/site_history.php",
+    "groupTitle": "SiteHistory",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/site_history/:site_history"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/site_history/:child/:host",
+    "title": "1. Получить историю посещений сайта для указанного ребенка",
+    "name": "GetSiteHistory",
+    "group": "SiteHistory",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка; host - Валидный хост или IP-адрес.</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array[site_history]",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Массив с историей посещения сайта</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "/api/site_history/1/google.com\n[\n    {\n        \"id\": 1,\n        \"host\": \"google.com\",\n        \"locked\": \"1\",\n        \"user\": \"1\",\n        \"date\": \"07.09.2021 19:13\",\n        \"created_at\": \"2021-09-08T12:54:05.000000Z\",\n        \"updated_at\": \"2021-09-08T12:54:05.000000Z\"\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/site_history.php",
+    "groupTitle": "SiteHistory",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/site_history/:child/:host"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/site_history/:child/:host/:date",
+    "title": "3. Получить список посещений сайта для указанного ребенка по дате",
+    "name": "GetSiteHistoryByDate",
+    "group": "SiteHistory",
+    "version": "1.0.0",
+    "description": "<p>child - Id ребенка; host - валидный хост или IP-адрес; date - дата посещения сайта в формате d.m.Y</p>",
+    "error": {
+      "fields": {
+        "Bad request 400": [
+          {
+            "group": "Bad request 400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некорректная дата</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 400:",
+          "content": "{\n   \"message\": \"Параметр date должен быть датой формата d.m.Y\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array[site_history]",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Массив с историей посещения сайта в указанный день</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "/api/site_history/1/google.com/07.09.2021\n[\n    {\n        \"id\": 1,\n        \"host\": \"google.com\",\n        \"locked\": \"1\",\n        \"user\": \"1\",\n        \"date\": \"07.09.2021 19:13\",\n        \"created_at\": \"2021-09-08T12:54:05.000000Z\",\n        \"updated_at\": \"2021-09-08T12:54:05.000000Z\"\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/site_history.php",
+    "groupTitle": "SiteHistory",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/site_history/:child/:host/:date"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/site_history",
+    "title": "2. Добавить историю посещения сайта",
+    "name": "PostSiteHistory",
+    "group": "SiteHistory",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "host",
+            "description": "<p>Валидный хост или IP-адрес. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Id ребенка. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Время захода на сайт в формате d.m.Y H:i.. Обязательный.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n   \"host\": \"google.com\",\n   \"user\": \"1\",\n   \"date\": \"07.09.2021 19:13\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Bad request 400": [
+          {
+            "group": "Bad request 400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некоторые параметры не прошли валидацию</p>"
+          }
+        ],
+        "Not Found 404": [
+          {
+            "group": "Not Found 404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Сайт не найден в списке сайтов ребенка</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 400:",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"host\": [\n           \"Параметр host обязателен\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not Found 404:",
+          "content": "{\n   \"message\": \"Сайт не существует в списке сайтов указанного ребенка\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>История посещения сайта и сообщение о ее создании</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"История посещения сайта добавлена\",\n    \"data\": {\n        \"id\": 1,\n        \"host\": \"google.com\",\n        \"locked\": \"1\",\n        \"user\": \"1\",\n        \"date\": \"07.09.2021 19:13\",\n        \"created_at\": \"2021-09-08T12:54:05.000000Z\",\n        \"updated_at\": \"2021-09-08T12:54:05.000000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/site_history.php",
+    "groupTitle": "SiteHistory",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/site_history"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/sites",
+    "title": "2. Добавить сайт",
+    "name": "PostSite",
+    "group": "Site",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "host",
+            "description": "<p>Валидный хост или IP-адрес. Должен быть уникальным для ребенка. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "locked",
+            "description": "<p>Является ли сайт заблокированным. Необязательный. По умолчанию true.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Id ребенка. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "start_dt",
+            "description": "<p>Время начала доступа к сайту в формате d.m.Y H:i. Необязательный. По умолчанию null.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "end_dt",
+            "description": "<p>Время конца доступа к сайту в формате d.m.Y H:i. Необязательный. По умолчанию null.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n   \"host\": \"google.com\",\n   \"locked\": false,\n   \"user\": \"1\",\n   \"start_dt\": \"07.09.2021 17:13\",\n   \"end_dt\": \"07.09.2021 19:13\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Bad request 400": [
+          {
+            "group": "Bad request 400",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некоторые параметры не прошли валидацию</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 403": [
+          {
+            "group": "Not your child 403",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 400:",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"channel\": [\n           \"Параметр channel обязателен\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 403:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сайт и сообщение о его добавлении</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Сайт добавлен\",\n    \"data\": {\n        \"id\": 1,\n        \"host\": \"google.com\",\n        \"locked\": \"0\",\n        \"start_dt\": \"07.09.2021 17:13\",\n        \"end_dt\": \"07.09.2021 19:13\",\n        \"user\": \"1\",\n        \"parent\": \"1\",\n        \"created_at\": \"2021-09-08T12:09:35.000000Z\",\n        \"updated_at\": \"2021-09-08T12:09:35.000000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/sites.php",
+    "groupTitle": "Site",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/sites"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "patch",
+    "url": "/sites/:site",
+    "title": "4. Обновить настройки сайта",
+    "name": "UpdateSite",
+    "group": "Site",
+    "version": "1.0.0",
+    "description": "<p>site - Id сайта</p>",
+    "error": {
+      "fields": {
+        "Not Found 404": [
+          {
+            "group": "Not Found 404",
+            "optional": false,
+            "field": "NotFound",
+            "description": "<p>Сайт не найден или не принадлежит ребенку пользователя</p>"
+          }
+        ],
+        "Unauthenticated 401": [
+          {
+            "group": "Unauthenticated 401",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "No subscription 403": [
+          {
+            "group": "No subscription 403",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 403": [
+          {
+            "group": "Subscription expired 403",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Not Found 404:",
+          "content": "{\n   \"message\": \"Не удалось найти сайт с указанным id\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 401:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 403:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 403:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "locked",
+            "description": "<p>Является ли сайт заблокированным.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|null",
+            "optional": false,
+            "field": "start_dt",
+            "description": "<p>Время начала доступа к сайту в формате d.m.Y H:i.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|null",
+            "optional": false,
+            "field": "end_dt",
+            "description": "<p>Время конца доступа к сайту в формате d.m.Y H:i.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n    \"locked\": true,\n    \"start_dt\": null,\n    \"end_dt\": \"07.09.2021 19:13\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Пользователь, ребенку которого принадлежит сайт |"
+      },
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сайт и сообщение о его обновлении</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Настройки сайта обновлены\",\n    \"data\": {\n         \"id\": 1,\n         \"host\": \"google.com\",\n         \"locked\": \"1\",\n         \"start_dt\": null,\n         \"end_dt\": \"07.09.2021 19:13\",\n         \"user\": \"1\",\n         \"parent\": \"1\",\n         \"created_at\": \"2021-09-08T12:09:35.000000Z\",\n         \"updated_at\": \"2021-09-08T12:09:35.000000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/sites.php",
+    "groupTitle": "Site",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/sites/:site"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete",
     "url": "/sms/:sms",
     "title": "4. Удалить смс",
     "name": "DeleteSms",
@@ -4323,7 +5619,7 @@ define({ "api": [
             "type": "Array[youtube]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив со списком youtube каналов</p>"
+            "description": "<p>Массив youtube каналов</p>"
           }
         ]
       },
@@ -5273,7 +6569,7 @@ define({ "api": [
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Youtube канал и сообщение о его создании</p>"
+            "description": "<p>Youtube канал и сообщение о его добавлении</p>"
           }
         ]
       },

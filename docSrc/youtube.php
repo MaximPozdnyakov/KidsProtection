@@ -11,7 +11,7 @@
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
- * @apiSuccess (Success 200) {Array[youtube]} Success Массив со списком youtube каналов
+ * @apiSuccess (Success 200) {Array[youtube]} Success Массив youtube каналов
  * @apiSuccessExample {json} Success 200:
  * /api/youtube/1
  * [
@@ -65,7 +65,7 @@
  *    }
  * }
  *
- * @apiSuccess (Success 200) Success Youtube канал и сообщение о его создании
+ * @apiSuccess (Success 200) Success Youtube канал и сообщение о его добавлении
  * @apiSuccessExample {json} Success 200:
  * {
  *     "message": "Youtube канал добавлен",
