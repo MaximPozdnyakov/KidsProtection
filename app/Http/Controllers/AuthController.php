@@ -14,12 +14,6 @@ use Laravel\Passport\Token;
 
 class AuthController extends Controller
 {
-    /**
-     * @api {get} /api/users Получить авторизированного пользователя
-     * @apiName              GetUser
-     * @apiGroup             User
-     */
-
     public function sendEmailVerificationCode($email, $userName)
     {
         $token = sprintf('%05d', rand(100000, 999999));
