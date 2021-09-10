@@ -3,89 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Models\Youtube;
-use App\Models\YoutubeHistory;
 use Illuminate\Http\Request;
 
 class YoutubeController extends Controller
 {
-    public function index(Request $request, $child)
+    public function index(Request $request)
     {
-        return Youtube::whereParent(auth()->user()->id)->whereUser($child)->get();
+        return Youtube::whereParent(auth()->user()->id)->whereChild($request->header('child'))->get()->pluck('channel');
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'channel' => 'required|string',
-            'locked' => 'boolean',
-            'user' => 'required|string',
-            'start_dt' => 'date|date_format:d.m.Y H:i',
-            'end_dt' => 'date|date_format:d.m.Y H:i',
+            'child' => 'required|string',
         ]);
-        if (Youtube::where('channel', 'LIKE', '%/' . $request->channel)->orWhere('channel', $request->channel)->whereUser($request->user)->first()) {
+        if (Youtube::where('channel', 'LIKE', '%/' . $request->channel)->whereChild($request->child)
+            ->orWhere('channel', $request->channel)->whereChild($request->child)->first()) {
             return response()->json([
                 'message' => 'The given data was invalid.',
-                'errors' => ['channel' => 'Этот youtube канал уже добавлен в список youtube каналов указанного ребенка'],
-            ], 400);
+                'errors' => ['channel' => 'Этот youtube канал уже заблокирован для указанного ребенка'],
+            ], 404);
         }
         $youtube = Youtube::create([
             'channel' => $request->channel,
+            'child' => $request->child,
             'parent' => auth()->user()->id,
-            'user' => $request->user,
-            'locked' => $request->get('locked', 1),
-            'start_dt' => $request->get('start_dt', null),
-            'end_dt' => $request->get('end_dt', null),
         ]);
-        return response()->json([
-            'message' => 'Youtube канал добавлен',
-            'data' => Youtube::find($youtube->id),
-        ], 201);
+        return response()->json(['message' => 'Youtube канал заблокирован'], 200);
     }
 
-    public function show(Request $request, $child, $youtube)
+    public function destroy(Request $request)
     {
-        return Youtube::whereId($youtube)->whereUser($child)->first();
-    }
-
-    public function update(Request $request, $youtube)
-    {
-        $existedYoutube = Youtube::whereId($youtube)->whereParent(auth()->user()->id)->first();
+        $existedYoutube = Youtube::where('channel', 'LIKE', '%/' . $request->header('channel'))->whereChild($request->header('child'))
+            ->orWhere('channel', $request->header('channel'))->whereChild($request->header('child'))->first();
         if (!$existedYoutube) {
-            return response()->json(['message' => 'Не удалось найти youtube канал с указанным id'], 404);
-        }
-        if ($request->has('locked')) {
-            $request->validate(['locked' => 'boolean']);
-            $existedYoutube->locked = $request->locked;
-            YoutubeHistory::where('channel', 'LIKE', '%/' . $existedYoutube->channel)->whereUser($existedYoutube->user)
-                ->orWhere('channel', $existedYoutube->channel)->whereUser($existedYoutube->user)
-                ->update(['locked' => $request->locked]);
-        }
-        if ($request->has('start_dt')) {
-            if (!is_null($request->start_dt)) {
-                $request->validate(['start_dt' => 'date|date_format:d.m.Y H:i']);
-            }
-            $existedYoutube->start_dt = $request->start_dt;
-        }
-        if ($request->has('end_dt')) {
-            if (!is_null($request->end_dt)) {
-                $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i']);
-            }
-            $existedYoutube->end_dt = $request->end_dt;
-        }
-        $existedYoutube->update();
-        return response()->json([
-            'message' => 'Настройки youtube канала обновлены',
-            'data' => $existedYoutube,
-        ], 202);
-    }
-
-    public function destroy(Request $request, $youtube)
-    {
-        $existedYoutube = Youtube::whereId($youtube)->whereParent(auth()->user()->id)->first();
-        if (!$existedYoutube) {
-            return response()->json(['message' => 'Не удалось найти youtube канал с указанным id'], 404);
+            return response()->json(['message' => 'Не удалось найти youtube канал'], 404);
         }
         $existedYoutube->delete();
-        return response()->json(['message' => 'Youtube канал удален'], 200);
+        return response()->json(['message' => 'Youtube канал разблокирован'], 200);
     }
 }

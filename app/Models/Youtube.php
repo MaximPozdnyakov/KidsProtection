@@ -11,10 +11,11 @@ class Youtube extends Model
     protected $table = 'youtube';
     protected $fillable = [
         'channel',
-        'locked',
-        'start_dt',
-        'end_dt',
-        'user',
+        'child',
         'parent',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 }

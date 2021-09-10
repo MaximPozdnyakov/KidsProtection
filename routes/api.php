@@ -50,11 +50,9 @@ Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::post('/websites/blocked', [SitesController::class, 'store']);
     Route::delete('/websites/blocked', [SitesController::class, 'destroy']);
 
-    Route::get('/youtube/{child}', [YoutubeController::class, 'index']);
-    Route::post('/youtube', [YoutubeController::class, 'store']);
-    Route::get('/youtube/{child}/{youtube}', [YoutubeController::class, 'show']);
-    Route::patch('/youtube/{youtube}', [YoutubeController::class, 'update']);
-    Route::delete('/youtube/{youtube}', [YoutubeController::class, 'destroy']);
+    Route::get('/youtube/blocked', [YoutubeController::class, 'index']);
+    Route::post('/youtube/blocked', [YoutubeController::class, 'store']);
+    Route::delete('/youtube/blocked', [YoutubeController::class, 'destroy']);
 
     Route::get('/phones/{child}', [PhonesController::class, 'index']);
     Route::post('/phones', [PhonesController::class, 'store']);

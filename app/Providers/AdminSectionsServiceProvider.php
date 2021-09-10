@@ -17,6 +17,7 @@ class AdminSectionsServiceProvider extends ServiceProvider
         \App\Models\SupportAppeal::class => 'App\Http\Sections\SupportAppeals',
         \App\Models\SupportTopic::class => 'App\Http\Sections\SupportTopics',
         \App\Models\Site::class => 'App\Http\Sections\Sites',
+        \App\Models\Youtube::class => 'App\Http\Sections\Youtube',
     ];
 
     /**

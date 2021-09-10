@@ -5717,12 +5717,11 @@
   },
   {
     "type": "delete",
-    "url": "/youtube/:youtube",
-    "title": "5. Удалить youtube канал",
+    "url": "/api/youtube/blocked",
+    "title": "3. Разблокировать youtube канал",
     "name": "DeleteYoutube",
     "group": "Youtube",
     "version": "1.0.0",
-    "description": "<p>youtube - Id youtube канала</p>",
     "error": {
       "fields": {
         "Not Found 404": [
@@ -5730,7 +5729,7 @@
             "group": "Not Found 404",
             "optional": false,
             "field": "NotFound",
-            "description": "<p>Youtube канал не найден или не принадлежит ребенку пользователя</p>"
+            "description": "<p>youtube канал не найден или не принадлежит ребенку пользователя</p>"
           }
         ],
         "Unauthenticated 404": [
@@ -5761,7 +5760,7 @@
       "examples": [
         {
           "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти youtube каналов с указанным id\",\n}",
+          "content": "{\n   \"message\": \"Не удалось найти youtube канал\",\n}",
           "type": "json"
         },
         {
@@ -5781,43 +5780,23 @@
         }
       ]
     },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Сообщение об удалении youtube канала</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "{\n    \"message\": \"Youtube канал удален\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/youtube.php",
-    "groupTitle": "Youtube",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/youtube/:youtube"
-      }
-    ],
-    "permission": [
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
     "header": {
       "fields": {
         "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Youtube",
+            "description": "<p>Заблокированный youtube канал</p>"
+          },
           {
             "group": "Header",
             "type": "String",
@@ -5830,36 +5809,106 @@
       "examples": [
         {
           "title": "Header:",
+          "content": "{\n   \"child\": \"1\",\n   \"channel\": \"NakeyJakey\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
       ]
-    }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение об разблокировки youtube канала</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Youtube канал разблокирован\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/youtube.php",
+    "groupTitle": "Youtube",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/youtube/blocked"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ]
   },
   {
     "type": "get",
-    "url": "/api/youtube/:child",
-    "title": "1. Получить список youtube каналов указанного ребенка",
+    "url": "/youtube/blocked",
+    "title": "1. Получить список заблокированных youtube каналов указанного ребенка",
     "name": "GetYoutube",
     "group": "Youtube",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"child\": \"1\" }",
+          "type": "json"
+        },
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
     "success": {
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Array[youtube]",
+            "type": "Array[Youtubes]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив youtube каналов</p>"
+            "description": "<p>Список заблокированных youtube каналов</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "/api/youtube/1\n[\n    {\n        \"id\": 1,\n        \"channel\": \"maxkatz1\",\n        \"locked\": \"1\",\n        \"start_dt\": \"07.09.2021 17:13\",\n        \"end_dt\": \"07.09.2021 19:13\",\n        \"user\": \"1\",\n        \"parent\": \"1\",\n        \"created_at\": \"2021-09-08T07:46:56.000000Z\",\n        \"updated_at\": \"2021-09-08T07:46:56.000000Z\"\n    },\n]",
+          "content": "[\n    \"NakeyJakey\",\n    \"BeatEmUps\"\n]",
           "type": "json"
         }
       ]
@@ -5868,7 +5917,7 @@
     "groupTitle": "Youtube",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/youtube/:child"
+        "url": "http://localhost:3000/youtube/blocked"
       }
     ],
     "permission": [
@@ -5882,151 +5931,6 @@
         "name": "Пользователь, обладающий активной подпиской"
       }
     ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Unauthenticated 404": [
-          {
-            "group": "Unauthenticated 404",
-            "optional": false,
-            "field": "Unauthenticated",
-            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
-          }
-        ],
-        "Not your child 404": [
-          {
-            "group": "Not your child 404",
-            "optional": false,
-            "field": "NotYourChild",
-            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
-          }
-        ],
-        "No subscription 404": [
-          {
-            "group": "No subscription 404",
-            "optional": false,
-            "field": "NoSubscription",
-            "description": "<p>Пользователь не оформил подписку</p>"
-          }
-        ],
-        "Subscription expired 404": [
-          {
-            "group": "Subscription expired 404",
-            "optional": false,
-            "field": "SubscriptionExpired",
-            "description": "<p>Подписка пользователя истекла</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Unauthenticated 404:",
-          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "get",
-    "url": "/youtube/:child/:youtube",
-    "title": "3. Получить youtube канал",
-    "name": "GetYoutubeById",
-    "group": "Youtube",
-    "version": "1.0.0",
-    "description": "<p>child - Id ребенка; youtube - Id youtube канала</p>",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Youtube канал</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "/api/youtube/1/1\n{\n   \"id\": 1,\n   \"channel\": \"maxkatz1\",\n   \"locked\": \"1\",\n   \"start_dt\": \"07.09.2021 17:13\",\n   \"end_dt\": \"07.09.2021 19:13\",\n   \"user\": \"1\",\n   \"parent\": \"1\",\n   \"created_at\": \"2021-09-08T07:46:56.000000Z\",\n   \"updated_at\": \"2021-09-08T07:46:56.000000Z\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/youtube.php",
-    "groupTitle": "Youtube",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/youtube/:child/:youtube"
-      }
-    ],
-    "permission": [
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, являющийся родителем указанного ребенка |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
     "error": {
       "fields": {
         "Unauthenticated 404": [
@@ -6088,8 +5992,8 @@
   },
   {
     "type": "post",
-    "url": "/api/youtube",
-    "title": "2. Добавить youtube канал",
+    "url": "/api/youtube/blocked",
+    "title": "2. Заблокировать youtube канал",
     "name": "PostYoutube",
     "group": "Youtube",
     "version": "1.0.0",
@@ -6105,47 +6009,26 @@
           },
           {
             "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "locked",
-            "description": "<p>Является ли youtube канал заблокированным. Необязательный. По умолчанию true.</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "user",
+            "field": "child",
             "description": "<p>Id ребенка. Обязательный.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "start_dt",
-            "description": "<p>Время начала доступа к каналу в формате d.m.Y H:i. Необязательный. По умолчанию null.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "end_dt",
-            "description": "<p>Время конца доступа к каналу в формате d.m.Y H:i. Необязательный. По умолчанию null.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"channel\": \"maxkatz1\",\n    \"locked\": false,\n    \"user\": \"1\",\n    \"start_dt\": \"07.09.2021 17:13\",\n    \"end_dt\": \"07.09.2021 19:13\"\n}",
+          "content": "{\n    \"channel\": \"NakeyJakey\",\n    \"child\": \"1\"\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -6186,7 +6069,7 @@
       },
       "examples": [
         {
-          "title": "Bad request 400:",
+          "title": "Bad request 404:",
           "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"channel\": [\n           \"Параметр channel обязателен\"\n       ]\n   }\n}",
           "type": "json"
         },
@@ -6219,14 +6102,14 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Youtube канал и сообщение о его добавлении</p>"
+            "description": "<p>Сообщение о блокировании youtube канала</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Youtube канал добавлен\",\n    \"data\": {\n        \"id\": 1,\n        \"channel\": \"maxkatz1\",\n        \"locked\": \"1\",\n        \"start_dt\": \"07.09.2021 17:13\",\n        \"end_dt\": \"07.09.2021 19:13\",\n        \"user\": \"1\",\n        \"parent\": \"1\",\n        \"created_at\": \"2021-09-08T07:46:56.000000Z\",\n        \"updated_at\": \"2021-09-08T07:46:56.000000Z\"\n    }\n}",
+          "content": "{\n    \"message\": \"Youtube канал заблокирован\"\n}",
           "type": "json"
         }
       ]
@@ -6235,7 +6118,7 @@
     "groupTitle": "Youtube",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/youtube"
+        "url": "http://localhost:3000/api/youtube/blocked"
       }
     ],
     "permission": [
@@ -6247,164 +6130,6 @@
       },
       {
         "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "patch",
-    "url": "/youtube/:youtube",
-    "title": "4. Обновить youtube канал",
-    "name": "UpdateYoutube",
-    "group": "Youtube",
-    "version": "1.0.0",
-    "description": "<p>youtube - Id youtube канала</p>",
-    "error": {
-      "fields": {
-        "Not Found 404": [
-          {
-            "group": "Not Found 404",
-            "optional": false,
-            "field": "NotFound",
-            "description": "<p>Youtube канал не найден или не принадлежит ребенку пользователя</p>"
-          }
-        ],
-        "Unauthenticated 404": [
-          {
-            "group": "Unauthenticated 404",
-            "optional": false,
-            "field": "Unauthenticated",
-            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
-          }
-        ],
-        "No subscription 404": [
-          {
-            "group": "No subscription 404",
-            "optional": false,
-            "field": "NoSubscription",
-            "description": "<p>Пользователь не оформил подписку</p>"
-          }
-        ],
-        "Subscription expired 404": [
-          {
-            "group": "Subscription expired 404",
-            "optional": false,
-            "field": "SubscriptionExpired",
-            "description": "<p>Подписка пользователя истекла</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти youtube канал с указанным id\",\n}",
-          "type": "json"
-        },
-        {
-          "title": "Unauthenticated 404:",
-          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "locked",
-            "description": "<p>Является ли youtube канал заблокированным.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String|null",
-            "optional": false,
-            "field": "start_dt",
-            "description": "<p>Время начала доступа к каналу в формате d.m.Y H:i.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String|null",
-            "optional": false,
-            "field": "end_dt",
-            "description": "<p>Время конца доступа к каналу в формате d.m.Y H:i.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request:",
-          "content": "{\n    \"locked\": false,\n    \"start_dt\": null,\n    \"end_dt\": \"07.09.2021 19:13\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "permission": [
-      {
-        "name": "Пользователь, ребенку которого принадлежит youtube канал |"
-      },
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Youtube канал и сообщение о его обновлении</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "{\n    \"message\": \"Настройки youtube канала обновлены\",\n    \"data\": {\n         \"id\": 1,\n         \"channel\": \"maxkatz1\",\n         \"locked\": 0,\n         \"start_dt\": null,\n         \"end_dt\": \"07.09.2021 19:13\",\n         \"user\": \"1\",\n         \"parent\": \"1\",\n         \"created_at\": \"2021-09-08T07:46:56.000000Z\",\n         \"updated_at\": \"2021-09-08T07:46:56.000000Z\"\n    }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/youtube.php",
-    "groupTitle": "Youtube",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/youtube/:youtube"
       }
     ],
     "header": {
