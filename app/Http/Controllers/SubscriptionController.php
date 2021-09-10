@@ -11,7 +11,8 @@ class SubscriptionController extends Controller
 {
     public function index(Request $request)
     {
-        return ActiveSubscription::whereUser(auth()->user()->id)->get();
+        return Subscription::all();
+        // return ActiveSubscription::whereUser(auth()->user()->id)->get();
     }
 
     public function store(Request $request)

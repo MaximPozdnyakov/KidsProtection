@@ -10,11 +10,12 @@ class Site extends Model
     use HasFactory;
     protected $table = 'sites';
     protected $fillable = [
-        'host',
-        'locked',
-        'start_dt',
-        'end_dt',
-        'user',
+        'site',
+        'child',
         'parent',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 }

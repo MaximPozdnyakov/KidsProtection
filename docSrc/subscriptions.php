@@ -1,7 +1,42 @@
 <?php
 
 /**
- * @api {get} /api/subscriptions 1. Получить список подписок
+ * @api {get} /api/subscribes/list 1. Получить список подписок
+ * @apiName GetSubscription
+ * @apiGroup Subscription
+ * @apiVersion 1.0.0
+ *
+ * @apiUse Authorization
+ *
+ * @apiSuccess (Success 200) {Array[subscriptions]} Success Список всех подписок
+ * @apiSuccessExample {json} Success 200:
+ * [
+ *     {
+ *         "id": 1,
+ *         "name": "Small",
+ *         "device": "3",
+ *         "price": "199.0",
+ *         "freeMonth": "1"
+ *     },
+ *     {
+ *         "id": 2,
+ *         "name": "Medium",
+ *         "device": "5",
+ *         "price": "249.0",
+ *         "freeMonth": "1"
+ *     },
+ *     {
+ *         "id": 3,
+ *         "name": "Large",
+ *         "device": "10",
+ *         "price": "299.0",
+ *         "freeMonth": "1"
+ *     }
+ * ]
+ */
+
+/**
+ * @api {get} /api/subscriptions 2. Получить список подписок
  * @apiName GetSubscription
  * @apiGroup Subscription
  * @apiVersion 1.0.0

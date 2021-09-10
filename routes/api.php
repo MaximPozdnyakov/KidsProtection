@@ -3,17 +3,14 @@
 use App\Http\Controllers\AppHistoryController;
 use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CallHistoryController;
 use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\GeolocationController;
 use App\Http\Controllers\PhonesController;
-use App\Http\Controllers\SiteHistoryController;
 use App\Http\Controllers\SitesController;
 use App\Http\Controllers\SmsHistoryController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\YoutubeController;
-use App\Http\Controllers\YoutubeHistoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('user')->group(function () {
@@ -49,16 +46,9 @@ Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::patch('/application_history/{application_history}', [AppHistoryController::class, 'update']);
     Route::delete('/application_history/{application_history}', [AppHistoryController::class, 'destroy']);
 
-    Route::get('/sites/{child}', [SitesController::class, 'index']);
-    Route::post('/sites', [SitesController::class, 'store']);
-    Route::get('/sites/{child}/{site}', [SitesController::class, 'show']);
-    Route::patch('/sites/{site}', [SitesController::class, 'update']);
-    Route::delete('/sites/{site}', [SitesController::class, 'destroy']);
-
-    Route::get('/site_history/{child}/{host}', [SiteHistoryController::class, 'index']);
-    Route::post('/site_history', [SiteHistoryController::class, 'store']);
-    Route::get('/site_history/{child}/{host}/{date}', [SiteHistoryController::class, 'show']);
-    Route::delete('/site_history/{site}', [SiteHistoryController::class, 'destroy']);
+    Route::get('/websites/blocked', [SitesController::class, 'index']);
+    Route::post('/websites/blocked', [SitesController::class, 'store']);
+    Route::delete('/websites/blocked', [SitesController::class, 'destroy']);
 
     Route::get('/youtube/{child}', [YoutubeController::class, 'index']);
     Route::post('/youtube', [YoutubeController::class, 'store']);
@@ -66,21 +56,11 @@ Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::patch('/youtube/{youtube}', [YoutubeController::class, 'update']);
     Route::delete('/youtube/{youtube}', [YoutubeController::class, 'destroy']);
 
-    Route::get('/youtube_history/{child}/{channel}', [YoutubeHistoryController::class, 'index']);
-    Route::post('/youtube_history', [YoutubeHistoryController::class, 'store']);
-    Route::get('/youtube_history/{child}/{channel}/{date}', [YoutubeHistoryController::class, 'show']);
-    Route::delete('/youtube_history/{youtube}', [YoutubeHistoryController::class, 'destroy']);
-
     Route::get('/phones/{child}', [PhonesController::class, 'index']);
     Route::post('/phones', [PhonesController::class, 'store']);
     Route::get('/phones/{child}/{phone}', [PhonesController::class, 'show']);
     Route::patch('/phones/{phone}', [PhonesController::class, 'update']);
     Route::delete('/phones/{phone}', [PhonesController::class, 'destroy']);
-
-    Route::get('/calls/{child}/{phone}', [CallHistoryController::class, 'index']);
-    Route::post('/calls', [CallHistoryController::class, 'store']);
-    Route::get('/calls/{child}/{phone}/{date}', [CallHistoryController::class, 'show']);
-    Route::delete('/calls/{call}', [CallHistoryController::class, 'destroy']);
 
     Route::get('/sms/{child}/{phone}', [SmsHistoryController::class, 'index']);
     Route::post('/sms', [SmsHistoryController::class, 'store']);
@@ -95,6 +75,6 @@ Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::get('/support/themes', [SupportController::class, 'index']);
     Route::post('/support/object', [SupportController::class, 'store']);
 
-    Route::get('/subscriptions', [SubscriptionController::class, 'index']);
+    Route::get('/subscribes/list', [SubscriptionController::class, 'index']);
     Route::post('/subscriptions', [SubscriptionController::class, 'store']);
 });

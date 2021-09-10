@@ -1,6 +1,6 @@
 <?php
 /**
- * @api {get} /api/support/themes Получить все темы
+ * @api {get} /api/support/themes 1. Получить все темы
  * @apiName GetSupportThemes
  * @apiGroup Support
  * @apiVersion 1.0.0
@@ -18,7 +18,7 @@
  */
 
 /**
- * @api {post} /api/support/object Отправка сообщения в поддержку
+ * @api {post} /api/support/object 2. Отправка сообщения в поддержку
  * @apiName Support
  * @apiGroup Support
  * @apiVersion 1.0.0
@@ -30,7 +30,7 @@
  * @apiParam {String} message Текст сообщения. Обязательный.
  * @apiParam {String} date Дата отправки сообщения в формате d.m.Y H:i. Обязательный.
  * @apiParam {String} fio ФИО пользователя, отправившего сообщение. Обязательный.
- * @apiParam {String} email Email пользователя, отправившего сообщение. Обязательный.
+ * @apiParam {String} email Валидный email пользователя, отправившего сообщение. Обязательный.
  *
  * @apiParamExample {json} Request:
  * {

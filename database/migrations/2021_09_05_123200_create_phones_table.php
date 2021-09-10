@@ -16,7 +16,6 @@ class CreatePhonesTable extends Migration
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
             $table->string('phone');
-            $table->boolean('locked')->default(1);
             $table->string('child');
             $table->string('parent');
             $table->timestamps();

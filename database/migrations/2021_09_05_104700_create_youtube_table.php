@@ -16,10 +16,7 @@ class CreateYoutubeTable extends Migration
         Schema::create('youtube', function (Blueprint $table) {
             $table->id();
             $table->string('channel');
-            $table->boolean('locked')->default(1);
-            $table->string('start_dt')->nullable();
-            $table->string('end_dt')->nullable();
-            $table->string('user');
+            $table->string('child');
             $table->string('parent');
             $table->timestamps();
         });

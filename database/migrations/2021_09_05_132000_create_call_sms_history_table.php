@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCallHistoryTable extends Migration
+class CreateCallSmsHistoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateCallHistoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('call_history', function (Blueprint $table) {
+        Schema::create('call_sms_history', function (Blueprint $table) {
             $table->id();
             $table->string('phone');
             $table->boolean('input');
+            $table->boolean('isCall');
+            $table->string('message')->nullable();
             $table->string('date');
             $table->string('child');
             $table->timestamps();
@@ -30,6 +32,6 @@ class CreateCallHistoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('call_history');
+        Schema::dropIfExists('call_sms_history');
     }
 }
