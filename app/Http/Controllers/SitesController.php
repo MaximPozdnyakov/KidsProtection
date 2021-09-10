@@ -9,7 +9,7 @@ class SitesController extends Controller
 {
     public function index(Request $request)
     {
-        return Site::whereParent(auth()->user()->id)->whereChild($request->header('child'))->pluck('site')->get();
+        return Site::whereParent(auth()->user()->id)->whereChild($request->header('child'))->get()->pluck('site');
     }
 
     public function store(Request $request)
@@ -39,7 +39,7 @@ class SitesController extends Controller
     {
         $existedSite = Site::whereSite($request->header('site'))->whereChild($request->header('child'))->first();
         if (!$existedSite) {
-            return response()->json(['message' => 'Не удалось найти сайт с указанным id'], 404);
+            return response()->json(['message' => 'Не удалось найти сайт'], 404);
         }
         $existedSite->delete();
         return response()->json(['message' => 'Сайт разблокирован'], 200);

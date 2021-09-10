@@ -3458,12 +3458,11 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/api/sites/:site",
-    "title": "5. Удалить сайт",
+    "url": "/api/websites/blocked",
+    "title": "3. Разблокировать сайт",
     "name": "DeleteSite",
     "group": "Site",
     "version": "1.0.0",
-    "description": "<p>site - Id сайта</p>",
     "error": {
       "fields": {
         "Not Found 404": [
@@ -3502,7 +3501,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти сайтов с указанным id\",\n}",
+          "content": "{\n   \"message\": \"Не удалось найти сайт\",\n}",
           "type": "json"
         },
         {
@@ -3522,43 +3521,23 @@ define({ "api": [
         }
       ]
     },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Сообщение об удалении сайта</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "{\n    \"message\": \"Сайт удален\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/sites.php",
-    "groupTitle": "Site",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/sites/:site"
-      }
-    ],
-    "permission": [
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
     "header": {
       "fields": {
         "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "site",
+            "description": "<p>Заблокированный сайт</p>"
+          },
           {
             "group": "Header",
             "type": "String",
@@ -3571,11 +3550,50 @@ define({ "api": [
       "examples": [
         {
           "title": "Header:",
+          "content": "{\n   \"child\": \"1\",\n   \"site\": \"google.com\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
       ]
-    }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение об разблокировки сайта</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Сайт разблокирован\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/sites.php",
+    "groupTitle": "Site",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/websites/blocked"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ]
   },
   {
     "type": "get",
@@ -3584,6 +3602,38 @@ define({ "api": [
     "name": "GetSite",
     "group": "Site",
     "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"child\": \"1\" }",
+          "type": "json"
+        },
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -3592,14 +3642,14 @@ define({ "api": [
             "type": "Array[sites]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив сайтов</p>"
+            "description": "<p>Список заблокированных сайтов</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "/api/sites/1\n[\n    {\n        \"id\": 1,\n        \"host\": \"google.com\",\n        \"locked\": \"0\",\n        \"start_dt\": \"07.09.2021 17:13\",\n        \"end_dt\": \"07.09.2021 19:13\",\n        \"user\": \"1\",\n        \"parent\": \"1\",\n        \"created_at\": \"2021-09-08T12:09:35.000000Z\",\n        \"updated_at\": \"2021-09-08T12:09:35.000000Z\"\n    },\n]",
+          "content": "[\n    \"google.com\",\n    \"youtube.com\"\n]",
           "type": "json"
         }
       ]
@@ -3622,26 +3672,6 @@ define({ "api": [
         "name": "Пользователь, обладающий активной подпиской"
       }
     ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
     "error": {
       "fields": {
         "Unauthenticated 404": [
