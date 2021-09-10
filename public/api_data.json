@@ -2067,12 +2067,43 @@
   },
   {
     "type": "delete",
-    "url": "/api/children/:child",
+    "url": "/api/child/object",
     "title": "5. Удалить ребенка",
     "name": "DeleteChild",
     "group": "Child",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"child\": \"1\" }",
+          "type": "json"
+        },
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -2096,7 +2127,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/children/:child"
+        "url": "http://localhost:3000/api/child/object"
       }
     ],
     "permission": [
@@ -2110,26 +2141,6 @@
         "name": "Пользователь, обладающий активной подпиской"
       }
     ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
     "error": {
       "fields": {
         "Unauthenticated 401": [
@@ -2191,7 +2202,7 @@
   },
   {
     "type": "get",
-    "url": "/api/children",
+    "url": "/api/child/list",
     "title": "1. Получить список детей",
     "name": "GetChild",
     "group": "Child",
@@ -2211,7 +2222,7 @@
       "examples": [
         {
           "title": "Success 200:",
-          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"Юля\",\n        \"date\": \"05.09.2010\",\n        \"parent\": \"1\",\n        \"block_all_apps\": \"0\",\n        \"block_all_phones\": \"0\",\n        \"block_all_site\": \"0\",\n        \"block_all_youtube\": \"0\",\n        \"created_at\": \"2021-09-05T12:09:56.000000Z\",\n        \"updated_at\": \"2021-09-05T12:09:56.000000Z\"\n    }\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"Вова\",\n        \"year\": \"2014\",\n        \"parent\": \"2\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Юля\",\n        \"year\": \"2014\",\n        \"parent\": \"2\"\n    }\n]",
           "type": "json"
         }
       ]
@@ -2220,7 +2231,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/children"
+        "url": "http://localhost:3000/api/child/list"
       }
     ],
     "permission": [
@@ -2299,12 +2310,43 @@
   },
   {
     "type": "get",
-    "url": "/api/children/:child",
+    "url": "/api/child/object",
     "title": "3. Получить ребенка",
     "name": "GetOneChild",
     "group": "Child",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка;</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"child\": \"1\" }",
+          "type": "json"
+        },
+        {
+          "title": "Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -2320,7 +2362,7 @@
       "examples": [
         {
           "title": "Success 200:",
-          "content": "/api/children/1\n{\n   \"id\": 1,\n   \"name\": \"Юля\",\n   \"date\": \"05.09.2010\",\n   \"parent\": \"1\",\n   \"block_all_apps\": \"0\",\n   \"block_all_phones\": \"0\",\n   \"block_all_site\": \"0\",\n   \"block_all_youtube\": \"0\",\n   \"created_at\": \"2021-09-05T12:09:56.000000Z\",\n   \"updated_at\": \"2021-09-05T12:09:56.000000Z\"\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"Вова\",\n    \"year\": \"2014\",\n    \"parent\": \"2\"\n}",
           "type": "json"
         }
       ]
@@ -2329,7 +2371,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/children/:child"
+        "url": "http://localhost:3000/api/child/object"
       }
     ],
     "permission": [
@@ -2343,26 +2385,6 @@
         "name": "Пользователь, обладающий активной подпиской"
       }
     ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
     "error": {
       "fields": {
         "Unauthenticated 401": [
@@ -2424,7 +2446,7 @@
   },
   {
     "type": "post",
-    "url": "/api/children",
+    "url": "/api/child/object",
     "title": "2. Добавить ребенка",
     "name": "PostChild",
     "group": "Child",
@@ -2441,36 +2463,36 @@
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Integer",
             "optional": false,
-            "field": "date",
-            "description": "<p>День рождения ребенка в формате d.m.Y. Обязательный.</p>"
+            "field": "year",
+            "description": "<p>Год рождения ребенка. Обязательный.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"name\": \"Юля\",\n    \"date\": \"05.09.2010\"\n}",
+          "content": "{\n    \"child\": {\n        \"name\": \"Вова\",\n        \"year\": 2014\n    }\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
           }
         ],
-        "Devices Limit Reached 403": [
+        "Devices Limit Reached 404": [
           {
-            "group": "Devices Limit Reached 403",
+            "group": "Devices Limit Reached 404",
             "optional": false,
-            "field": "BadRequest",
+            "field": "DevicesLimitReached",
             "description": "<p>Возникает при попытке добавить больше устройств, чем позволяет подписка</p>"
           }
         ],
@@ -2501,12 +2523,12 @@
       },
       "examples": [
         {
-          "title": "Bad request 400:",
-          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"name\": [\n           \"Параметр name обязателен\"\n       ]\n   }\n}",
+          "title": "Bad request 404:",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"child.name\": [\n           \"Параметр child.name обязателен\"\n       ]\n   }\n}",
           "type": "json"
         },
         {
-          "title": "Devices Limit Reached 403:",
+          "title": "Devices Limit Reached 404:",
           "content": "{\n   \"message\": \"Вам можно подключить не более 3 устройств\",\n}",
           "type": "json"
         },
@@ -2534,14 +2556,14 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Новый ребенок и сообщение о его создании</p>"
+            "description": "<p>Новый ребенок</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Ребенок добавлен\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Юля\",\n        \"date\": \"05.09.2010\",\n        \"parent\": \"1\",\n        \"block_all_apps\": \"0\",\n        \"block_all_phones\": \"0\",\n        \"block_all_site\": \"0\",\n        \"block_all_youtube\": \"0\",\n        \"created_at\": \"2021-09-05T12:09:56.000000Z\",\n        \"updated_at\": \"2021-09-05T12:09:56.000000Z\"\n    }\n}",
+          "content": "{\n    \"id\": 2,\n    \"name\": \"Юля\",\n    \"year\": \"2014\",\n    \"parent\": \"2\"\n}",
           "type": "json"
         }
       ]
@@ -2550,7 +2572,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/children"
+        "url": "http://localhost:3000/api/child/object"
       }
     ],
     "permission": [
@@ -2583,16 +2605,22 @@
     }
   },
   {
-    "type": "patch",
-    "url": "/api/children/:child",
-    "title": "4. Обновить настройки и данные ребенка",
+    "type": "put",
+    "url": "/api/child/object",
+    "title": "4. Обновить данные ребенка",
     "name": "UpdateChild",
     "group": "Child",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка;</p>",
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id ребенка.</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
@@ -2602,64 +2630,36 @@
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Integer",
             "optional": false,
-            "field": "date",
-            "description": "<p>День рождения ребенка в формате d.m.Y.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "block_all_apps",
-            "description": "<p>Нужно ли блокировать все приложении.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "block_all_phones",
-            "description": "<p>Нужно ли блокировать все телефоны.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "block_all_site",
-            "description": "<p>Нужно ли блокировать все сайты.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "block_all_youtube",
-            "description": "<p>Нужно ли блокировать все youtube каналы.</p>"
+            "field": "year",
+            "description": "<p>Год рождения ребенка</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"name\": \"Антон\",\n    \"date\": \"07.01.2012\",\n    \"block_all_apps\": true,\n    \"block_all_phones\": true,\n    \"block_all_site\": true,\n    \"block_all_youtube\": true\n}",
+          "content": "{\n    \"child\": {\n        \"id\": \"1\",\n        \"name\": \"Вадим\",\n        \"year\": 2015\n    }\n}",
           "type": "json"
         }
       ]
     },
     "success": {
       "fields": {
-        "Success 202": [
+        "Success 200": [
           {
-            "group": "Success 202",
+            "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Ребенок и сообщение о обновлении его данных</p>"
+            "description": "<p>Обновленный ребенок</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Success 202:",
-          "content": "{\n    \"message\": \"Данные ребенка обновлены\",\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Антон\",\n        \"date\": \"07.01.2012\",\n        \"parent\": \"1\",\n        \"block_all_apps\": true,\n        \"block_all_phones\": true,\n        \"block_all_site\": true,\n        \"block_all_youtube\": true,\n        \"created_at\": \"2021-09-07T12:07:47.000000Z\",\n        \"updated_at\": \"2021-09-08T10:25:20.000000Z\"\n    }\n}",
+          "title": "Success 200:",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"Вадим\",\n    \"year\": 2015,\n    \"parent\": \"2\"\n}",
           "type": "json"
         }
       ]
@@ -2668,7 +2668,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/children/:child"
+        "url": "http://localhost:3000/api/child/object"
       }
     ],
     "permission": [

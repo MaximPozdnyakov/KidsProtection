@@ -30,7 +30,7 @@ Route::prefix('user')->group(function () {
     Route::post('/reset', [AuthController::class, 'reset'])->name('password.reset');
 });
 
-Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(function () {
+Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::get('/child/list', [ChildrenController::class, 'index']);
     Route::post('/child/object', [ChildrenController::class, 'store']);
     Route::get('/child/object', [ChildrenController::class, 'show']);
@@ -92,8 +92,8 @@ Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(functi
     Route::get('/geolocation/{child}/{date}', [GeolocationController::class, 'show']);
     Route::delete('/geolocation/{geolocation}', [GeolocationController::class, 'destroy']);
 
-    Route::post('/support', [SupportController::class, 'store'])->withoutMiddleware('checkSubscription');
+    Route::post('/support', [SupportController::class, 'store']);
 
-    Route::get('/subscriptions', [SubscriptionController::class, 'index'])->withoutMiddleware('checkSubscription');
-    Route::post('/subscriptions', [SubscriptionController::class, 'store'])->withoutMiddleware('checkSubscription');
+    Route::get('/subscriptions', [SubscriptionController::class, 'index']);
+    Route::post('/subscriptions', [SubscriptionController::class, 'store']);
 });

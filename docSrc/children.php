@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @api {get} /api/children 1. Получить список детей
+ * @api {get} /api/child/list 1. Получить список детей
  * @apiName GetChild
  * @apiGroup Child
  * @apiVersion 1.0.0
@@ -14,21 +14,21 @@
  * [
  *     {
  *         "id": 1,
+ *         "name": "Вова",
+ *         "year": "2014",
+ *         "parent": "2"
+ *     },
+ *     {
+ *         "id": 2,
  *         "name": "Юля",
- *         "date": "05.09.2010",
- *         "parent": "1",
- *         "block_all_apps": "0",
- *         "block_all_phones": "0",
- *         "block_all_site": "0",
- *         "block_all_youtube": "0",
- *         "created_at": "2021-09-05T12:09:56.000000Z",
- *         "updated_at": "2021-09-05T12:09:56.000000Z"
+ *         "year": "2014",
+ *         "parent": "2"
  *     }
  * ]
  */
 
 /**
- * @api {post} /api/children 2. Добавить ребенка
+ * @api {post} /api/child/object 2. Добавить ребенка
  * @apiName PostChild
  * @apiGroup Child
  * @apiVersion 1.0.0
@@ -37,133 +37,109 @@
  * @apiUse WithSubscription
  *
  * @apiParam {String} name Имя ребенка. Обязательный.
- * @apiParam {String} date День рождения ребенка в формате d.m.Y. Обязательный.
+ * @apiParam {Integer} year Год рождения ребенка. Обязательный.
  *
  * @apiParamExample {json} Request:
  * {
- *     "name": "Юля",
- *     "date": "05.09.2010"
+ *     "child": {
+ *         "name": "Вова",
+ *         "year": 2014
+ *     }
  * }
  *
- * @apiError (Bad request 400) BadRequest Некоторые параметры не прошли валидацию
- * @apiErrorExample {json} Bad request 400:
+ * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
+ * @apiErrorExample {json} Bad request 404:
  * {
  *    "message": "The given data was invalid.",
  *    "errors": {
- *        "name": [
- *            "Параметр name обязателен"
+ *        "child.name": [
+ *            "Параметр child.name обязателен"
  *        ]
  *    }
  * }
  *
- * @apiError (Devices Limit Reached 403) BadRequest Возникает при попытке добавить больше устройств, чем позволяет подписка
- * @apiErrorExample {json} Devices Limit Reached 403:
+ * @apiError (Devices Limit Reached 404) DevicesLimitReached Возникает при попытке добавить больше устройств, чем позволяет подписка
+ * @apiErrorExample {json} Devices Limit Reached 404:
  * {
  *    "message": "Вам можно подключить не более 3 устройств",
  * }
  *
- * @apiSuccess (Success 200) Success Новый ребенок и сообщение о его создании
+ * @apiSuccess (Success 200) Success Новый ребенок
  * @apiSuccessExample {json} Success 200:
  * {
- *     "message": "Ребенок добавлен",
- *     "data": {
- *         "id": 1,
- *         "name": "Юля",
- *         "date": "05.09.2010",
- *         "parent": "1",
- *         "block_all_apps": "0",
- *         "block_all_phones": "0",
- *         "block_all_site": "0",
- *         "block_all_youtube": "0",
- *         "created_at": "2021-09-05T12:09:56.000000Z",
- *         "updated_at": "2021-09-05T12:09:56.000000Z"
- *     }
+ *     "id": 2,
+ *     "name": "Юля",
+ *     "year": "2014",
+ *     "parent": "2"
  * }
  */
 
 /**
- * @api {get} /api/children/:child 3. Получить ребенка
+ * @api {get} /api/child/object 3. Получить ребенка
  * @apiName GetOneChild
  * @apiGroup Child
  * @apiVersion 1.0.0
  *
- * @apiDescription child - Id ребенка;
- *
  * @apiUse Authorization
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
+ * @apiHeader {String} child Id ребенка
+ * @apiHeaderExample {json} Header:
+ *     { "child": "1" }
+ *
  * @apiSuccess (Success 200) {Object} Success Ребенок
  * @apiSuccessExample {json} Success 200:
- * /api/children/1
  * {
- *    "id": 1,
- *    "name": "Юля",
- *    "date": "05.09.2010",
- *    "parent": "1",
- *    "block_all_apps": "0",
- *    "block_all_phones": "0",
- *    "block_all_site": "0",
- *    "block_all_youtube": "0",
- *    "created_at": "2021-09-05T12:09:56.000000Z",
- *    "updated_at": "2021-09-05T12:09:56.000000Z"
+ *     "id": 1,
+ *     "name": "Вова",
+ *     "year": "2014",
+ *     "parent": "2"
  * }
  */
 
 /**
- * @api {patch} /api/children/:child 4. Обновить настройки и данные ребенка
+ * @api {put} /api/child/object 4. Обновить данные ребенка
  * @apiName UpdateChild
  * @apiGroup Child
  * @apiVersion 1.0.0
  *
- * @apiDescription child - Id ребенка;
- *
  * @apiUse Authorization
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
+ * @apiParam {String} id Id ребенка.
  * @apiParam {String} name Имя ребенка.
- * @apiParam {String} date День рождения ребенка в формате d.m.Y.
- * @apiParam {Boolean} block_all_apps Нужно ли блокировать все приложении.
- * @apiParam {Boolean} block_all_phones Нужно ли блокировать все телефоны.
- * @apiParam {Boolean} block_all_site Нужно ли блокировать все сайты.
- * @apiParam {Boolean} block_all_youtube Нужно ли блокировать все youtube каналы.
+ * @apiParam {Integer} year Год рождения ребенка
+ *
  * @apiParamExample {json} Request:
  * {
- *     "name": "Антон",
- *     "date": "07.01.2012",
- *     "block_all_apps": true,
- *     "block_all_phones": true,
- *     "block_all_site": true,
- *     "block_all_youtube": true
+ *     "child": {
+ *         "id": "1",
+ *         "name": "Вадим",
+ *         "year": 2015
+ *     }
  * }
  *
- * @apiSuccess (Success 202) Success Ребенок и сообщение о обновлении его данных
- * @apiSuccessExample {json} Success 202:
+ * @apiSuccess (Success 200) Success Обновленный ребенок
+ * @apiSuccessExample {json} Success 200:
  * {
- *     "message": "Данные ребенка обновлены",
- *     "data": {
- *         "id": 2,
- *         "name": "Антон",
- *         "date": "07.01.2012",
- *         "parent": "1",
- *         "block_all_apps": true,
- *         "block_all_phones": true,
- *         "block_all_site": true,
- *         "block_all_youtube": true,
- *         "created_at": "2021-09-07T12:07:47.000000Z",
- *         "updated_at": "2021-09-08T10:25:20.000000Z"
- *     }
+ *     "id": 1,
+ *     "name": "Вадим",
+ *     "year": 2015,
+ *     "parent": "2"
  * }
  */
 
 /**
- * @api {delete} /api/children/:child 5. Удалить ребенка
+ * @api {delete} /api/child/object 5. Удалить ребенка
  * @apiName DeleteChild
  * @apiGroup Child
  * @apiVersion 1.0.0
  *
- * @apiDescription child - Id ребенка
+ * @apiHeader {String} child Id ребенка
+ * @apiHeaderExample {json} Header:
+ *     { "child": "1" }
  *
  * @apiUse Authorization
  * @apiUse WithChild

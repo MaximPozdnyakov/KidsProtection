@@ -17,11 +17,14 @@ class CheckChild
      */
     public function handle(Request $request, Closure $next)
     {
-        $child = $request->route('child');
+        $child = $request->header('child');
         if (!$child) {
-            $child = $request->user;
+            $child = $request->child;
         }
-        if ($child && !Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
+        if (!is_string($child) && is_array($child) && array_key_exists('id', $child)) {
+            $child = $request->child['id'];
+        }
+        if ($child && is_string($child) && !Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
             return response()->json(['message' => 'Указанный ребенок вам не принадлежит'], 403);
         }
         return $next($request);

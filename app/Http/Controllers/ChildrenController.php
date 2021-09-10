@@ -44,14 +44,14 @@ class ChildrenController extends Controller
             ]);
         // $devices = $this->getDevices();
         // if (count(Child::whereParent(auth()->user()->id)->get()->toArray()) >= $devices) {
-        //     return response()->json(['message' => 'Вам можно подключить не более ' . $devices . ' устройств'], 403);
+        //     return response()->json(['message' => 'Вам можно подключить не более ' . $devices . ' устройств'], 404);
         // }
         $child = Child::create([
             'name' => $request->child['name'],
             'year' => $request->child['year'],
             'parent' => auth()->user()->id,
         ]);
-        return response()->json(Child::find($child->id), 201);
+        return response()->json(Child::find($child->id), 200);
     }
 
     public function show(Request $request)
@@ -67,11 +67,11 @@ class ChildrenController extends Controller
             $existedChild->name = $request->child['name'];
         }
         if ($request->child['year']) {
-            $request->validate(['child.year' => 'required|integer']);
-            $existedChild->child['year'] = $request->child['year'];
+            $request->validate(['child.year' => 'integer']);
+            $existedChild->year = $request->child['year'];
         }
         $existedChild->update();
-        return response()->json($existedChild, 202);
+        return response()->json($existedChild, 200);
     }
 
     public function destroy(Request $request)
@@ -79,6 +79,6 @@ class ChildrenController extends Controller
         $existedChild = Child::whereId($request->header('child'))->whereParent(auth()->user()->id)->first();
         $childCopy = $existedChild;
         $existedChild->delete();
-        return response()->json($childCopy, 200);
+        return response()->json(["message" => "Ребенок удален"], 200);
     }
 }
