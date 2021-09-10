@@ -14,6 +14,8 @@ class AdminSectionsServiceProvider extends ServiceProvider
         \App\Models\User::class => 'App\Http\Sections\Users',
         \App\Models\Child::class => 'App\Http\Sections\Children',
         \App\Models\Subscription::class => 'App\Http\Sections\Subscriptions',
+        \App\Models\SupportAppeal::class => 'App\Http\Sections\SupportAppeals',
+        \App\Models\SupportTopic::class => 'App\Http\Sections\SupportTopics',
     ];
 
     /**

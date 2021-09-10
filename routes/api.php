@@ -92,7 +92,8 @@ Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::get('/geolocation/{child}/{date}', [GeolocationController::class, 'show']);
     Route::delete('/geolocation/{geolocation}', [GeolocationController::class, 'destroy']);
 
-    Route::post('/support', [SupportController::class, 'store']);
+    Route::get('/support/themes', [SupportController::class, 'index']);
+    Route::post('/support/object', [SupportController::class, 'store']);
 
     Route::get('/subscriptions', [SubscriptionController::class, 'index']);
     Route::post('/subscriptions', [SubscriptionController::class, 'store']);

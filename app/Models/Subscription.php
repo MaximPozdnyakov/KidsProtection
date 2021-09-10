@@ -15,4 +15,8 @@ class Subscription extends Model
         'freeMonth',
         'price',
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 }

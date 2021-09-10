@@ -11,8 +11,14 @@ class SupportAppeal extends Model
     protected $table = 'support_appeals';
     protected $fillable = [
         'theme',
-        'description',
+        'message',
         'date',
+        'fio',
+        'email',
         'user',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 }
