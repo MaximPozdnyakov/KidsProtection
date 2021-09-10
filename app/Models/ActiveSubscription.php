@@ -10,11 +10,13 @@ class ActiveSubscription extends Model
     use HasFactory;
     protected $table = 'active_subscriptions';
     protected $fillable = [
-        'name',
-        'price',
-        'free_month',
-        'start_dt',
-        'end_dt',
+        'subscribe',
+        'fromDate',
+        'endDate',
         'user',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 }

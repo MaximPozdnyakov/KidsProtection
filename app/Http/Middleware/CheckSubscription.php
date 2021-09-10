@@ -20,18 +20,18 @@ class CheckSubscription
     {
         $subscriptions = ActiveSubscription::whereUser(auth()->user()->id)->get()->toArray();
         if (!count($subscriptions)) {
-            return response()->json(['message' => 'Оформите подписку'], 403);
+            return response()->json(['message' => 'Оформите подписку'], 404);
         }
         $now = Carbon::now();
         $latestSubscriptionDate = Carbon::now();
         foreach ($subscriptions as $subscription) {
-            $subscriptionDate = Carbon::createFromFormat('d.m.Y H:i', $subscription['end_dt']);
+            $subscriptionDate = Carbon::createFromFormat('d.m.Y H:i', $subscription['endDate']);
             if ($subscriptionDate->gt($latestSubscriptionDate)) {
                 $latestSubscriptionDate = $subscriptionDate;
             }
         }
         if ($latestSubscriptionDate->format('d.m.Y H:i') == $now->format('d.m.Y H:i')) {
-            return response()->json(['message' => 'Действие вашей подписки истекло, оформите новую'], 403);
+            return response()->json(['message' => 'Действие вашей подписки истекло, оформите новую'], 404);
         }
         return $next($request);
     }

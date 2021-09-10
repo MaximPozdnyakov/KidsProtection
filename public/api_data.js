@@ -3815,8 +3815,8 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/subscriptions",
-    "title": "2. Получить список подписок",
+    "url": "/api/user/subscribe",
+    "title": "3. Получить подписки, одна из них будет или нет, с признаком активности",
     "name": "GetSubscription",
     "group": "Subscription",
     "version": "1.0.0",
@@ -3835,7 +3835,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "[\n    {\n        \"id\": 4,\n        \"name\": \"Small\",\n        \"price\": \"199.0\",\n        \"free_month\": \"1\",\n        \"start_dt\": \"07.09.2021 11:40\",\n        \"end_dt\": \"07.01.2022 11:40\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T11:40:39.000000Z\",\n        \"updated_at\": \"2021-09-07T11:40:39.000000Z\"\n    },\n    {\n        \"id\": 5,\n        \"name\": \"Medium\",\n        \"price\": \"249.0\",\n        \"free_month\": \"0\",\n        \"start_dt\": \"07.01.2022 11:40\",\n        \"end_dt\": \"07.02.2022 11:40\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T11:41:06.000000Z\",\n        \"updated_at\": \"2021-09-07T11:41:06.000000Z\"\n    }\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"Small\",\n        \"device\": \"3\",\n        \"price\": \"199.0\",\n        \"freeMonth\": \"1\",\n        \"active\": false\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Medium\",\n        \"device\": \"5\",\n        \"price\": \"249.0\",\n        \"freeMonth\": \"1\",\n        \"active\": true\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Large\",\n        \"device\": \"10\",\n        \"price\": \"299.0\",\n        \"freeMonth\": \"1\",\n        \"active\": false\n    }\n]",
           "type": "json"
         }
       ]
@@ -3844,12 +3844,15 @@ define({ "api": [
     "groupTitle": "Subscription",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/subscriptions"
+        "url": "http://localhost:3000/api/user/subscribe"
       }
     ],
     "permission": [
       {
         "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
       }
     ],
     "header": {
@@ -3881,6 +3884,22 @@ define({ "api": [
             "field": "Unauthenticated",
             "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
           }
+        ],
+        "No subscription 404": [
+          {
+            "group": "No subscription 404",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 404": [
+          {
+            "group": "Subscription expired 404",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
         ]
       },
       "examples": [
@@ -3888,13 +3907,23 @@ define({ "api": [
           "title": "Unauthenticated 404:",
           "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
           "type": "json"
+        },
+        {
+          "title": "No subscription 404:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 404:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
         }
       ]
     }
   },
   {
     "type": "post",
-    "url": "/api/subscriptions",
+    "url": "/api/subscribes/object",
     "title": "2. Добавить подписку",
     "name": "PostSubscription",
     "group": "Subscription",
@@ -3928,9 +3957,9 @@ define({ "api": [
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -3955,7 +3984,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Bad request 400:",
+          "title": "Bad request 404:",
           "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"name\": [\n           \"Параметр name обязателен\"\n       ]\n   }\n}",
           "type": "json"
         },
@@ -3978,14 +4007,14 @@ define({ "api": [
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Новая подписка и сообщение о ее создании</p>"
+            "description": "<p>Сообщение о создании подписки</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Подписка добавлена\",\n    \"data\": {\n        \"id\": 4,\n        \"name\": \"Small\",\n        \"price\": \"199.0\",\n        \"free_month\": \"1\",\n        \"start_dt\": \"07.09.2021 11:40\",\n        \"end_dt\": \"07.01.2022 11:40\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T11:40:39.000000Z\",\n        \"updated_at\": \"2021-09-07T11:40:39.000000Z\"\n    }\n}",
+          "content": "{\n    \"message\": \"Подписка добавлена\"\n}",
           "type": "json"
         }
       ]
@@ -3994,7 +4023,7 @@ define({ "api": [
     "groupTitle": "Subscription",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/subscriptions"
+        "url": "http://localhost:3000/api/subscribes/object"
       }
     ],
     "permission": [
