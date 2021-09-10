@@ -11,11 +11,11 @@ class Child extends Model
     protected $table = 'children';
     protected $fillable = [
         'name',
-        'date',
+        'year',
         'parent',
-        'block_all_apps',
-        'block_all_phones',
-        'block_all_site',
-        'block_all_youtube',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 }

@@ -19,8 +19,9 @@ class User extends \TCG\Voyager\Models\User
         'fio',
         'email',
         'password',
-        'terms_agree',
-        'email_verified',
+        'termsAgree',
+        'emailVerified',
+        'emailNotify',
     ];
 
     /**
@@ -30,5 +31,11 @@ class User extends \TCG\Voyager\Models\User
      */
     protected $hidden = [
         'password',
+        'created_at',
+        'updated_at',
+        'remember_token',
+        'avatar',
+        'role_id',
+        'settings',
     ];
 }

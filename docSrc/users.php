@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @api {get} /api/users 1. Получить авторизированного пользователя
+ * @api {get} /api/user/auth 1. Получить авторизированного пользователя
  * @apiName GetUser
  * @apiGroup User
  * @apiVersion 1.0.0
@@ -11,18 +11,17 @@
  * @apiSuccess (Success 200) {Object} Success Авторизированный пользователь
  * @apiSuccessExample {json} Success 200:
  * {
- *     "id": 1,
+ *     "id": 2,
  *     "fio": "Максим Поздняков",
  *     "email": "maximpozdnyakow@gmail.com",
- *     "terms_agree": "0",
- *     "email_verified": "1",
- *     "created_at": "2021-09-05T11:58:04.000000Z",
- *     "updated_at": "2021-09-07T13:30:05.000000Z"
+ *     "termsAgree": "1",
+ *     "emailVerified": "0",
+ *     "emailNotify": "1"
  * }
  */
 
 /**
- * @api {post} /api/users/register 2. Регистрация
+ * @api {post} /api/user/register 2. Регистрация
  * @apiName RegisterUser
  * @apiGroup User
  * @apiVersion 1.0.0
@@ -31,19 +30,19 @@
  *
  * @apiParam {String} fio ФИО пользователя. Обязательный.
  * @apiParam {String} email Валидный email пользователя. Должен быть уникальным. Обязательный.
- * @apiParam {String} password Пароль пользователя, должен содержать от 8 символов, включая как минимум одну строчную букву, одну заглавную букву и одну цифру. Обязательный.
- * @apiParam {Boolean} terms_agree Согласен ли пользователь с условиями соглашения. Должен быть true. Обязательный.
+ * @apiParam {String} pass Пароль пользователя, должен содержать от 8 символов, включая как минимум одну строчную букву, одну заглавную букву и одну цифру. Обязательный.
+ * @apiParam {Boolean} termsAgree Согласен ли пользователь с условиями соглашения. Должен быть true. Обязательный.
  *
  * @apiParamExample {json} Request:
  * {
- *     "fio": "Максим Поздняков Алексеевич",
- *     "email": "maximpozdnyakow@gmail.com",
- *     "password": "SDGsdfn735F",
- *     "terms_agree": true
+ *    "email": "maximpozdnyakow@gmail.com",
+ *    "fio": "Максим Поздняков",
+ *    "termsAgree": true,
+ *    "pass": "SDGsdfn735F"
  * }
  *
- * @apiError (Bad request 400) BadRequest Некоторые параметры не прошли валидацию
- * @apiErrorExample {json} Bad request 400:
+ * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
+ * @apiErrorExample {json} Bad request 404:
  *     {
  *        "message": "The given data was invalid.",
  *        "errors": {
@@ -53,77 +52,72 @@
  *        }
  *     }
  *
- * @apiSuccess (Success 201) Success Новый пользователь, токен авторизации и сообщение о успешной регистрации
- * @apiSuccessExample {json} Success 201:
- *     HTTP/1.1 201 Created
- *     {
- *         "message": "Вы успешно зарегистрировались",
- *         "data": {
- *             "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9",
- *             "user": {
- *                  "id": 1,
- *                  "fio": "Максим Поздняков",
- *                  "email": "maximpozdnyakow@gmail.com",
- *                  "terms_agree": "0",
- *                  "email_verified": "1",
- *                  "created_at": "2021-09-05T11:58:04.000000Z",
- *                  "updated_at": "2021-09-07T13:30:05.000000Z"
- *             }
+ * @apiSuccess (Success 200) Success Новый пользователь, токен авторизации
+ * @apiSuccessExample {json} Success 200:
+ * {
+ *     "data": {
+ *         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
+ *         "user": {
+ *             "id": 2,
+ *             "fio": "Максим Поздняков",
+ *             "email": "maximpozdnyakow@gmail.com",
+ *             "termsAgree": "1",
+ *             "emailVerified": "0",
+ *             "emailNotify": "1"
  *         }
  *     }
+ * }
  *
  */
 
 /**
- * @api {post} /api/users/login 3. Авторизация
+ * @api {post} /api/user/login 3. Авторизация
  * @apiName LoginUser
  * @apiGroup User
  * @apiVersion 1.0.0
  *
  * @apiParam {String} email Email пользователя. Обязательный.
- * @apiParam {String} password Пароль пользователя, соответствующий указанному email. Обязательный.
+ * @apiParam {String} pass Пароль пользователя, соответствующий указанному email. Обязательный.
 
  * @apiParamExample {json} Request:
  * {
  *     "email": "maximpozdnyakow@gmail.com",
- *     "password": "SDGsdfn735F"
+ *     "pass": "SDGsdfn735F"
  * }
  *
- * @apiError (Bad request 400) BadRequest Некоторые параметры не прошли валидацию
- * @apiErrorExample {json} Bad request 400:
+ * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
+ * @apiErrorExample {json} Bad request 404:
  *     {
  *        "message": "The given data was invalid.",
  *        "errors": {
  *            "email": [
  *                "Веденный вами электронный адрес не связан ни с одним аккаунтом"
  *            ],
- *            "password": [
+ *            "pass": [
  *                "Вы ввели неверный пароль"
  *            ],
  *        }
  *     }
  *
- * @apiSuccess (Success 200) Success Пользователь, токен авторизации и сообщение о успешной авторизации
+ * @apiSuccess (Success 200) Success Пользователь, токен авторизации
  * @apiSuccessExample {json} Success 200:
- *     {
- *         "message": "Вы успешно авторизовались",
- *         "data": {
- *             "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9",
- *             "user": {
- *                  "id": 1,
- *                  "fio": "Максим Поздняков",
- *                  "email": "maximpozdnyakow@gmail.com",
- *                  "terms_agree": "0",
- *                  "email_verified": "1",
- *                  "created_at": "2021-09-05T11:58:04.000000Z",
- *                  "updated_at": "2021-09-07T13:30:05.000000Z"
- *             }
+ * {
+ *     "data": {
+ *         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
+ *         "user": {
+ *             "id": 2,
+ *             "fio": "Максим Поздняков",
+ *             "email": "maximpozdnyakow@gmail.com",
+ *             "termsAgree": "1",
+ *             "emailVerified": "0",
+ *             "emailNotify": "1"
  *         }
  *     }
+ * }
  */
 
 /**
- * @api {get} /api/users/logout 4. Выйти из аккаунта
+ * @api {get} /api/user/logout 4. Выйти из аккаунта
  * @apiName LogoutUser
  * @apiGroup User
  * @apiVersion 1.0.0
@@ -138,27 +132,25 @@
  */
 
 /**
- * @api {post} /api/users/forgot 5. Запрос на отправку кода для сброса пароля
+ * @api {post} /api/user/restore 5. Запрос на отправку кода для сброса пароля
  * @apiName ForgotUserPassword
  * @apiGroup User
  * @apiVersion 1.0.0
  *
- * @apiParam {String} email Валидный email существующего пользователя. Обязательный.
+ * @apiParam {String} body Тело запроса, строка, валидный email существующего пользователя. Обязательный.
  * @apiParamExample {json} Request:
- * {
- *     "email": "maximpozdnyakow@gmail.com"
- * }
+ * "maximpozdnyakow@gmail.com"
  *
- * @apiError (Bad request 400) BadRequest Некоторые параметры не прошли валидацию
- * @apiErrorExample {json} Bad request 400:
- *     {
- *        "message": "The given data was invalid.",
- *        "errors": {
- *            "email": [
- *                "Веденный вами электронный адрес не связан ни с одним аккаунтом"
- *            ]
- *        }
- *     }
+ * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
+ * @apiErrorExample {json} Bad request 404:
+ * {
+ *     "message": "The given data was invalid.",
+ *     "errors": [
+ *         [
+ *             "Укажите корректный email"
+ *         ]
+ *     ]
+ * }
  *
  * @apiSuccess (Success 200) Success Сообщение об отправке шестизначного кода для сброса пароля
  * @apiSuccessExample {json} Success 200:
@@ -168,21 +160,21 @@
  */
 
 /**
- * @api {post} /api/users/reset 6. Сброс пароля
+ * @api {post} /api/user/reset 6. Сброс пароля
  * @apiName RestUserPassword
  * @apiGroup User
  * @apiVersion 1.0.0
  *
  * @apiParam {String} token Шестизначный код для сброса пароля. Обязательный.
- * @apiParam {String} password Новый пароль пользователя, должен содержать от 8 символов, включая как минимум одну строчную букву, одну заглавную букву и одну цифру. Обязательный.
+ * @apiParam {String} pass Новый пароль пользователя, должен содержать от 8 символов, включая как минимум одну строчную букву, одну заглавную букву и одну цифру. Обязательный.
  * @apiParamExample {json} Request:
  * {
  *     "token": "396402",
- *     "password": "SDGsdfn735F"
+ *     "pass": "SDGsdfn735F"
  * }
  *
- * @apiError (Bad request 400) BadRequest Некоторые параметры не прошли валидацию
- * @apiErrorExample {json} Bad request 400:
+ * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
+ * @apiErrorExample {json} Bad request 404:
  *     {
  *        "message": "The given data was invalid.",
  *        "errors": {
@@ -192,15 +184,15 @@
  *        }
  *     }
  *
- * @apiSuccess (Success 202) Success Сообщение о успешном изменении пароля
- * @apiSuccessExample {json} Success 202:
+ * @apiSuccess (Success 200) Success Сообщение о успешном изменении пароля
+ * @apiSuccessExample {json} Success 200:
  * {
  *     "message": "Ваш пароль был успешно изменен"
  * }
  */
 
 /**
- * @api {patch} /api/users 7. Обновление данных пользователя
+ * @api {patch} /api/user/object 7. Обновление данных пользователя
  * @apiName UpdateUser
  * @apiGroup User
  * @apiVersion 1.0.0
@@ -209,17 +201,17 @@
  *
  * @apiParam {String} fio Новое ФИО пользователя.
  * @apiParam {String} email Новый валидный email пользователя. Должен быть уникальным. После обновления email, на него присылается код для подтверждения email.
- * @apiParam {String} password Новый пароль пользователя, должен содержать от 8 символов, включая как минимум одну строчную букву, одну заглавную букву и одну цифру.
+ * @apiParam {String} pass Новый пароль пользователя, должен содержать от 8 символов, включая как минимум одну строчную букву, одну заглавную букву и одну цифру.
  *
  * @apiParamExample {json} Request:
  * {
- *     "fio": "Максим Поздняков",
+ *     "fio": "Максим Поздняков Алексеевич",
  *     "email": "maxim@gmail.com",
- *     "password": "SDGsdfn735F"
+ *     "pass": "SDGsdfn735F"
  * }
  *
- * @apiError (Bad request 400) BadRequest Некоторые параметры не прошли валидацию
- * @apiErrorExample {json} Bad request 400:
+ * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
+ * @apiErrorExample {json} Bad request 404:
  *     {
  *        "message": "The given data was invalid.",
  *        "errors": {
@@ -229,47 +221,49 @@
  *        }
  *     }
  *
- * @apiSuccess (Success 202) Success Пользователь и сообщение о успешном обновлении данных пользователя
- * @apiSuccessExample {json} Success 202:
+ * @apiSuccess (Success 200) Success Обновленный пользователь
+ * @apiSuccessExample {json} Success 200:
  * {
- *     "message": Настройки профиля обновлены.",
- *     "data": {
- *         "id": 1,
- *         "fio": "Максим Поздняков",
- *         "email": "maxim@gmail.com",
- *         "terms_agree": "0",
- *         "email_verified": "1",
- *         "created_at": "2021-09-05T11:58:04.000000Z",
- *         "updated_at": "2021-09-07T13:30:05.000000Z"
- *     }
+ *     "id": 2,
+ *     "fio": "Максим Поздняков Алексеевич",
+ *     "email": "maxim@gmail.com",
+ *     "termsAgree": "1",
+ *     "emailVerified": 0,
+ *     "emailNotify": "1"
  * }
  */
 
 /**
- * @api {post} /api/users/verify 8. Подтверждение email
+ * @api {get} /api/user/check 8. Запросить новый код подтверждения email
+ * @apiName SendVerifyCodeForUserEmail
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccess (Success 200) Success Сообщение о успешном подтверждении email
+ * @apiSuccessExample {json} Success 200:
+ * {
+ *     "message": "Код для подтверждения email отправлен на вашу электронную почту"
+ * }
+ */
+
+/**
+ * @api {post} /api/user/check 9. Подтверждение email
  * @apiName VerifyUserEmail
  * @apiGroup User
  * @apiVersion 1.0.0
  *
- * @apiParam {String} token Шестизначный код для подтверждения email. Обязательный.
+ * @apiParam {String} token Тело запроса, шестизначный код для подтверждения email.
  * @apiParamExample {json} Request:
- * {
- *     "token": "396402"
- * }
+ * "396402"
  *
- * @apiError (Bad request 400) BadRequest Некоторые параметры не прошли валидацию
- * @apiErrorExample {json} Bad request 400:
+ * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
+ * @apiErrorExample {json} Bad request 404:
  *     {
- *        "message": "The given data was invalid.",
- *        "errors": {
- *            "token": [
- *                "Веденный вами код для подтверждения email недействителен"
- *            ]
- *        }
+ *        "message": "Веденный вами код для подтверждения email недействителен"
  *     }
  *
- * @apiSuccess (Success 202) Success Сообщение о успешном подтверждении email
- * @apiSuccessExample {json} Success 202:
+ * @apiSuccess (Success 200) Success Сообщение о успешном подтверждении email
+ * @apiSuccessExample {json} Success 200:
  * {
  *     "message": "Ваша электронная почта была подтверждена"
  * }

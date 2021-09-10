@@ -6277,7 +6277,7 @@
   },
   {
     "type": "post",
-    "url": "/api/users/forgot",
+    "url": "/api/user/restore",
     "title": "5. Запрос на отправку кода для сброса пароля",
     "name": "ForgotUserPassword",
     "group": "User",
@@ -6289,24 +6289,24 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "email",
-            "description": "<p>Валидный email существующего пользователя. Обязательный.</p>"
+            "field": "body",
+            "description": "<p>Тело запроса, строка, валидный email существующего пользователя. Обязательный.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"email\": \"maximpozdnyakow@gmail.com\"\n}",
+          "content": "\"maximpozdnyakow@gmail.com\"",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -6315,8 +6315,8 @@
       },
       "examples": [
         {
-          "title": "Bad request 400:",
-          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"email\": [\n           \"Веденный вами электронный адрес не связан ни с одним аккаунтом\"\n       ]\n   }\n}",
+          "title": "Bad request 404:",
+          "content": "{\n    \"message\": \"The given data was invalid.\",\n    \"errors\": [\n        [\n            \"Укажите корректный email\"\n        ]\n    ]\n}",
           "type": "json"
         }
       ]
@@ -6344,13 +6344,13 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/users/forgot"
+        "url": "http://localhost:3000/api/user/restore"
       }
     ]
   },
   {
     "type": "get",
-    "url": "/api/users",
+    "url": "/api/user/auth",
     "title": "1. Получить авторизированного пользователя",
     "name": "GetUser",
     "group": "User",
@@ -6370,7 +6370,7 @@
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"id\": 1,\n    \"fio\": \"Максим Поздняков\",\n    \"email\": \"maximpozdnyakow@gmail.com\",\n    \"terms_agree\": \"0\",\n    \"email_verified\": \"1\",\n    \"created_at\": \"2021-09-05T11:58:04.000000Z\",\n    \"updated_at\": \"2021-09-07T13:30:05.000000Z\"\n}",
+          "content": "{\n    \"id\": 2,\n    \"fio\": \"Максим Поздняков\",\n    \"email\": \"maximpozdnyakow@gmail.com\",\n    \"termsAgree\": \"1\",\n    \"emailVerified\": \"0\",\n    \"emailNotify\": \"1\"\n}",
           "type": "json"
         }
       ]
@@ -6379,7 +6379,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/users"
+        "url": "http://localhost:3000/api/user/auth"
       }
     ],
     "permission": [
@@ -6429,7 +6429,7 @@
   },
   {
     "type": "post",
-    "url": "/api/users/login",
+    "url": "/api/user/login",
     "title": "3. Авторизация",
     "name": "LoginUser",
     "group": "User",
@@ -6448,7 +6448,7 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "password",
+            "field": "pass",
             "description": "<p>Пароль пользователя, соответствующий указанному email. Обязательный.</p>"
           }
         ]
@@ -6456,16 +6456,16 @@
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"email\": \"maximpozdnyakow@gmail.com\",\n    \"password\": \"SDGsdfn735F\"\n}",
+          "content": "{\n    \"email\": \"maximpozdnyakow@gmail.com\",\n    \"pass\": \"SDGsdfn735F\"\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -6474,8 +6474,8 @@
       },
       "examples": [
         {
-          "title": "Bad request 400:",
-          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"email\": [\n           \"Веденный вами электронный адрес не связан ни с одним аккаунтом\"\n       ],\n       \"password\": [\n           \"Вы ввели неверный пароль\"\n       ],\n   }\n}",
+          "title": "Bad request 404:",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"email\": [\n           \"Веденный вами электронный адрес не связан ни с одним аккаунтом\"\n       ],\n       \"pass\": [\n           \"Вы ввели неверный пароль\"\n       ],\n   }\n}",
           "type": "json"
         }
       ]
@@ -6487,14 +6487,14 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Пользователь, токен авторизации и сообщение о успешной авторизации</p>"
+            "description": "<p>Пользователь, токен авторизации</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Вы успешно авторизовались\",\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9\",\n        \"user\": {\n             \"id\": 1,\n             \"fio\": \"Максим Поздняков\",\n             \"email\": \"maximpozdnyakow@gmail.com\",\n             \"terms_agree\": \"0\",\n             \"email_verified\": \"1\",\n             \"created_at\": \"2021-09-05T11:58:04.000000Z\",\n             \"updated_at\": \"2021-09-07T13:30:05.000000Z\"\n        }\n    }\n}",
+          "content": "{\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\",\n        \"user\": {\n            \"id\": 2,\n            \"fio\": \"Максим Поздняков\",\n            \"email\": \"maximpozdnyakow@gmail.com\",\n            \"termsAgree\": \"1\",\n            \"emailVerified\": \"0\",\n            \"emailNotify\": \"1\"\n        }\n    }\n}",
           "type": "json"
         }
       ]
@@ -6503,13 +6503,13 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/users/login"
+        "url": "http://localhost:3000/api/user/login"
       }
     ]
   },
   {
     "type": "get",
-    "url": "/api/users/logout",
+    "url": "/api/user/logout",
     "title": "4. Выйти из аккаунта",
     "name": "LogoutUser",
     "group": "User",
@@ -6537,7 +6537,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/users/logout"
+        "url": "http://localhost:3000/api/user/logout"
       }
     ],
     "permission": [
@@ -6587,7 +6587,7 @@
   },
   {
     "type": "post",
-    "url": "/api/users/register",
+    "url": "/api/user/register",
     "title": "2. Регистрация",
     "name": "RegisterUser",
     "group": "User",
@@ -6614,14 +6614,14 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "password",
+            "field": "pass",
             "description": "<p>Пароль пользователя, должен содержать от 8 символов, включая как минимум одну строчную букву, одну заглавную букву и одну цифру. Обязательный.</p>"
           },
           {
             "group": "Parameter",
             "type": "Boolean",
             "optional": false,
-            "field": "terms_agree",
+            "field": "termsAgree",
             "description": "<p>Согласен ли пользователь с условиями соглашения. Должен быть true. Обязательный.</p>"
           }
         ]
@@ -6629,16 +6629,16 @@
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"fio\": \"Максим Поздняков Алексеевич\",\n    \"email\": \"maximpozdnyakow@gmail.com\",\n    \"password\": \"SDGsdfn735F\",\n    \"terms_agree\": true\n}",
+          "content": "{\n   \"email\": \"maximpozdnyakow@gmail.com\",\n   \"fio\": \"Максим Поздняков\",\n   \"termsAgree\": true,\n   \"pass\": \"SDGsdfn735F\"\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -6647,7 +6647,7 @@
       },
       "examples": [
         {
-          "title": "Bad request 400:",
+          "title": "Bad request 404:",
           "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"fio\": [\n           \"Укажите ФИО\"\n       ]\n   }\n}",
           "type": "json"
         }
@@ -6655,19 +6655,19 @@
     },
     "success": {
       "fields": {
-        "Success 201": [
+        "Success 200": [
           {
-            "group": "Success 201",
+            "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Новый пользователь, токен авторизации и сообщение о успешной регистрации</p>"
+            "description": "<p>Новый пользователь, токен авторизации</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Success 201:",
-          "content": "HTTP/1.1 201 Created\n{\n    \"message\": \"Вы успешно зарегистрировались\",\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9\",\n        \"user\": {\n             \"id\": 1,\n             \"fio\": \"Максим Поздняков\",\n             \"email\": \"maximpozdnyakow@gmail.com\",\n             \"terms_agree\": \"0\",\n             \"email_verified\": \"1\",\n             \"created_at\": \"2021-09-05T11:58:04.000000Z\",\n             \"updated_at\": \"2021-09-07T13:30:05.000000Z\"\n        }\n    }\n}",
+          "title": "Success 200:",
+          "content": "{\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\",\n        \"user\": {\n            \"id\": 2,\n            \"fio\": \"Максим Поздняков\",\n            \"email\": \"maximpozdnyakow@gmail.com\",\n            \"termsAgree\": \"1\",\n            \"emailVerified\": \"0\",\n            \"emailNotify\": \"1\"\n        }\n    }\n}",
           "type": "json"
         }
       ]
@@ -6676,13 +6676,13 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/users/register"
+        "url": "http://localhost:3000/api/user/register"
       }
     ]
   },
   {
     "type": "post",
-    "url": "/api/users/reset",
+    "url": "/api/user/reset",
     "title": "6. Сброс пароля",
     "name": "RestUserPassword",
     "group": "User",
@@ -6701,7 +6701,7 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "password",
+            "field": "pass",
             "description": "<p>Новый пароль пользователя, должен содержать от 8 символов, включая как минимум одну строчную букву, одну заглавную букву и одну цифру. Обязательный.</p>"
           }
         ]
@@ -6709,16 +6709,16 @@
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"token\": \"396402\",\n    \"password\": \"SDGsdfn735F\"\n}",
+          "content": "{\n    \"token\": \"396402\",\n    \"pass\": \"SDGsdfn735F\"\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -6727,7 +6727,7 @@
       },
       "examples": [
         {
-          "title": "Bad request 400:",
+          "title": "Bad request 404:",
           "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"token\": [\n           \"Веденный вами код для сброса пароля недействителен\"\n       ]\n   }\n}",
           "type": "json"
         }
@@ -6735,9 +6735,9 @@
     },
     "success": {
       "fields": {
-        "Success 202": [
+        "Success 200": [
           {
-            "group": "Success 202",
+            "group": "Success 200",
             "optional": false,
             "field": "Success",
             "description": "<p>Сообщение о успешном изменении пароля</p>"
@@ -6746,7 +6746,7 @@
       },
       "examples": [
         {
-          "title": "Success 202:",
+          "title": "Success 200:",
           "content": "{\n    \"message\": \"Ваш пароль был успешно изменен\"\n}",
           "type": "json"
         }
@@ -6756,13 +6756,47 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/users/reset"
+        "url": "http://localhost:3000/api/user/reset"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/user/check",
+    "title": "8. Запросить новый код подтверждения email",
+    "name": "SendVerifyCodeForUserEmail",
+    "group": "User",
+    "version": "1.0.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение о успешном подтверждении email</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Код для подтверждения email отправлен на вашу электронную почту\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/users.php",
+    "groupTitle": "User",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/user/check"
       }
     ]
   },
   {
     "type": "patch",
-    "url": "/api/users",
+    "url": "/api/user/object",
     "title": "7. Обновление данных пользователя",
     "name": "UpdateUser",
     "group": "User",
@@ -6788,7 +6822,7 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "password",
+            "field": "pass",
             "description": "<p>Новый пароль пользователя, должен содержать от 8 символов, включая как минимум одну строчную букву, одну заглавную букву и одну цифру.</p>"
           }
         ]
@@ -6796,16 +6830,16 @@
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"fio\": \"Максим Поздняков\",\n    \"email\": \"maxim@gmail.com\",\n    \"password\": \"SDGsdfn735F\"\n}",
+          "content": "{\n    \"fio\": \"Максим Поздняков Алексеевич\",\n    \"email\": \"maxim@gmail.com\",\n    \"pass\": \"SDGsdfn735F\"\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -6822,7 +6856,7 @@
       },
       "examples": [
         {
-          "title": "Bad request 400:",
+          "title": "Bad request 404:",
           "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"email\": [\n           \"Пользователь с такими email уже существует\"\n       ]\n   }\n}",
           "type": "json"
         },
@@ -6835,19 +6869,19 @@
     },
     "success": {
       "fields": {
-        "Success 202": [
+        "Success 200": [
           {
-            "group": "Success 202",
+            "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Пользователь и сообщение о успешном обновлении данных пользователя</p>"
+            "description": "<p>Обновленный пользователь</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Success 202:",
-          "content": "{\n    \"message\": Настройки профиля обновлены.\",\n    \"data\": {\n        \"id\": 1,\n        \"fio\": \"Максим Поздняков\",\n        \"email\": \"maxim@gmail.com\",\n        \"terms_agree\": \"0\",\n        \"email_verified\": \"1\",\n        \"created_at\": \"2021-09-05T11:58:04.000000Z\",\n        \"updated_at\": \"2021-09-07T13:30:05.000000Z\"\n    }\n}",
+          "title": "Success 200:",
+          "content": "{\n    \"id\": 2,\n    \"fio\": \"Максим Поздняков Алексеевич\",\n    \"email\": \"maxim@gmail.com\",\n    \"termsAgree\": \"1\",\n    \"emailVerified\": 0,\n    \"emailNotify\": \"1\"\n}",
           "type": "json"
         }
       ]
@@ -6856,7 +6890,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/users"
+        "url": "http://localhost:3000/api/user/object"
       }
     ],
     "permission": [
@@ -6887,8 +6921,8 @@
   },
   {
     "type": "post",
-    "url": "/api/users/verify",
-    "title": "8. Подтверждение email",
+    "url": "/api/user/check",
+    "title": "9. Подтверждение email",
     "name": "VerifyUserEmail",
     "group": "User",
     "version": "1.0.0",
@@ -6900,23 +6934,23 @@
             "type": "String",
             "optional": false,
             "field": "token",
-            "description": "<p>Шестизначный код для подтверждения email. Обязательный.</p>"
+            "description": "<p>Тело запроса, шестизначный код для подтверждения email.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"token\": \"396402\"\n}",
+          "content": "\"396402\"",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -6925,17 +6959,17 @@
       },
       "examples": [
         {
-          "title": "Bad request 400:",
-          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"token\": [\n           \"Веденный вами код для подтверждения email недействителен\"\n       ]\n   }\n}",
+          "title": "Bad request 404:",
+          "content": "{\n   \"message\": \"Веденный вами код для подтверждения email недействителен\"\n}",
           "type": "json"
         }
       ]
     },
     "success": {
       "fields": {
-        "Success 202": [
+        "Success 200": [
           {
-            "group": "Success 202",
+            "group": "Success 200",
             "optional": false,
             "field": "Success",
             "description": "<p>Сообщение о успешном подтверждении email</p>"
@@ -6944,7 +6978,7 @@
       },
       "examples": [
         {
-          "title": "Success 202:",
+          "title": "Success 200:",
           "content": "{\n    \"message\": \"Ваша электронная почта была подтверждена\"\n}",
           "type": "json"
         }
@@ -6954,7 +6988,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/users/verify"
+        "url": "http://localhost:3000/api/user/check"
       }
     ]
   },

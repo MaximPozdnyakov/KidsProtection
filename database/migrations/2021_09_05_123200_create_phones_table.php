@@ -17,7 +17,7 @@ class CreatePhonesTable extends Migration
             $table->id();
             $table->string('phone');
             $table->boolean('locked')->default(1);
-            $table->string('user');
+            $table->string('child');
             $table->string('parent');
             $table->timestamps();
         });

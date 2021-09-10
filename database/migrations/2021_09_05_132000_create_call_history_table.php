@@ -16,10 +16,9 @@ class CreateCallHistoryTable extends Migration
         Schema::create('call_history', function (Blueprint $table) {
             $table->id();
             $table->string('phone');
-            $table->boolean('locked');
-            $table->boolean('incoming');
+            $table->boolean('input');
             $table->string('date');
-            $table->string('user');
+            $table->string('child');
             $table->timestamps();
         });
     }

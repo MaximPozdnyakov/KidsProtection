@@ -12,7 +12,7 @@ class Subscription extends Model
     protected $fillable = [
         'name',
         'device',
-        'free_month',
+        'freeMonth',
         'price',
     ];
 }

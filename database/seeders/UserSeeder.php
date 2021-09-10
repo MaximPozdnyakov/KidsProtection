@@ -19,7 +19,8 @@ class UserSeeder extends Seeder
             'fio' => env('ADMIN_NAME', 'admin'),
             'email' => env('ADMIN_EMAIL', 'admin@gmail.com'),
             'password' => Hash::make(env('ADMIN_PASSWORD', 'SDGsdfn735F')),
-            'terms_agree' => true,
+            'termsAgree' => true,
+            'role_id' => 1,
         ]);
     }
 }

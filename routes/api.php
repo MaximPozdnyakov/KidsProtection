@@ -16,21 +16,26 @@ use App\Http\Controllers\YoutubeController;
 use App\Http\Controllers\YoutubeHistoryController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('users')->group(function () {
+Route::prefix('user')->group(function () {
     Route::middleware('auth:api')->group(function () {
-        Route::get('/', [AuthController::class, 'index']);
-        Route::patch('/', [AuthController::class, 'update']);
-        Route::post('/verify', [AuthController::class, 'verify_email']);
+        Route::get('/auth', [AuthController::class, 'index']);
+        Route::post('/object', [AuthController::class, 'update']);
+        Route::get('/check', [AuthController::class, 'send_email_verification_code']);
+        Route::post('/check', [AuthController::class, 'verify_email']);
         Route::get('/logout', [AuthController::class, 'logout']);
     });
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/forgot', [AuthController::class, 'forgot']);
+    Route::post('/restore', [AuthController::class, 'forgot']);
     Route::post('/reset', [AuthController::class, 'reset'])->name('password.reset');
 });
 
 Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(function () {
-    Route::apiResource('children', ChildrenController::class);
+    Route::get('/child/list', [ChildrenController::class, 'index']);
+    Route::post('/child/object', [ChildrenController::class, 'store']);
+    Route::get('/child/object', [ChildrenController::class, 'show']);
+    Route::put('/child/object', [ChildrenController::class, 'update']);
+    Route::delete('/child/object', [ChildrenController::class, 'destroy']);
 
     Route::get('/applications/{child}', [ApplicationsController::class, 'index']);
     Route::post('/applications', [ApplicationsController::class, 'store']);

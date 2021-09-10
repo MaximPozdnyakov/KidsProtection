@@ -28,77 +28,57 @@ class ChildrenController extends Controller
 
     public function index()
     {
-        return Child::whereParent(auth()->user()->id)->limit($this->getDevices())->get();
+        // return Child::whereParent(auth()->user()->id)->limit($this->getDevices())->get();
+        return Child::whereParent(auth()->user()->id)->get();
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
-            'date' => 'required|date|date_format:d.m.Y',
+            'child.name' => 'required|string',
+            'child.year' => 'required|integer',
         ],
             [
-                'name.required' => 'Укажите имя ребенка',
-                'date.required' => 'Укажите день рождения ребенка',
+                'child.name.required' => 'Укажите имя ребенка',
+                'child.year.required' => 'Укажите год рождения ребенка',
             ]);
-        $devices = $this->getDevices();
-        if (count(Child::whereParent(auth()->user()->id)->get()->toArray()) >= $devices) {
-            return response()->json(['message' => 'Вам можно подключить не более ' . $devices . ' устройств'], 403);
-        }
+        // $devices = $this->getDevices();
+        // if (count(Child::whereParent(auth()->user()->id)->get()->toArray()) >= $devices) {
+        //     return response()->json(['message' => 'Вам можно подключить не более ' . $devices . ' устройств'], 403);
+        // }
         $child = Child::create([
-            'name' => $request->name,
-            'date' => $request->date,
+            'name' => $request->child['name'],
+            'year' => $request->child['year'],
             'parent' => auth()->user()->id,
         ]);
-        return response()->json([
-            'message' => 'Ребенок добавлен',
-            'data' => Child::find($child->id),
-        ], 201);
+        return response()->json(Child::find($child->id), 201);
     }
 
-    public function show(Request $request, $child)
+    public function show(Request $request)
     {
-        return Child::whereId($child)->whereParent(auth()->user()->id)->first();
+        return Child::whereId($request->header('child'))->whereParent(auth()->user()->id)->first();
     }
 
-    public function update(Request $request, $child)
+    public function update(Request $request)
     {
-        $existedChild = Child::whereId($child)->whereParent(auth()->user()->id)->first();
-        if ($request->name) {
-            $request->validate(['name' => 'string']);
-            $existedChild->name = $request->name;
+        $existedChild = Child::whereId($request->child['id'])->whereParent(auth()->user()->id)->first();
+        if ($request->child['name']) {
+            $request->validate(['child.name' => 'string']);
+            $existedChild->name = $request->child['name'];
         }
-        if ($request->date) {
-            $request->validate(['date' => 'date|date_format:d.m.Y']);
-            $existedChild->date = $request->date;
-        }
-        if ($request->has('block_all_apps')) {
-            $request->validate(['block_all_apps' => 'boolean']);
-            $existedChild->block_all_apps = $request->block_all_apps;
-        }
-        if ($request->has('block_all_phones')) {
-            $request->validate(['block_all_phones' => 'boolean']);
-            $existedChild->block_all_phones = $request->block_all_phones;
-        }
-        if ($request->has('block_all_site')) {
-            $request->validate(['block_all_site' => 'boolean']);
-            $existedChild->block_all_site = $request->block_all_site;
-        }
-        if ($request->has('block_all_youtube')) {
-            $request->validate(['block_all_youtube' => 'boolean']);
-            $existedChild->block_all_youtube = $request->block_all_youtube;
+        if ($request->child['year']) {
+            $request->validate(['child.year' => 'required|integer']);
+            $existedChild->child['year'] = $request->child['year'];
         }
         $existedChild->update();
-        return response()->json([
-            'message' => 'Данные ребенка обновлены',
-            'data' => $existedChild,
-        ], 202);
+        return response()->json($existedChild, 202);
     }
 
-    public function destroy(Request $request, $child)
+    public function destroy(Request $request)
     {
-        $existedChild = Child::whereId($child)->whereParent(auth()->user()->id)->first();
+        $existedChild = Child::whereId($request->header('child'))->whereParent(auth()->user()->id)->first();
+        $childCopy = $existedChild;
         $existedChild->delete();
-        return response()->json(['message' => 'Ребенок удален'], 200);
+        return response()->json($childCopy, 200);
     }
 }

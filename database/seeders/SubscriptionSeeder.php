@@ -18,17 +18,17 @@ class SubscriptionSeeder extends Seeder
             [
                 'name' => 'Small',
                 'device' => 3,
-                'free_month' => 1,
+                'freeMonth' => 1,
                 'price' => 199,
             ], [
                 'name' => 'Medium',
                 'device' => 5,
-                'free_month' => 1,
+                'freeMonth' => 1,
                 'price' => 249,
             ], [
                 'name' => 'Large',
                 'device' => 10,
-                'free_month' => 1,
+                'freeMonth' => 1,
                 'price' => 299,
             ],
         ]);

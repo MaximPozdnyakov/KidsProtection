@@ -17,10 +17,9 @@ class CreateSmsHistoryTable extends Migration
             $table->id();
             $table->string('phone');
             $table->string('msg')->nullable();
-            $table->boolean('locked');
-            $table->boolean('incoming');
+            $table->boolean('input');
             $table->string('date');
-            $table->string('user');
+            $table->string('child');
             $table->timestamps();
         });
     }

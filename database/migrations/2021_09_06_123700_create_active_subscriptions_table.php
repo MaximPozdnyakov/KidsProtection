@@ -15,11 +15,9 @@ class CreateActiveSubscriptionsTable extends Migration
     {
         Schema::create('active_subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->float('price');
-            $table->integer('free_month');
-            $table->string('start_dt');
-            $table->string('end_dt');
+            $table->string('subscribe');
+            $table->string('fromDate');
+            $table->string('endDate');
             $table->string('user');
             $table->timestamps();
         });

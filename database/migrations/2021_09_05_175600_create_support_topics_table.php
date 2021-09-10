@@ -16,6 +16,7 @@ class CreateSupportTopicsTable extends Migration
         Schema::create('support_topics', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->timestamps();
         });
     }
 

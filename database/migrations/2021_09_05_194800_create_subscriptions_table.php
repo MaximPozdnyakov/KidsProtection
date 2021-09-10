@@ -17,8 +17,8 @@ class CreateSubscriptionsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('device');
-            $table->integer('free_month');
             $table->float('price');
+            $table->integer('freeMonth');
         });
     }
 

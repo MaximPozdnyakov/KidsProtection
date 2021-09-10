@@ -19,7 +19,7 @@ class CreateGeolocationTable extends Migration
             $table->string('longitude');
             $table->string('address')->nullable();
             $table->string('date');
-            $table->string('user');
+            $table->string('child');
             $table->timestamps();
         });
     }

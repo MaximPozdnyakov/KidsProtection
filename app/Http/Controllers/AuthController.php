@@ -9,7 +9,6 @@ use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
 use Laravel\Passport\Token;
 
 class AuthController extends Controller
@@ -31,7 +30,7 @@ class AuthController extends Controller
         Mail::send('verify_email',
             $data,
             function ($message) use ($to_name, $to_email) {
-                $message->to($to_email, $to_name)->subject(\Config::get('mail.from.name') . ': ' . 'Запрос на смену пароля');
+                $message->to($to_email, $to_name)->subject(\Config::get('mail.from.name') . ': ' . 'Подтвердите email');
                 $message->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'));
             },
         );
@@ -46,38 +45,33 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|string|email',
-            'password' => 'required|string',
+            'pass' => 'required|string',
         ],
             [
                 'email.required' => 'Укажите email',
                 'email.email' => 'Укажите корректный email',
-                'password.required' => 'Укажите пароль',
+                'pass.required' => 'Укажите пароль',
             ]);
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'pass');
         $existedUser = User::whereEmail($credentials['email'])->first();
         if (!$existedUser) {
             return response()->json([
                 'message' => 'The given data was invalid.',
-                'errors' => [
-                    'email' => 'Веденный вами электронный адрес не связан ни с одним аккаунтом',
-                ],
-            ], 400);
+                'errors' => ['email' => 'Веденный вами электронный адрес не связан ни с одним аккаунтом'],
+            ], 404);
         }
-        $attempt = Auth::attempt($credentials);
+        $attempt = Auth::attempt(['email' => $request->email, 'password' => $request->pass]);
         if (!$attempt) {
             return response()->json([
                 'message' => 'The given data was invalid.',
-                'errors' => [
-                    'password' => 'Вы ввели неверный пароль',
-                ],
-            ], 400);
+                'errors' => ['pass' => 'Вы ввели неверный пароль'],
+            ], 404);
         }
         $token = auth()->user()->createToken('API Token')->accessToken;
         return response()->json([
-            'message' => 'Вы успешно авторизовались',
             'data' => [
                 'token' => $token,
-                'user' => auth()->user(),
+                'user' => $existedUser,
             ],
         ], 200);
     }
@@ -87,44 +81,44 @@ class AuthController extends Controller
         $request->validate([
             'fio' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => [
+            'pass' => [
                 'required',
                 'string',
                 new isValidPassword(),
             ],
-            'terms_agree' => 'required|boolean',
+            'termsAgree' => 'required|boolean',
         ],
             [
                 'fio.required' => 'Укажите ФИО',
                 'email.required' => 'Укажите email',
                 'email.email' => 'Укажите корректный email',
                 'email.unique' => 'Пользователь с такими email уже существует',
-                'password.required' => 'Укажите пароль',
+                'pass.required' => 'Укажите пароль',
             ]);
-        if (!$request->terms_agree) {
+        if (!$request->termsAgree) {
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => [
-                    'terms_agree' => 'Примите условия использования',
+                    'termsAgree' => 'Примите условия использования',
                 ],
-            ], 400);
+            ], 404);
         }
         $data = $request->all();
         $user = User::create([
             'fio' => $data['fio'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'terms_agree' => $data['terms_agree'],
+            'password' => Hash::make($data['pass']),
+            'termsAgree' => $data['termsAgree'],
+            'emailNotify' => true,
         ]);
         $token = $user->createToken('API Token')->accessToken;
         $this->sendEmailVerificationCode($data['email'], $data['fio']);
         return response()->json([
-            'message' => 'Вы успешно зарегистрировались',
             'data' => [
                 'token' => $token,
-                'user' => $user,
+                'user' => User::find($user->id),
             ],
-        ], 201);
+        ], 200);
     }
 
     public function logout(Request $request)
@@ -135,17 +129,18 @@ class AuthController extends Controller
 
     public function forgot(Request $request)
     {
-        $request->validate(['email' => 'required|string|email'],
+        $request->email = $request[0];
+        $request->validate(['0' => 'required|string|email'],
             [
-                'email.required' => 'Укажите email',
-                'email.email' => 'Укажите корректный email',
+                '0.required' => 'Укажите email',
+                '0.email' => 'Укажите корректный email',
             ]);
         $user = User::whereEmail($request->email)->first();
         if (!$user) {
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => ['email' => 'Веденный вами электронный адрес не связан ни с одним аккаунтом'],
-            ], 400);
+            ], 404);
         }
 
         $token = sprintf('%05d', rand(100000, 999999));
@@ -174,7 +169,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'token' => 'required|string',
-            'password' => [
+            'pass' => [
                 'required',
                 'string',
                 new isValidPassword(),
@@ -182,7 +177,7 @@ class AuthController extends Controller
         ],
             [
                 'token.required' => 'Укажите код для сброса пароля',
-                'password.required' => 'Укажите пароль',
+                'pass.required' => 'Укажите пароль',
             ]);
         $tokenData = DB::table('password_resets')->whereToken($request->token)->first();
         $user = null;
@@ -192,15 +187,13 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json([
                 'message' => 'The given data was invalid.',
-                'errors' => [
-                    'token' => 'Веденный вами код для сброса пароля недействителен',
-                ],
-            ], 400);
+                'errors' => ['token' => 'Веденный вами код для сброса пароля недействителен'],
+            ], 404);
         }
-        $user->password = Hash::make($request->password);
+        $user->password = Hash::make($request->pass);
         $user->update();
         DB::table('password_resets')->whereEmail($user->email)->delete();
-        return response()->json(["message" => 'Ваш пароль был успешно изменен'], 202);
+        return response()->json(["message" => 'Ваш пароль был успешно изменен'], 200);
     }
 
     public function update(Request $request)
@@ -219,37 +212,38 @@ class AuthController extends Controller
                 ]
             );
             $currentUser->email = $request->email;
-            $currentUser->email_verified = 0;
+            $currentUser->emailVerified = 0;
             $this->sendEmailVerificationCode($request->email, $currentUser->fio);
         }
-        if ($request->has('password')) {
-            $request->validate(['password' => ['required', 'string', new isValidPassword()]], ['password.required' => 'Укажите пароль']);
-            $currentUser->password = Hash::make($request->password);
+        if ($request->has('pass')) {
+            $request->validate(['pass' => ['required', 'string', new isValidPassword()]], ['password.required' => 'Укажите пароль']);
+            $currentUser->password = Hash::make($request->pass);
         }
         $currentUser->update();
-        return response()->json([
-            'message' => $request->has('email') ? 'Настройки профиля обновлены. Код для подтверждения email отправлен на вашу электронную почту' : 'Настройки профиля обновлены',
-            'data' => $currentUser,
-        ], 202);
+        return response()->json($currentUser, 200);
     }
 
     public function verify_email(Request $request)
     {
-        $request->validate(['token' => 'required|string'], ['token.required' => 'Укажите код для подтверждения email']);
+        $request->token = $request[0];
+        $request->validate(['0' => 'required|string'], ['0.required' => 'Укажите код для подтверждения email']);
         $tokenData = DB::table('password_resets')->whereToken($request->token)->first();
         $user = null;
         if ($tokenData) {
             $user = User::whereEmail($tokenData->email)->first();
         }
         if (!$user) {
-            return response()->json([
-                'message' => 'The given data was invalid.',
-                'errors' => ['token' => 'Веденный вами код для подтверждения email недействителен'],
-            ], 400);
+            return response()->json(['message' => 'Веденный вами код для подтверждения email недействителен'], 404);
         }
-        $user->email_verified = 1;
+        $user->emailVerified = 1;
         $user->update();
         DB::table('password_resets')->whereEmail($user->email)->delete();
-        return response()->json(["message" => 'Ваша электронная почта была подтверждена'], 202);
+        return response()->json(["message" => 'Ваша электронная почта была подтверждена'], 200);
+    }
+
+    public function send_email_verification_code()
+    {
+        $this->sendEmailVerificationCode(auth()->user()->email, auth()->user()->fio);
+        return response()->json(["message" => 'Код для подтверждения email отправлен на вашу электронную почту'], 200);
     }
 }

@@ -18,7 +18,7 @@ class CreateYoutubeHistoryTable extends Migration
             $table->string('channel');
             $table->boolean('locked');
             $table->string('user');
-            $table->string('date');
+            $table->string('child');
             $table->timestamps();
         });
     }
