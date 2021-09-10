@@ -116,7 +116,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -183,7 +183,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -308,7 +308,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -503,7 +503,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -570,7 +570,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -766,7 +766,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -949,7 +949,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -1119,7 +1119,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -1296,7 +1296,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -1468,7 +1468,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -1508,7 +1508,7 @@ define({ "api": [
           "type": "json"
         },
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -1666,7 +1666,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -1751,7 +1751,7 @@ define({ "api": [
           "type": "json"
         },
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -2007,7 +2007,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -2106,269 +2106,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Unauthenticated 404": [
-          {
-            "group": "Unauthenticated 404",
-            "optional": false,
-            "field": "Unauthenticated",
-            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
-          }
-        ],
-        "Not your child 404": [
-          {
-            "group": "Not your child 404",
-            "optional": false,
-            "field": "NotYourChild",
-            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
-          }
-        ],
-        "No subscription 404": [
-          {
-            "group": "No subscription 404",
-            "optional": false,
-            "field": "NoSubscription",
-            "description": "<p>Пользователь не оформил подписку</p>"
-          }
-        ],
-        "Subscription expired 404": [
-          {
-            "group": "Subscription expired 404",
-            "optional": false,
-            "field": "SubscriptionExpired",
-            "description": "<p>Подписка пользователя истекла</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Unauthenticated 404:",
-          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "delete",
-    "url": "/api/geolocation/:geolocation",
-    "title": "4. Удалить геолокацию",
-    "name": "DeleteGeolocation",
-    "group": "Geolocation",
-    "version": "1.0.0",
-    "description": "<p>geolocation - Id геолокации</p>",
-    "error": {
-      "fields": {
-        "Not Found 404": [
-          {
-            "group": "Not Found 404",
-            "optional": false,
-            "field": "NotFound",
-            "description": "<p>Геолокация не найдена</p>"
-          }
-        ],
-        "Not belong to your child 403": [
-          {
-            "group": "Not belong to your child 403",
-            "optional": false,
-            "field": "NotBelongToYourChild",
-            "description": "<p>Попытка удалить геолокацию, не принадлежащую ребенку родителя</p>"
-          }
-        ],
-        "Unauthenticated 404": [
-          {
-            "group": "Unauthenticated 404",
-            "optional": false,
-            "field": "Unauthenticated",
-            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
-          }
-        ],
-        "No subscription 404": [
-          {
-            "group": "No subscription 404",
-            "optional": false,
-            "field": "NoSubscription",
-            "description": "<p>Пользователь не оформил подписку</p>"
-          }
-        ],
-        "Subscription expired 404": [
-          {
-            "group": "Subscription expired 404",
-            "optional": false,
-            "field": "SubscriptionExpired",
-            "description": "<p>Подписка пользователя истекла</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти геолокацию с указанным id\",\n}",
-          "type": "json"
-        },
-        {
-          "title": "Not belong to your child 403:",
-          "content": "{\n  \"message\": \"Эта геолокация не принадлежит вашему ребенку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Unauthenticated 404:",
-          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "permission": [
-      {
-        "name": "Пользователь, ребенку которого принадлежит геолокация |"
-      },
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Сообщение об удалении геолокации</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "{\n    \"message\": \"Геолокация была удалена\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/geolocation.php",
-    "groupTitle": "Geolocation",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/geolocation/:geolocation"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "get",
-    "url": "/api/geolocation/:child",
-    "title": "1. Получить список геолокаций для указанного ребенка",
-    "name": "GetGeolocation",
-    "group": "Geolocation",
-    "version": "1.0.0",
-    "description": "<p>child - Id ребенка</p>",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Array[geolocation]",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Массив геолокаций</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "/api/geolocation/1\n[\n   {\n       \"id\": 1,\n       \"latitude\": \"59.837271\",\n       \"longitude\": \"30.312033\",\n       \"address\": null,\n       \"date\": \"05.09.2021 17:40\",\n       \"user\": \"1\",\n       \"created_at\": \"2021-09-05T14:46:06.000000Z\",\n       \"updated_at\": \"2021-09-05T14:46:06.000000Z\"\n   },\n]",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/geolocation.php",
-    "groupTitle": "Geolocation",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/geolocation/:child"
-      }
-    ],
-    "permission": [
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, являющийся родителем указанного ребенка |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -2435,17 +2173,55 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/geolocation/:child/:date",
-    "title": "3. Получить список геолокация для указанного ребенка по дате",
+    "url": "/api/geolocation/",
+    "title": "1. Получить список местоположений для указанного ребенка по дате",
     "name": "GetGeolocationByDate",
     "group": "Geolocation",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка; date - дата записи геолокации в формате d.m.Y</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Дата добавления геолокации в формате d.m.Y</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{\n   \"child\": \"1\",\n   \"date\": \"07.09.2021\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некорректная дата</p>"
@@ -2486,8 +2262,8 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Bad request 400:",
-          "content": "{\n   \"message\": \"Параметр date должен быть датой формата d.m.Y\",\n}",
+          "title": "Bad request 404:",
+          "content": "{\n   \"message\": \"date должен быть датой формата d.m.Y\",\n}",
           "type": "json"
         },
         {
@@ -2520,14 +2296,14 @@ define({ "api": [
             "type": "Array[geolocation]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив геолокаций по указанной дате</p>"
+            "description": "<p>Массив местоположений по указанной дате</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "/api/geolocation/1/05.09.2021\n[\n   {\n       \"id\": 1,\n       \"latitude\": \"59.837271\",\n       \"longitude\": \"30.312033\",\n       \"address\": null,\n       \"date\": \"05.09.2021 17:40\",\n       \"user\": \"1\",\n       \"created_at\": \"2021-09-05T14:46:06.000000Z\",\n       \"updated_at\": \"2021-09-05T14:46:06.000000Z\"\n   },\n]",
+          "content": "[\n    {\n        \"latitude\": \"79.837271\",\n        \"longitude\": \"30.312033\",\n        \"address\": \"адрес\",\n        \"date\": \"07.09.2021 17:13\"\n    },\n    {\n        \"latitude\": \"69.837271\",\n        \"longitude\": \"30.312033\",\n        \"address\": \"адрес2\",\n        \"date\": \"07.09.2021 18:13\"\n    }\n]",
           "type": "json"
         }
       ]
@@ -2536,7 +2312,7 @@ define({ "api": [
     "groupTitle": "Geolocation",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/geolocation/:child/:date"
+        "url": "http://localhost:3000/api/geolocation/"
       }
     ],
     "permission": [
@@ -2549,32 +2325,12 @@ define({ "api": [
       {
         "name": "Пользователь, обладающий активной подпиской"
       }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    }
+    ]
   },
   {
     "type": "post",
-    "url": "/api/geolocation",
-    "title": "2. Добавить геолокацию ребенка",
+    "url": "/api/gps/story",
+    "title": "2. Добавить местоположение ребенка",
     "name": "PostGeolocation",
     "group": "Geolocation",
     "version": "1.0.0",
@@ -2613,7 +2369,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "user",
+            "field": "child",
             "description": "<p>Id ребенка. Обязательный.</p>"
           }
         ]
@@ -2621,7 +2377,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"latitude\": \"79.837271\",\n    \"longitude\": \"30.312033\",\n    \"address\": \"адрес\",\n    \"date\": \"07.09.2021 17:13\",\n    \"user\": \"1\"\n}",
+          "content": "{\n    \"latitude\": \"79.837271\",\n    \"longitude\": \"30.312033\",\n    \"address\": \"адрес\",\n    \"date\": \"07.09.2021 17:13\",\n    \"child\": \"1\"\n}",
           "type": "json"
         }
       ]
@@ -2704,14 +2460,14 @@ define({ "api": [
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Геолокация и сообщение о ее создании</p>"
+            "description": "<p>Сообщение о добавлении геолокации</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Геолокация добавлена\",\n    \"data\": {\n        \"id\": 5,\n        \"latitude\": \"79.837271\",\n        \"longitude\": \"30.312033\",\n        \"address\": \"адрес\",\n        \"date\": \"07.09.2021 17:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T15:08:19.000000Z\",\n        \"updated_at\": \"2021-09-07T15:08:19.000000Z\"\n    }\n}",
+          "content": "{\n    \"message\": \"Геолокация добавлена\"\n}",
           "type": "json"
         }
       ]
@@ -2720,7 +2476,7 @@ define({ "api": [
     "groupTitle": "Geolocation",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/geolocation"
+        "url": "http://localhost:3000/api/gps/story"
       }
     ],
     "permission": [
@@ -2748,7 +2504,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -2869,7 +2625,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -2936,7 +2692,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -3061,7 +2817,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -3289,7 +3045,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -3449,7 +3205,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -3554,7 +3310,7 @@ define({ "api": [
           "type": "json"
         },
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -3628,7 +3384,7 @@ define({ "api": [
           "type": "json"
         },
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -3887,7 +3643,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -4024,7 +3780,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -4091,7 +3847,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -4287,7 +4043,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -4484,7 +4240,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -4544,7 +4300,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -4623,7 +4379,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -4773,7 +4529,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -4832,7 +4588,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -4991,7 +4747,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -5124,7 +4880,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -5282,7 +5038,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -5635,7 +5391,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -5813,7 +5569,7 @@ define({ "api": [
           "type": "json"
         },
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -5887,7 +5643,7 @@ define({ "api": [
           "type": "json"
         },
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
@@ -6146,7 +5902,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Header:",
+          "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }

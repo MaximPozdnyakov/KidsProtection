@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Child;
 use App\Models\Geolocation;
 use Illuminate\Http\Request;
 
 class GeolocationController extends Controller
 {
-    public function index(Request $request, $child)
+    public function index(Request $request)
     {
-        return Geolocation::whereUser($child)->get();
+        $d = \DateTime::createFromFormat('d.m.Y', $request->header('date'));
+        if (!($d && $d->format('d.m.Y') === $request->header('date'))) {
+            return response()->json(['message' => 'date должен быть датой формата dd.MM.yyyy'], 404);
+        }
+        return Geolocation::whereChild($request->header('child'))->where('date', 'LIKE', $request->header('date') . '%')->get()->makeHidden(['id', 'child']);
     }
 
     public function store(Request $request)
@@ -20,7 +23,7 @@ class GeolocationController extends Controller
             'longitude' => ['required', 'string', 'regex:/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/'],
             'address' => 'string',
             'date' => 'required|date|date_format:d.m.Y H:i',
-            'user' => 'required|string',
+            'child' => 'required|string',
         ],
             [
                 'latitude.regex' => 'Параметр latitude должен быть валидной широтой',
@@ -31,33 +34,8 @@ class GeolocationController extends Controller
             'longitude' => $request->longitude,
             'address' => $request->get('address', null),
             'date' => $request->date,
-            'user' => $request->user,
+            'child' => $request->child,
         ]);
-        return response()->json([
-            'message' => 'Геолокация добавлена',
-            'data' => Geolocation::find($geolocation->id),
-        ], 201);
-    }
-
-    public function show(Request $request, $child, $date)
-    {
-        $d = \DateTime::createFromFormat('d.m.Y', $date);
-        if (!($d && $d->format('d.m.Y') === $date)) {
-            return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);
-        }
-        return Geolocation::whereUser($child)->where('date', 'LIKE', $date . '%')->get();
-    }
-
-    public function destroy(Request $request, $geolocation)
-    {
-        $existedGeolocation = Geolocation::find($geolocation);
-        if (!$existedGeolocation) {
-            return response()->json(['message' => 'Не удалось найти геолокацию с указанным id'], 404);
-        }
-        if (!Child::whereId($existedGeolocation->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Эта геолокация не принадлежит вашему ребенку'], 403);
-        }
-        $existedGeolocation->delete();
-        return response()->json(['message' => 'Геолокация была удалена'], 200);
+        return response()->json(['message' => 'Геолокация добавлена'], 200);
     }
 }

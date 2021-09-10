@@ -5,7 +5,7 @@
  * @apiPermission Авторизованный пользователь |
  *
  * @apiHeader {String} Authorization Bearer $token
- * @apiHeaderExample {json} Header:
+ * @apiHeaderExample {json} Authorization Header:
  *     { "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO" }
  *
  * @apiError (Unauthenticated 404) Unauthenticated Не был предоставлен токен авторизации, или же он недействителен

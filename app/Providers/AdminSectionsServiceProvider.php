@@ -18,6 +18,7 @@ class AdminSectionsServiceProvider extends ServiceProvider
         \App\Models\SupportTopic::class => 'App\Http\Sections\SupportTopics',
         \App\Models\Site::class => 'App\Http\Sections\Sites',
         \App\Models\Youtube::class => 'App\Http\Sections\Youtube',
+        \App\Models\Geolocation::class => 'App\Http\Sections\Geolocation',
     ];
 
     /**

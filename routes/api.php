@@ -65,10 +65,8 @@ Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::get('/sms/{child}/{phone}/{date}', [SmsHistoryController::class, 'show']);
     Route::delete('/sms/{sms}', [SmsHistoryController::class, 'destroy']);
 
-    Route::get('/geolocation/{child}', [GeolocationController::class, 'index']);
-    Route::post('/geolocation', [GeolocationController::class, 'store']);
-    Route::get('/geolocation/{child}/{date}', [GeolocationController::class, 'show']);
-    Route::delete('/geolocation/{geolocation}', [GeolocationController::class, 'destroy']);
+    Route::get('/gps/story', [GeolocationController::class, 'index']);
+    Route::post('/gps/story', [GeolocationController::class, 'store']);
 
     Route::get('/support/themes', [SupportController::class, 'index']);
     Route::post('/support/object', [SupportController::class, 'store']);

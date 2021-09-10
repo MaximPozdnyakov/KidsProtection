@@ -14,6 +14,10 @@ class Geolocation extends Model
         'longitude',
         'address',
         'date',
-        'user',
+        'child',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 }
