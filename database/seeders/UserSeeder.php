@@ -20,7 +20,6 @@ class UserSeeder extends Seeder
             'email' => env('ADMIN_EMAIL', 'admin@gmail.com'),
             'password' => Hash::make(env('ADMIN_PASSWORD', 'SDGsdfn735F')),
             'termsAgree' => true,
-            'role_id' => 1,
         ]);
     }
 }

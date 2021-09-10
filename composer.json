@@ -12,7 +12,7 @@
         "laravel/passport": "^10.1",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "tcg/voyager": "^1.5"
+        "laravelrus/sleepingowl": "^8.44"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
