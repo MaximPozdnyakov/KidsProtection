@@ -11,8 +11,11 @@ class Phone extends Model
     protected $table = 'phones';
     protected $fillable = [
         'phone',
-        'locked',
-        'user',
+        'child',
         'parent',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 }

@@ -2377,16 +2377,16 @@ define({ "api": [
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"latitude\": \"79.837271\",\n    \"longitude\": \"30.312033\",\n    \"address\": \"адрес\",\n    \"date\": \"07.09.2021 17:13\",\n    \"child\": \"1\"\n}",
+          "content": "[\n    {\n        \"date\": \"08.09.2021 13:33\",\n        \"latitude\": \"52.2234234\",\n        \"longitude\": \"33.1244433\",\n        \"child\": \"1\"\n    },\n    {\n        \"date\": \"08.09.2021 14:21\",\n        \"latitude\": \"52.5534234\",\n        \"longitude\": \"33.3344433\",\n        \"child\": \"1\"\n    }\n]",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -2427,8 +2427,8 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Bad request 400:",
-          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"latitude\": [\n           \"Параметр latitude обязателен\"\n       ]\n   }\n}",
+          "title": "Bad request 404:",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"0.latitude\": [\n           \"Параметр 0.latitude обязателен\"\n       ]\n   }\n}",
           "type": "json"
         },
         {
@@ -2513,12 +2513,11 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/api/phones/:phone",
-    "title": "5. Удалить телефон",
+    "url": "/api/numberphones/blocked",
+    "title": "3. Разблокировать телефон",
     "name": "DeletePhone",
     "group": "Phone",
     "version": "1.0.0",
-    "description": "<p>phone - Id телефона</p>",
     "error": {
       "fields": {
         "Not Found 404": [
@@ -2557,7 +2556,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти телефонов с указанным id\",\n}",
+          "content": "{\n   \"message\": \"Не удалось найти телефон\",\n}",
           "type": "json"
         },
         {
@@ -2577,43 +2576,23 @@ define({ "api": [
         }
       ]
     },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Сообщение об удалении телефона</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "{\n    \"message\": \"Телефон удален из списка телефонов\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/phone.php",
-    "groupTitle": "Phone",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/phones/:phone"
-      }
-    ],
-    "permission": [
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
     "header": {
       "fields": {
         "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Заблокированный телефон</p>"
+          },
           {
             "group": "Header",
             "type": "String",
@@ -2625,37 +2604,107 @@ define({ "api": [
       },
       "examples": [
         {
+          "title": "Header:",
+          "content": "{\n   \"child\": \"1\",\n   \"phone\": \"+79996665544\"\n}",
+          "type": "json"
+        },
+        {
           "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
       ]
-    }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение об разблокировки телефона</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Телефон разблокирован\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/phone.php",
+    "groupTitle": "Phone",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/numberphones/blocked"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ]
   },
   {
     "type": "get",
-    "url": "/api/phones/:child",
-    "title": "1. Получить список телефонов указанного ребенка",
+    "url": "/numberphones/blocked",
+    "title": "1. Получить список заблокированных телефонов указанного ребенка",
     "name": "GetPhone",
     "group": "Phone",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"child\": \"1\" }",
+          "type": "json"
+        },
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
     "success": {
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Array[Phones]",
+            "type": "Array[sites]",
             "optional": false,
             "field": "Success",
-            "description": "<p>Массив телефонов</p>"
+            "description": "<p>Список заблокированных телефонов</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "[\n    {\n        \"id\": 1,\n        \"phone\": \"79999999999\",\n        \"locked\": \"1\",\n        \"user\": \"1\",\n        \"parent\": \"1\",\n        \"created_at\": \"2021-09-05T12:11:30.000000Z\",\n        \"updated_at\": \"2021-09-05T12:11:30.000000Z\"\n    },\n]",
+          "content": "[\n    \"+79998887766\",\n    \"+79997776655\",\n    \"+79996665544\"\n]",
           "type": "json"
         }
       ]
@@ -2664,7 +2713,7 @@ define({ "api": [
     "groupTitle": "Phone",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/phones/:child"
+        "url": "http://localhost:3000/numberphones/blocked"
       }
     ],
     "permission": [
@@ -2678,151 +2727,6 @@ define({ "api": [
         "name": "Пользователь, обладающий активной подпиской"
       }
     ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Authorization Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Unauthenticated 404": [
-          {
-            "group": "Unauthenticated 404",
-            "optional": false,
-            "field": "Unauthenticated",
-            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
-          }
-        ],
-        "Not your child 404": [
-          {
-            "group": "Not your child 404",
-            "optional": false,
-            "field": "NotYourChild",
-            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
-          }
-        ],
-        "No subscription 404": [
-          {
-            "group": "No subscription 404",
-            "optional": false,
-            "field": "NoSubscription",
-            "description": "<p>Пользователь не оформил подписку</p>"
-          }
-        ],
-        "Subscription expired 404": [
-          {
-            "group": "Subscription expired 404",
-            "optional": false,
-            "field": "SubscriptionExpired",
-            "description": "<p>Подписка пользователя истекла</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Unauthenticated 404:",
-          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "get",
-    "url": "/api/phones/:child/:phone",
-    "title": "3. Получить телефон",
-    "name": "GetPhoneByDate",
-    "group": "Phone",
-    "version": "1.0.0",
-    "description": "<p>child - Id ребенка; phone - Id телефона</p>",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Телефон</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "{\n    \"id\": 3,\n    \"phone\": \"79998887766\",\n    \"locked\": \"0\",\n    \"user\": \"1\",\n    \"parent\": \"1\",\n    \"created_at\": \"2021-09-07T15:46:06.000000Z\",\n    \"updated_at\": \"2021-09-07T15:46:06.000000Z\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/phone.php",
-    "groupTitle": "Phone",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/phones/:child/:phone"
-      }
-    ],
-    "permission": [
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, являющийся родителем указанного ребенка |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Authorization Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
     "error": {
       "fields": {
         "Unauthenticated 404": [
@@ -2884,8 +2788,8 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/api/phones",
-    "title": "2. Добавить телефон ребенка",
+    "url": "/api/numberphones/blocked",
+    "title": "2. Заблокировать телефон",
     "name": "PostPhone",
     "group": "Phone",
     "version": "1.0.0",
@@ -2897,20 +2801,13 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "phone",
-            "description": "<p>Валидный номер телефона без спец символов, начинающийся с кода страны. Состоит из ровно 11 цифр. Должен быть уникальным для ребенка. Обязательный.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "locked",
-            "description": "<p>Является ли телефон заблокированным. Необязательный. По умолчанию true.</p>"
+            "description": "<p>Валидный номер телефона, начинающийся с плюса и кода страны. Состоит из ровно 11 цифр. Должен быть уникальным для ребенка. Обязательный.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "user",
+            "field": "child",
             "description": "<p>Id ребенка. Обязательный.</p>"
           }
         ]
@@ -2918,16 +2815,16 @@ define({ "api": [
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"phone\": \"79998887766\",\n    \"locked\": false,\n    \"user\": \"1\"\n}",
+          "content": "{\n    \"phone\": \"+79996665544\",\n    \"child\": \"1\"\n}",
           "type": "json"
         }
       ]
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -2968,7 +2865,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Bad request 400:",
+          "title": "Bad request 404:",
           "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"phone\": [\n           \"Параметр phone обязателен\"\n       ]\n   }\n}",
           "type": "json"
         },
@@ -3001,14 +2898,14 @@ define({ "api": [
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Телефон и сообщение о его добавлении</p>"
+            "description": "<p>Сообщение о блокировании телефона</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Телефон добавлен\",\n    \"data\": {\n        \"id\": 3,\n        \"phone\": \"79998887766\",\n        \"locked\": \"0\",\n        \"user\": \"1\",\n        \"parent\": \"1\",\n        \"created_at\": \"2021-09-07T15:46:06.000000Z\",\n        \"updated_at\": \"2021-09-07T15:46:06.000000Z\"\n    }\n}",
+          "content": "{\n    \"message\": \"Телефон заблокирован\"\n}",
           "type": "json"
         }
       ]
@@ -3017,7 +2914,7 @@ define({ "api": [
     "groupTitle": "Phone",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/phones"
+        "url": "http://localhost:3000/api/numberphones/blocked"
       }
     ],
     "permission": [
@@ -3029,166 +2926,6 @@ define({ "api": [
       },
       {
         "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Authorization Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "patch",
-    "url": "/api/phones/:phone",
-    "title": "4. Обновить телефон",
-    "name": "UpdatePhone",
-    "group": "Phone",
-    "version": "1.0.0",
-    "description": "<p>phones - Id телефона</p>",
-    "error": {
-      "fields": {
-        "Not Found 404": [
-          {
-            "group": "Not Found 404",
-            "optional": false,
-            "field": "NotFound",
-            "description": "<p>Телефон не найден или не принадлежит ребенку пользователя</p>"
-          }
-        ],
-        "Unauthenticated 404": [
-          {
-            "group": "Unauthenticated 404",
-            "optional": false,
-            "field": "Unauthenticated",
-            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
-          }
-        ],
-        "Not your child 404": [
-          {
-            "group": "Not your child 404",
-            "optional": false,
-            "field": "NotYourChild",
-            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
-          }
-        ],
-        "No subscription 404": [
-          {
-            "group": "No subscription 404",
-            "optional": false,
-            "field": "NoSubscription",
-            "description": "<p>Пользователь не оформил подписку</p>"
-          }
-        ],
-        "Subscription expired 404": [
-          {
-            "group": "Subscription expired 404",
-            "optional": false,
-            "field": "SubscriptionExpired",
-            "description": "<p>Подписка пользователя истекла</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти телефон с указанным id\",\n}",
-          "type": "json"
-        },
-        {
-          "title": "Unauthenticated 404:",
-          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "locked",
-            "description": "<p>Является ли телефон заблокированным.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request:",
-          "content": "{\n    \"locked\": true,\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "permission": [
-      {
-        "name": "Пользователь, ребенку которого принадлежит телефон |"
-      },
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, являющийся родителем указанного ребенка |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Телефон и сообщение о его обновлении</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "{\n    \"message\": \"Настройки телефона обновлены\",\n    \"data\": {\n        \"id\": 3,\n        \"phone\": \"79998887766\",\n        \"locked\": true,\n        \"user\": \"1\",\n        \"parent\": \"1\",\n        \"created_at\": \"2021-09-07T15:46:06.000000Z\",\n        \"updated_at\": \"2021-09-07T16:12:10.000000Z\"\n    }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/phone.php",
-    "groupTitle": "Phone",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/phones/:phone"
       }
     ],
     "header": {

@@ -2,76 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CallHistory;
 use App\Models\Phone;
-use App\Models\SmsHistory;
+// use App\Models\SmsHistory;
 use Illuminate\Http\Request;
 
 class PhonesController extends Controller
 {
-    public function index(Request $request, $child)
+    public function index(Request $request)
     {
-        return Phone::whereParent(auth()->user()->id)->whereUser($child)->get();
+        return Phone::whereParent(auth()->user()->id)->whereChild($request->header('child'))->get()->pluck('phone');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'phone' => ['required', 'string', 'regex:/^[0-9]{11}$/'],
-            'locked' => 'boolean',
-            'user' => 'required|string',
-        ], ['phone.regex' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
-        if (Phone::wherePhone($request->phone)->whereUser($request->user)->first()) {
+            'phone' => ['required', 'string', 'regex:/^\+[0-9]{11}$/'],
+            'child' => 'required|string',
+        ], ['phone.regex' => 'Параметр phone должен быть валидным номером телефона начинающийся с кода страны']);
+
+        if (Phone::wherePhone($request->phone)->whereChild($request->user)->first()) {
             return response()->json([
                 'message' => 'The given data was invalid.',
-                'errors' => ['phone' => 'Этот телефон уже добавлен в список телефонов указанного ребенка'],
-            ], 400);
+                'errors' => ['phone' => 'Этот телефон уже заблокирован для указанного ребенка'],
+            ], 404);
         }
         $phone = Phone::create([
             'phone' => $request->phone,
             'parent' => auth()->user()->id,
-            'user' => $request->user,
-            'locked' => $request->get('locked', 1),
+            'child' => $request->child,
         ]);
-        return response()->json([
-            'message' => 'Телефон добавлен',
-            'data' => Phone::find($phone->id),
-        ], 201);
+        return response()->json(['message' => 'Телефон заблокирован'], 200);
     }
 
-    public function show(Request $request, $child, $phone)
+    public function destroy(Request $request)
     {
-        return Phone::whereId($phone)->whereUser($child)->first();
-    }
-
-    public function update(Request $request, $phone)
-    {
-        $existedPhone = Phone::whereId($phone)->whereParent(auth()->user()->id)->first();
+        $existedPhone = Phone::wherePhone($request->header('phone'))->whereChild($request->header('child'))->first();
         if (!$existedPhone) {
-            return response()->json(['message' => 'Не удалось найти телефон с указанным id'], 404);
-        }
-        if ($request->has('locked')) {
-            $request->validate(['locked' => 'boolean']);
-            $existedPhone->locked = $request->locked;
-            CallHistory::wherePhone($existedPhone->phone)->whereUser($existedPhone->user)
-                ->update(['locked' => $request->locked]);
-            SmsHistory::wherePhone($existedPhone->phone)->whereUser($existedPhone->user)
-                ->update(['locked' => $request->locked]);
-        }
-        $existedPhone->update();
-        return response()->json([
-            'message' => 'Настройки телефона обновлены',
-            'data' => $existedPhone,
-        ], 202);
-    }
-
-    public function destroy(Request $request, $phone)
-    {
-        $existedPhone = Phone::whereId($phone)->whereParent(auth()->user()->id)->first();
-        if (!$existedPhone) {
-            return response()->json(['message' => 'Не удалось найти телефон с указанным id'], 404);
+            return response()->json(['message' => 'Не удалось найти телефон'], 404);
         }
         $existedPhone->delete();
-        return response()->json(['message' => 'Телефон удален из списка телефонов'], 200);
+        return response()->json(['message' => 'Телефон разблокирован'], 200);
     }
 }

@@ -54,11 +54,9 @@ Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::post('/youtube/blocked', [YoutubeController::class, 'store']);
     Route::delete('/youtube/blocked', [YoutubeController::class, 'destroy']);
 
-    Route::get('/phones/{child}', [PhonesController::class, 'index']);
-    Route::post('/phones', [PhonesController::class, 'store']);
-    Route::get('/phones/{child}/{phone}', [PhonesController::class, 'show']);
-    Route::patch('/phones/{phone}', [PhonesController::class, 'update']);
-    Route::delete('/phones/{phone}', [PhonesController::class, 'destroy']);
+    Route::get('/numberphones/blocked', [PhonesController::class, 'index']);
+    Route::post('/numberphones/blocked', [PhonesController::class, 'store']);
+    Route::delete('/numberphones/blocked', [PhonesController::class, 'destroy']);
 
     Route::get('/sms/{child}/{phone}', [SmsHistoryController::class, 'index']);
     Route::post('/sms', [SmsHistoryController::class, 'store']);
