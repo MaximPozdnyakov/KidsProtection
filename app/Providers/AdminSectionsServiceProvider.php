@@ -20,6 +20,7 @@ class AdminSectionsServiceProvider extends ServiceProvider
         \App\Models\Youtube::class => 'App\Http\Sections\Youtube',
         \App\Models\Geolocation::class => 'App\Http\Sections\Geolocation',
         \App\Models\Phone::class => 'App\Http\Sections\Phones',
+        \App\Models\CallSmsHistory::class => 'App\Http\Sections\CallSmsHistory',
     ];
 
     /**

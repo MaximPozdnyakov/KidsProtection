@@ -1476,6 +1476,353 @@ define({ "api": [
     }
   },
   {
+    "type": "get",
+    "url": "/api/numberphones/story",
+    "title": "1. Получить список звонков и смс для указанного ребенка по дате",
+    "name": "GetCallsAndSmsByDate",
+    "group": "CallsAndSms",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Дата добавления звонков и смс в формате d.m.Y</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{\n   \"child\": \"1\",\n   \"date\": \"07.09.2021\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Bad request 404": [
+          {
+            "group": "Bad request 404",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некорректная дата</p>"
+          }
+        ],
+        "Unauthenticated 404": [
+          {
+            "group": "Unauthenticated 404",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 404": [
+          {
+            "group": "Not your child 404",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 404": [
+          {
+            "group": "No subscription 404",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 404": [
+          {
+            "group": "Subscription expired 404",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 404:",
+          "content": "{\n   \"message\": \"date должен быть датой формата d.m.Y\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 404:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 404:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 404:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 404:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array[geolocation]",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Массив звонков и смс по указанной дате</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "[\n    {\n        \"phone\": \"+79998887744\",\n        \"input\": \"1\",\n        \"isCall\": \"1\",\n        \"message\": null,\n        \"date\": \"07.09.2021 13:33:21\"\n    },\n    {\n        \"phone\": \"+79998887734\",\n        \"input\": \"1\",\n        \"isCall\": \"0\",\n        \"message\": \"Новое сообщение\",\n        \"date\": \"07.09.2021 16:33:22\"\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/sms.php",
+    "groupTitle": "CallsAndSms",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/numberphones/story"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/numberphones/story",
+    "title": "2. Добавить звонки и смс ребенка",
+    "name": "PostCallsAndSms",
+    "group": "CallsAndSms",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Валидный номер телефона, начинающийся с + и кода страны. Состоит из ровно 11 цифр. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "input",
+            "description": "<p>Является ли смс или звонок входящим. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "isCall",
+            "description": "<p>Является звонком или смс. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Текст смс. Необязательный. По умолчанию null.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Дата отправки смс или звонка в формате d.m.Y H:i:s. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка. Обязательный.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n    \"child\": \"1\",\n    \"phones\":\n        [\n            {\n                \"date\": \"07.09.2021 13:33:21\",\n                \"phone\": \"+79998887744\",\n                \"input\": true,\n                \"isCall\": true,\n                \"msg\": \"\"\n            },\n            {\n                \"date\": \"07.09.2021 16:33:22\",\n                \"phone\": \"+79998887734\",\n                \"input\": true,\n                \"isCall\": false,\n                \"msg\": \"Новое сообщение\"\n            }\n        ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Bad request 404": [
+          {
+            "group": "Bad request 404",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некоторые параметры не прошли валидацию</p>"
+          }
+        ],
+        "Unauthenticated 404": [
+          {
+            "group": "Unauthenticated 404",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 404": [
+          {
+            "group": "Not your child 404",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 404": [
+          {
+            "group": "No subscription 404",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 404": [
+          {
+            "group": "Subscription expired 404",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 404:",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"phones.0.phone\": [\n           \"Параметр phones.0.phone обязателен\"\n       ]\n   }\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 404:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 404:",
+          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 404:",
+          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 404:",
+          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение о добавлении звонков и смс</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "{\n    \"message\": \"Звонки и смс добавлены\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/sms.php",
+    "groupTitle": "CallsAndSms",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/numberphones/story"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "delete",
     "url": "/api/child/object",
     "title": "5. Удалить ребенка",
@@ -2173,7 +2520,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/geolocation/",
+    "url": "/api/gps/story",
     "title": "1. Получить список местоположений для указанного ребенка по дате",
     "name": "GetGeolocationByDate",
     "group": "Geolocation",
@@ -2312,7 +2659,7 @@ define({ "api": [
     "groupTitle": "Geolocation",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/geolocation/"
+        "url": "http://localhost:3000/api/gps/story"
       }
     ],
     "permission": [
@@ -3353,603 +3700,6 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://localhost:3000/api/websites/blocked"
-      }
-    ],
-    "permission": [
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, являющийся родителем указанного ребенка |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Authorization Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "delete",
-    "url": "/api/sms/:sms",
-    "title": "4. Удалить смс",
-    "name": "DeleteSms",
-    "group": "Sms",
-    "version": "1.0.0",
-    "description": "<p>sms - Id смс</p>",
-    "error": {
-      "fields": {
-        "Not Found 404": [
-          {
-            "group": "Not Found 404",
-            "optional": false,
-            "field": "NotFound",
-            "description": "<p>Смс не найдено</p>"
-          }
-        ],
-        "Not belong to your child 403": [
-          {
-            "group": "Not belong to your child 403",
-            "optional": false,
-            "field": "NotBelongToYourChild",
-            "description": "<p>Попытка удалить смс, не принадлежащее ребенку родителя</p>"
-          }
-        ],
-        "Unauthenticated 404": [
-          {
-            "group": "Unauthenticated 404",
-            "optional": false,
-            "field": "Unauthenticated",
-            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
-          }
-        ],
-        "No subscription 404": [
-          {
-            "group": "No subscription 404",
-            "optional": false,
-            "field": "NoSubscription",
-            "description": "<p>Пользователь не оформил подписку</p>"
-          }
-        ],
-        "Subscription expired 404": [
-          {
-            "group": "Subscription expired 404",
-            "optional": false,
-            "field": "SubscriptionExpired",
-            "description": "<p>Подписка пользователя истекла</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти смс с указанным id\",\n}",
-          "type": "json"
-        },
-        {
-          "title": "Not belong to your child 403:",
-          "content": "{\n  \"message\": \"Это смс не принадлежит вашему ребенку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Unauthenticated 404:",
-          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "permission": [
-      {
-        "name": "Пользователь, ребенку которого принадлежит смс |"
-      },
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Сообщение об удалении смс</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "{\n    \"message\": \"Смс было удалено\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/sms.php",
-    "groupTitle": "Sms",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/sms/:sms"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Authorization Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "get",
-    "url": "/api/sms/:child/:phone",
-    "title": "1. Получить список смс для указанного ребенка и телефона",
-    "name": "GetSms",
-    "group": "Sms",
-    "version": "1.0.0",
-    "description": "<p>child - Id ребенка; phone - Валидный номер телефона без спец символов, начинающийся с кода страны. Состоит из ровно 11 цифр.</p>",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Array[sms]",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Массив смс</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "/api/sms/1/79998887766\n[\n    {\n        \"id\": 7,\n        \"phone\": \"79998887766\",\n        \"msg\": \"Текст сообщения\",\n        \"locked\": \"1\",\n        \"incoming\": \"1\",\n        \"date\": \"07.09.2021 17:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T16:26:52.000000Z\",\n        \"updated_at\": \"2021-09-07T16:26:52.000000Z\"\n    }\n]",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/sms.php",
-    "groupTitle": "Sms",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/sms/:child/:phone"
-      }
-    ],
-    "permission": [
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, являющийся родителем указанного ребенка |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Authorization Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Unauthenticated 404": [
-          {
-            "group": "Unauthenticated 404",
-            "optional": false,
-            "field": "Unauthenticated",
-            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
-          }
-        ],
-        "Not your child 404": [
-          {
-            "group": "Not your child 404",
-            "optional": false,
-            "field": "NotYourChild",
-            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
-          }
-        ],
-        "No subscription 404": [
-          {
-            "group": "No subscription 404",
-            "optional": false,
-            "field": "NoSubscription",
-            "description": "<p>Пользователь не оформил подписку</p>"
-          }
-        ],
-        "Subscription expired 404": [
-          {
-            "group": "Subscription expired 404",
-            "optional": false,
-            "field": "SubscriptionExpired",
-            "description": "<p>Подписка пользователя истекла</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Unauthenticated 404:",
-          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "get",
-    "url": "/api/sms/:child/:phone/:date",
-    "title": "3. Получить список смс для указанного ребенка по дате",
-    "name": "GetSmsByDate",
-    "group": "Sms",
-    "version": "1.0.0",
-    "description": "<p>child - Id ребенка; phone - Валидный номер телефона без спец символов, начинающийся с кода страны. Состоит из ровно 11 цифр.; date - дата смс в формате d.m.Y</p>",
-    "error": {
-      "fields": {
-        "Bad request 400": [
-          {
-            "group": "Bad request 400",
-            "optional": false,
-            "field": "BadRequest",
-            "description": "<p>Некорректная дата</p>"
-          }
-        ],
-        "Unauthenticated 404": [
-          {
-            "group": "Unauthenticated 404",
-            "optional": false,
-            "field": "Unauthenticated",
-            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
-          }
-        ],
-        "Not your child 404": [
-          {
-            "group": "Not your child 404",
-            "optional": false,
-            "field": "NotYourChild",
-            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
-          }
-        ],
-        "No subscription 404": [
-          {
-            "group": "No subscription 404",
-            "optional": false,
-            "field": "NoSubscription",
-            "description": "<p>Пользователь не оформил подписку</p>"
-          }
-        ],
-        "Subscription expired 404": [
-          {
-            "group": "Subscription expired 404",
-            "optional": false,
-            "field": "SubscriptionExpired",
-            "description": "<p>Подписка пользователя истекла</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Bad request 400:",
-          "content": "{\n   \"message\": \"Параметр date должен быть датой формата d.m.Y\",\n}",
-          "type": "json"
-        },
-        {
-          "title": "Unauthenticated 404:",
-          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Array[sms]",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Массив смс по указанной дате</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "/api/sms/1/79998887766/07.09.2021\n[\n    {\n        \"id\": 7,\n        \"phone\": \"79998887766\",\n        \"msg\": \"Текст сообщения\",\n        \"locked\": \"1\",\n        \"incoming\": \"1\",\n        \"date\": \"07.09.2021 17:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T16:26:52.000000Z\",\n        \"updated_at\": \"2021-09-07T16:26:52.000000Z\"\n    }\n]",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/sms.php",
-    "groupTitle": "Sms",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/sms/:child/:phone/:date"
-      }
-    ],
-    "permission": [
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, являющийся родителем указанного ребенка |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Authorization Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    }
-  },
-  {
-    "type": "post",
-    "url": "/api/sms",
-    "title": "2. Добавить смс",
-    "name": "PostSms",
-    "group": "Sms",
-    "version": "1.0.0",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "phone",
-            "description": "<p>Валидный номер телефона без спец символов, начинающийся с кода страны. Состоит из ровно 11 цифр. Обязательный.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>Текст сообщения. Необязательный. По умолчанию null.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "incoming",
-            "description": "<p>Является ли смс входящим. Обязательный.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "date",
-            "description": "<p>Дата отправки смс в формате d.m.Y H:i. Обязательный.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "user",
-            "description": "<p>Id ребенка. Обязательный.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request:",
-          "content": "{\n    \"phone\": \"79998887766\",\n    \"msg\": \"Текст сообщения\",\n    \"incoming\": true,\n    \"date\": \"07.09.2021 17:13\",\n    \"user\": \"1\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Bad request 400": [
-          {
-            "group": "Bad request 400",
-            "optional": false,
-            "field": "BadRequest",
-            "description": "<p>Некоторые параметры не прошли валидацию</p>"
-          }
-        ],
-        "Not Found 404": [
-          {
-            "group": "Not Found 404",
-            "optional": false,
-            "field": "NotFound",
-            "description": "<p>Телефон не найден в списке телефонов ребенка</p>"
-          }
-        ],
-        "Unauthenticated 404": [
-          {
-            "group": "Unauthenticated 404",
-            "optional": false,
-            "field": "Unauthenticated",
-            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
-          }
-        ],
-        "Not your child 404": [
-          {
-            "group": "Not your child 404",
-            "optional": false,
-            "field": "NotYourChild",
-            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
-          }
-        ],
-        "No subscription 404": [
-          {
-            "group": "No subscription 404",
-            "optional": false,
-            "field": "NoSubscription",
-            "description": "<p>Пользователь не оформил подписку</p>"
-          }
-        ],
-        "Subscription expired 404": [
-          {
-            "group": "Subscription expired 404",
-            "optional": false,
-            "field": "SubscriptionExpired",
-            "description": "<p>Подписка пользователя истекла</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Bad request 400:",
-          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"phone\": [\n           \"Параметр phone обязателен\"\n       ]\n   }\n}",
-          "type": "json"
-        },
-        {
-          "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Номер телефона 79998887766 не существует в списке номеров указанного ребенка\",\n}",
-          "type": "json"
-        },
-        {
-          "title": "Unauthenticated 404:",
-          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
-          "type": "json"
-        },
-        {
-          "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Смс и сообщение о его добавлении</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "{\n    \"message\": \"Смс добавлено\",\n    \"data\": {\n        \"id\": 7,\n        \"phone\": \"79998887766\",\n        \"msg\": \"Текст сообщения\",\n        \"locked\": \"1\",\n        \"incoming\": \"1\",\n        \"date\": \"07.09.2021 17:13\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-07T16:26:52.000000Z\",\n        \"updated_at\": \"2021-09-07T16:26:52.000000Z\"\n    }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/sms.php",
-    "groupTitle": "Sms",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/sms"
       }
     ],
     "permission": [

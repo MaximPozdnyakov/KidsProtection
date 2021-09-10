@@ -50,7 +50,7 @@
  */
 
 /**
- * @api {get} /api/geolocation/ 1. Получить список местоположений для указанного ребенка по дате
+ * @api {get} /api/gps/story 1. Получить список местоположений для указанного ребенка по дате
  * @apiName GetGeolocationByDate
  * @apiGroup Geolocation
  * @apiVersion 1.0.0

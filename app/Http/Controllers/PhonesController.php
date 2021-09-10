@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Phone;
-// use App\Models\SmsHistory;
 use Illuminate\Http\Request;
 
 class PhonesController extends Controller

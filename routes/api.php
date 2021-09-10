@@ -3,11 +3,11 @@
 use App\Http\Controllers\AppHistoryController;
 use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CallSmsHistoryController;
 use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\GeolocationController;
 use App\Http\Controllers\PhonesController;
 use App\Http\Controllers\SitesController;
-use App\Http\Controllers\SmsHistoryController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\YoutubeController;
@@ -58,10 +58,8 @@ Route::middleware(['auth:api', 'checkChild'])->group(function () {
     Route::post('/numberphones/blocked', [PhonesController::class, 'store']);
     Route::delete('/numberphones/blocked', [PhonesController::class, 'destroy']);
 
-    Route::get('/sms/{child}/{phone}', [SmsHistoryController::class, 'index']);
-    Route::post('/sms', [SmsHistoryController::class, 'store']);
-    Route::get('/sms/{child}/{phone}/{date}', [SmsHistoryController::class, 'show']);
-    Route::delete('/sms/{sms}', [SmsHistoryController::class, 'destroy']);
+    Route::get('/numberphones/story', [CallSmsHistoryController::class, 'index']);
+    Route::post('/numberphones/story', [CallSmsHistoryController::class, 'store']);
 
     Route::get('/gps/story', [GeolocationController::class, 'index']);
     Route::post('/gps/story', [GeolocationController::class, 'store']);
