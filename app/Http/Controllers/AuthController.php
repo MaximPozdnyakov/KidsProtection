@@ -68,12 +68,7 @@ class AuthController extends Controller
             ], 404);
         }
         $token = auth()->user()->createToken('API Token')->accessToken;
-        return response()->json([
-            'data' => [
-                'token' => $token,
-                'user' => $existedUser,
-            ],
-        ], 200);
+        return response()->json($existedUser, 200, ['token' => $token]);
     }
 
     public function register(Request $request)
@@ -113,12 +108,7 @@ class AuthController extends Controller
         ]);
         $token = $user->createToken('API Token')->accessToken;
         $this->sendEmailVerificationCode($data['email'], $data['fio']);
-        return response()->json([
-            'data' => [
-                'token' => $token,
-                'user' => User::find($user->id),
-            ],
-        ], 200);
+        return response()->json(User::find($user->id), 200, ['token' => $token]);
     }
 
     public function logout(Request $request)

@@ -49,23 +49,24 @@
  *            "fio": [
  *                "Укажите ФИО"
  *            ]
- *        }
+ *        }"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."
  *     }
  *
- * @apiSuccess (Success 200) Success Новый пользователь, токен авторизации
+ * @apiSuccess (Success 200) Success Новый пользователь
  * @apiSuccessExample {json} Success 200:
  * {
- *     "data": {
- *         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
- *         "user": {
- *             "id": 2,
- *             "fio": "Максим Поздняков",
- *             "email": "maximpozdnyakow@gmail.com",
- *             "termsAgree": "1",
- *             "emailVerified": "0",
- *             "emailNotify": "1"
- *         }
- *     }
+ *    "id": 2,
+ *    "fio": "Максим Поздняков",
+ *    "email": "maximpozdnyakow@gmail.com",
+ *    "termsAgree": "1",
+ *    "emailVerified": "0",
+ *    "emailNotify": "1"
+ * }
+ *
+ * @apiSuccess (Header Success 200) HeaderSuccess Токен авторизации передается через header
+ * @apiSuccessExample {json} Header Success 200:
+ * {
+ *    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."
  * }
  *
  */
@@ -99,20 +100,21 @@
  *        }
  *     }
  *
- * @apiSuccess (Success 200) Success Пользователь, токен авторизации
+ * @apiSuccess (Success 200) Success Пользователь
  * @apiSuccessExample {json} Success 200:
  * {
- *     "data": {
- *         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
- *         "user": {
- *             "id": 2,
- *             "fio": "Максим Поздняков",
- *             "email": "maximpozdnyakow@gmail.com",
- *             "termsAgree": "1",
- *             "emailVerified": "0",
- *             "emailNotify": "1"
- *         }
- *     }
+ *    "id": 2,
+ *    "fio": "Максим Поздняков",
+ *    "email": "maximpozdnyakow@gmail.com",
+ *    "termsAgree": "1",
+ *    "emailVerified": "0",
+ *    "emailNotify": "1"
+ * }
+ *
+ * @apiSuccess (Header Success 200) HeaderSuccess Токен авторизации передается через header
+ * @apiSuccessExample {json} Header Success 200:
+ * {
+ *    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."
  * }
  */
 

@@ -4482,14 +4482,27 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Пользователь, токен авторизации</p>"
+            "description": "<p>Пользователь</p>"
+          }
+        ],
+        "Header Success 200": [
+          {
+            "group": "Header Success 200",
+            "optional": false,
+            "field": "HeaderSuccess",
+            "description": "<p>Токен авторизации передается через header</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\",\n        \"user\": {\n            \"id\": 2,\n            \"fio\": \"Максим Поздняков\",\n            \"email\": \"maximpozdnyakow@gmail.com\",\n            \"termsAgree\": \"1\",\n            \"emailVerified\": \"0\",\n            \"emailNotify\": \"1\"\n        }\n    }\n}",
+          "content": "{\n   \"id\": 2,\n   \"fio\": \"Максим Поздняков\",\n   \"email\": \"maximpozdnyakow@gmail.com\",\n   \"termsAgree\": \"1\",\n   \"emailVerified\": \"0\",\n   \"emailNotify\": \"1\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Header Success 200:",
+          "content": "{\n   \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\"\n}",
           "type": "json"
         }
       ]
@@ -4643,7 +4656,7 @@
       "examples": [
         {
           "title": "Bad request 404:",
-          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"fio\": [\n           \"Укажите ФИО\"\n       ]\n   }\n}",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"fio\": [\n           \"Укажите ФИО\"\n       ]\n   }\"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\"\n}",
           "type": "json"
         }
       ]
@@ -4655,14 +4668,27 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Новый пользователь, токен авторизации</p>"
+            "description": "<p>Новый пользователь</p>"
+          }
+        ],
+        "Header Success 200": [
+          {
+            "group": "Header Success 200",
+            "optional": false,
+            "field": "HeaderSuccess",
+            "description": "<p>Токен авторизации передается через header</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"data\": {\n        \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\",\n        \"user\": {\n            \"id\": 2,\n            \"fio\": \"Максим Поздняков\",\n            \"email\": \"maximpozdnyakow@gmail.com\",\n            \"termsAgree\": \"1\",\n            \"emailVerified\": \"0\",\n            \"emailNotify\": \"1\"\n        }\n    }\n}",
+          "content": "{\n   \"id\": 2,\n   \"fio\": \"Максим Поздняков\",\n   \"email\": \"maximpozdnyakow@gmail.com\",\n   \"termsAgree\": \"1\",\n   \"emailVerified\": \"0\",\n   \"emailNotify\": \"1\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Header Success 200:",
+          "content": "{\n   \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\"\n}",
           "type": "json"
         }
       ]
