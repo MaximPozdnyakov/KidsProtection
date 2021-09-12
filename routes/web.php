@@ -13,6 +13,10 @@
 
 Route::view('/docs', 'doc');
 
-// Auth::routes();
+Route::get('login', 'App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'App\Http\Controllers\Auth\LoginController@login');
+Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout');
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/admin', function () {
+    return redirect('/admin/users');
+});
