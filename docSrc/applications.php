@@ -54,8 +54,8 @@
  *    "image": Иконка WhatsApp
  * }
  *
- * @apiError (Bad request 400) BadRequest Некоторые параметры не прошли валидацию
- * @apiErrorExample {json} Bad request 400:
+ * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
+ * @apiErrorExample {json} Bad request 404:
  * {
  *    "message": "The given data was invalid.",
  *    "errors": {

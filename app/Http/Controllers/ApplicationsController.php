@@ -30,7 +30,7 @@ class ApplicationsController extends Controller
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => ['package' => 'Приложение с таким названием уже существует в списке приложений указанного ребенка'],
-            ], 400);
+            ], 404);
         }
 
         $file = $request->file('image');
@@ -49,7 +49,7 @@ class ApplicationsController extends Controller
         return response()->json([
             'message' => 'Мобильное приложение добавлено',
             'data' => $application,
-        ], 201);
+        ], 200);
     }
 
     public function show(Request $request, $child, $application)
@@ -107,7 +107,7 @@ class ApplicationsController extends Controller
         return response()->json([
             'message' => 'Данные приложения обновлены',
             'data' => $existedApplication,
-        ], 202);
+        ], 200);
     }
 
     public function destroy(Request $request, $application)

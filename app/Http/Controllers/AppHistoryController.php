@@ -40,7 +40,7 @@ class AppHistoryController extends Controller
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => ['package' => 'Приложение с названием ' . $request->package . ' не существует в списке приложений указанного ребенка'],
-            ], 400);
+            ], 404);
         }
 
         $appHistory = ApplicationHistory::create([
@@ -57,14 +57,14 @@ class AppHistoryController extends Controller
         return response()->json([
             'message' => 'История использования приложения добавлена',
             'data' => $appHistory,
-        ], 201);
+        ], 200);
     }
 
     public function show(Request $request, $child, $package, $date)
     {
         $d = \DateTime::createFromFormat('d.m.Y', $date);
         if (!($d && $d->format('d.m.Y') === $date)) {
-            return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 400);
+            return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 404);
         }
         $appHistory = ApplicationHistory::whereUser($child)->wherePackage($package)
             ->where('start_dt', 'LIKE', $date . '%')->get();
@@ -91,7 +91,7 @@ class AppHistoryController extends Controller
             return response()->json(['message' => 'Не удалось найти историю приложения с указанным id'], 404);
         }
         if (!Child::whereId($existedAppHistory->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 403);
+            return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 404);
         }
         if ($request->end_dt) {
             $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i']);
@@ -102,7 +102,7 @@ class AppHistoryController extends Controller
         return response()->json([
             'message' => 'История приложения обновлена',
             'data' => $existedAppHistory,
-        ], 202);
+        ], 200);
     }
 
     public function destroy(Request $request, $application_history)
@@ -112,7 +112,7 @@ class AppHistoryController extends Controller
             return response()->json(['message' => 'Не удалось найти историю приложения с указанным id'], 404);
         }
         if (!Child::whereId($existedAppHistory->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 403);
+            return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 404);
         }
         $existedAppHistory->delete();
         return response()->json(['message' => 'История была удалена'], 200);

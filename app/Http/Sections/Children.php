@@ -31,6 +31,7 @@ class Children extends Section implements Initializable
             AdminColumn::text('id', 'Id'),
             AdminColumn::text('name', 'Имя'),
             AdminColumn::text('year', 'Год рождения'),
+            AdminColumn::text('allowedTimeOfAppsUse', 'Разрешенное время использования приложений'),
             AdminColumn::text('parent', 'Id родителя'),
         ]);
         $display->paginate(15);

@@ -645,9 +645,9 @@ define({ "api": [
     "description": "<p>child - Id ребенка; package - Идентификатор приложения; date - дата использования приложения в формате d.m.Y</p>",
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некорректная дата</p>"
@@ -688,7 +688,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Bad request 400:",
+          "title": "Bad request 404:",
           "content": "{\n   \"message\": \"Параметр date должен быть датой формата d.m.Y\",\n}",
           "type": "json"
         },
@@ -816,9 +816,9 @@ define({ "api": [
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -867,7 +867,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Bad request 400:",
+          "title": "Bad request 404:",
           "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"package\": [\n           \"Параметр package обязателен\"\n       ]\n   }\n}",
           "type": "json"
         },
@@ -986,9 +986,9 @@ define({ "api": [
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -1037,7 +1037,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Bad request 400:",
+          "title": "Bad request 404:",
           "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"end_dt\": [\n           \"Параметр end_dt должен быть датой формата d.m.Y H:i\"\n       ]\n   }\n}",
           "type": "json"
         },
@@ -1176,9 +1176,9 @@ define({ "api": [
     },
     "error": {
       "fields": {
-        "Bad request 400": [
+        "Bad request 404": [
           {
-            "group": "Bad request 400",
+            "group": "Bad request 404",
             "optional": false,
             "field": "BadRequest",
             "description": "<p>Некоторые параметры не прошли валидацию</p>"
@@ -1219,7 +1219,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Bad request 400:",
+          "title": "Bad request 404:",
           "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"package\": [\n           \"Параметр package обязателен\"\n       ]\n   }\n}",
           "type": "json"
         },
@@ -1979,7 +1979,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"Вова\",\n        \"year\": \"2014\",\n        \"parent\": \"2\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Юля\",\n        \"year\": \"2014\",\n        \"parent\": \"2\"\n    }\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"Вова\",\n        \"year\": \"2014\",\n        \"parent\": \"2\",\n        \"allowedTimeOfAppsUse\": null\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Юля\",\n        \"year\": \"2014\",\n        \"parent\": \"2\"\n        \"allowedTimeOfAppsUse\": null\n    }\n]",
           "type": "json"
         }
       ]
@@ -2119,7 +2119,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"id\": 1,\n    \"name\": \"Вова\",\n    \"year\": \"2014\",\n    \"parent\": \"2\"\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"Вова\",\n    \"year\": \"2014\",\n    \"parent\": \"2\",\n    \"allowedTimeOfAppsUse\": null\n}",
           "type": "json"
         }
       ]
@@ -2320,7 +2320,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"id\": 2,\n    \"name\": \"Юля\",\n    \"year\": \"2014\",\n    \"parent\": \"2\"\n}",
+          "content": "{\n    \"id\": 2,\n    \"name\": \"Юля\",\n    \"year\": \"2014\",\n    \"parent\": \"2\",\n    \"allowedTimeOfAppsUse\": null\n}",
           "type": "json"
         }
       ]
@@ -2391,13 +2391,20 @@ define({ "api": [
             "optional": false,
             "field": "year",
             "description": "<p>Год рождения ребенка</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "allowedTimeOfAppsUse",
+            "description": "<p>Ограничение на время использования приложений в день, в формате hh:mm, по умолчанию null</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"child\": {\n        \"id\": \"1\",\n        \"name\": \"Вадим\",\n        \"year\": 2015\n    }\n}",
+          "content": "{\n    \"child\": {\n        \"id\": \"1\",\n        \"name\": \"Вадим\",\n        \"year\": 2015,\n        \"allowedTimeOfAppsUse\": \"04:00\"\n    }\n}",
           "type": "json"
         }
       ]
@@ -2416,7 +2423,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"id\": 1,\n    \"name\": \"Вадим\",\n    \"year\": 2015,\n    \"parent\": \"2\"\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"Вадим\",\n    \"year\": 2015,\n    \"parent\": \"2\",\n    \"allowedTimeOfAppsUse\": \"04:00\"\n}",
           "type": "json"
         }
       ]

@@ -16,13 +16,15 @@
  *         "id": 1,
  *         "name": "Вова",
  *         "year": "2014",
- *         "parent": "2"
+ *         "parent": "2",
+ *         "allowedTimeOfAppsUse": null
  *     },
  *     {
  *         "id": 2,
  *         "name": "Юля",
  *         "year": "2014",
  *         "parent": "2"
+ *         "allowedTimeOfAppsUse": null
  *     }
  * ]
  */
@@ -70,7 +72,8 @@
  *     "id": 2,
  *     "name": "Юля",
  *     "year": "2014",
- *     "parent": "2"
+ *     "parent": "2",
+ *     "allowedTimeOfAppsUse": null
  * }
  */
 
@@ -94,7 +97,8 @@
  *     "id": 1,
  *     "name": "Вова",
  *     "year": "2014",
- *     "parent": "2"
+ *     "parent": "2",
+ *     "allowedTimeOfAppsUse": null
  * }
  */
 
@@ -111,13 +115,15 @@
  * @apiParam {String} id Id ребенка.
  * @apiParam {String} name Имя ребенка.
  * @apiParam {Integer} year Год рождения ребенка
+ * @apiParam {String} allowedTimeOfAppsUse Ограничение на время использования приложений в день, в формате hh:mm, по умолчанию null
  *
  * @apiParamExample {json} Request:
  * {
  *     "child": {
  *         "id": "1",
  *         "name": "Вадим",
- *         "year": 2015
+ *         "year": 2015,
+ *         "allowedTimeOfAppsUse": "04:00"
  *     }
  * }
  *
@@ -127,7 +133,8 @@
  *     "id": 1,
  *     "name": "Вадим",
  *     "year": 2015,
- *     "parent": "2"
+ *     "parent": "2",
+ *     "allowedTimeOfAppsUse": "04:00"
  * }
  */
 

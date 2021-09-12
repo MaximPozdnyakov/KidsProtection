@@ -4,5 +4,5 @@
 
 docker-compose build app && docker-compose up -d && docker-compose exec app composer install && touch database/database.sqlite && cp .env.example .env && docker-compose exec app php artisan migrate --seed && docker-compose exec app php artisan passport:install --force
 
-Документация к api - http://localhost:3000
+Документация к api - http://localhost:3000/docs
 Админ панель - http://localhost:3000/admin

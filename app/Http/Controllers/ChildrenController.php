@@ -28,8 +28,7 @@ class ChildrenController extends Controller
 
     public function index()
     {
-        // return Child::whereParent(auth()->user()->id)->limit($this->getDevices())->get();
-        return Child::whereParent(auth()->user()->id)->get();
+        return Child::whereParent(auth()->user()->id)->limit($this->getDevices())->get();
     }
 
     public function store(Request $request)
@@ -42,10 +41,10 @@ class ChildrenController extends Controller
                 'child.name.required' => 'Укажите имя ребенка',
                 'child.year.required' => 'Укажите год рождения ребенка',
             ]);
-        // $devices = $this->getDevices();
-        // if (count(Child::whereParent(auth()->user()->id)->get()->toArray()) >= $devices) {
-        //     return response()->json(['message' => 'Вам можно подключить не более ' . $devices . ' устройств'], 404);
-        // }
+        $devices = $this->getDevices();
+        if (count(Child::whereParent(auth()->user()->id)->get()->toArray()) >= $devices) {
+            return response()->json(['message' => 'Вам можно подключить не более ' . $devices . ' устройств'], 404);
+        }
         $child = Child::create([
             'name' => $request->child['name'],
             'year' => $request->child['year'],
@@ -62,13 +61,19 @@ class ChildrenController extends Controller
     public function update(Request $request)
     {
         $existedChild = Child::whereId($request->child['id'])->whereParent(auth()->user()->id)->first();
-        if ($request->child['name']) {
+        if (array_key_exists('name', $request->child)) {
             $request->validate(['child.name' => 'string']);
             $existedChild->name = $request->child['name'];
         }
-        if ($request->child['year']) {
+        if (array_key_exists('year', $request->child)) {
             $request->validate(['child.year' => 'integer']);
             $existedChild->year = $request->child['year'];
+        }
+        if (array_key_exists('allowedTimeOfAppsUse', $request->child)) {
+            if (!is_null($request->child['allowedTimeOfAppsUse'])) {
+                $request->validate(['child.allowedTimeOfAppsUse' => 'date_format:H:i']);
+            }
+            $existedChild->allowedTimeOfAppsUse = $request->child['allowedTimeOfAppsUse'];
         }
         $existedChild->update();
         return response()->json($existedChild, 200);
