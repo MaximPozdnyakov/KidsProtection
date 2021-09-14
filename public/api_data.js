@@ -1979,7 +1979,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"Вова\",\n        \"year\": \"2014\",\n        \"parent\": \"2\",\n        \"allowedTimeOfAppsUse\": null\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Юля\",\n        \"year\": \"2014\",\n        \"parent\": \"2\"\n        \"allowedTimeOfAppsUse\": null\n    }\n]",
+          "content": "[\n    {\n        \"id\": 1,\n        \"name\": \"Вова\",\n        \"year\": \"2014\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Юля\",\n        \"year\": \"2014\"\n    }\n]",
           "type": "json"
         }
       ]
@@ -2119,7 +2119,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"id\": 1,\n    \"name\": \"Вова\",\n    \"year\": \"2014\",\n    \"parent\": \"2\",\n    \"allowedTimeOfAppsUse\": null\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"Вова\",\n    \"year\": \"2014\",\n    \"allApps\": {\n        \"allAppsLock\": \"0\",\n        \"allAppsLimit\": null,\n        \"allAppsStartTime\": null,\n        \"allAppsFinishTime\": null\n    }\n}",
           "type": "json"
         }
       ]
@@ -2320,7 +2320,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"id\": 2,\n    \"name\": \"Юля\",\n    \"year\": \"2014\",\n    \"parent\": \"2\",\n    \"allowedTimeOfAppsUse\": null\n}",
+          "content": "{\n    \"id\": 2,\n    \"name\": \"Юля\",\n    \"year\": \"2014\"\n}",
           "type": "json"
         }
       ]
@@ -2423,7 +2423,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"id\": 1,\n    \"name\": \"Вадим\",\n    \"year\": 2015,\n    \"parent\": \"2\",\n    \"allowedTimeOfAppsUse\": \"04:00\"\n}",
+          "content": "{\n    \"id\": 1,\n    \"name\": \"Вадим\",\n    \"year\": 2015\n}",
           "type": "json"
         }
       ]
@@ -2466,6 +2466,182 @@ define({ "api": [
         }
       ]
     },
+    "error": {
+      "fields": {
+        "Unauthenticated 404": [
+          {
+            "group": "Unauthenticated 404",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 404": [
+          {
+            "group": "Not your child 404",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 404": [
+          {
+            "group": "No subscription 404",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 404": [
+          {
+            "group": "Subscription expired 404",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 404:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 404:",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 404:",
+          "content": "\"Оформите подписку\"",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 404:",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/child/allapps",
+    "title": "6. Установить/снять ограничение на все приложения",
+    "name": "UpdateChildApps",
+    "group": "Child",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{ \"child\": \"1\" }",
+          "type": "json"
+        },
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "allAppsLock",
+            "description": "<p>Все приложения заблокированы.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer|null",
+            "optional": false,
+            "field": "allAppsLimit",
+            "description": "<p>Лимит в минутах на использование приложений.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|null",
+            "optional": false,
+            "field": "allAppsStartTime",
+            "description": "<p>Разрешенное время начала использования приложений.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|null",
+            "optional": false,
+            "field": "allAppsFinishTime",
+            "description": "<p>Разрешенное время конца использования приложений.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n    \"allAppsLock\": true,\n    \"allAppsLimit\": 120,\n    \"allAppsStartTime\": \"0930\",\n    \"allAppsFinishTime\": \"1900\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение об обновлении ограничений на приложения</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "\"Настройки приложений обновлены\"",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/children.php",
+    "groupTitle": "Child",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/child/allapps"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
     "error": {
       "fields": {
         "Unauthenticated 404": [

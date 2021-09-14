@@ -33,6 +33,7 @@ Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(functi
     Route::get('/child/object', [ChildrenController::class, 'show']);
     Route::put('/child/object', [ChildrenController::class, 'update']);
     Route::delete('/child/object', [ChildrenController::class, 'destroy']);
+    Route::post('/child/allapps', [ChildrenController::class, 'updateApps']);
 
     Route::get('/applications/{child}', [ApplicationsController::class, 'index']);
     Route::post('/applications', [ApplicationsController::class, 'store']);

@@ -15,16 +15,12 @@
  *     {
  *         "id": 1,
  *         "name": "Вова",
- *         "year": "2014",
- *         "parent": "2",
- *         "allowedTimeOfAppsUse": null
+ *         "year": "2014"
  *     },
  *     {
  *         "id": 2,
  *         "name": "Юля",
- *         "year": "2014",
- *         "parent": "2"
- *         "allowedTimeOfAppsUse": null
+ *         "year": "2014"
  *     }
  * ]
  */
@@ -69,9 +65,7 @@
  * {
  *     "id": 2,
  *     "name": "Юля",
- *     "year": "2014",
- *     "parent": "2",
- *     "allowedTimeOfAppsUse": null
+ *     "year": "2014"
  * }
  */
 
@@ -95,8 +89,12 @@
  *     "id": 1,
  *     "name": "Вова",
  *     "year": "2014",
- *     "parent": "2",
- *     "allowedTimeOfAppsUse": null
+ *     "allApps": {
+ *         "allAppsLock": "0",
+ *         "allAppsLimit": null,
+ *         "allAppsStartTime": null,
+ *         "allAppsFinishTime": null
+ *     }
  * }
  */
 
@@ -130,9 +128,7 @@
  * {
  *     "id": 1,
  *     "name": "Вадим",
- *     "year": 2015,
- *     "parent": "2",
- *     "allowedTimeOfAppsUse": "04:00"
+ *     "year": 2015
  * }
  */
 
@@ -153,4 +149,36 @@
  * @apiSuccess (Success 200) Success Сообщение об удалении ребенка
  * @apiSuccessExample {json} Success 200:
  * "Ребенок удален"
+ */
+
+/**
+ * @api {post} /api/child/allapps 6. Установить/снять ограничение на все приложения
+ * @apiName UpdateChildApps
+ * @apiGroup Child
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} child Id ребенка
+ * @apiHeaderExample {json} Header:
+ *     { "child": "1" }
+ *
+ * @apiUse Authorization
+ * @apiUse WithChild
+ * @apiUse WithSubscription
+ *
+ * @apiParam {Boolean} allAppsLock Все приложения заблокированы.
+ * @apiParam {Integer|null} allAppsLimit Лимит в минутах на использование приложений.
+ * @apiParam {String|null} allAppsStartTime Разрешенное время начала использования приложений.
+ * @apiParam {String|null} allAppsFinishTime Разрешенное время конца использования приложений.
+ *
+ * @apiParamExample {json} Request:
+ * {
+ *     "allAppsLock": true,
+ *     "allAppsLimit": 120,
+ *     "allAppsStartTime": "0930",
+ *     "allAppsFinishTime": "1900"
+ * }
+ *
+ * @apiSuccess (Success 200) Success Сообщение об обновлении ограничений на приложения
+ * @apiSuccessExample {json} Success 200:
+ * "Настройки приложений обновлены"
  */

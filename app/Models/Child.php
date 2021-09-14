@@ -13,6 +13,10 @@ class Child extends Model
         'name',
         'year',
         'parent',
+        'allAppsLock',
+        'allAppsLimit',
+        'allAppsStartTime',
+        'allAppsFinishTime',
     ];
     protected $hidden = [
         'created_at',

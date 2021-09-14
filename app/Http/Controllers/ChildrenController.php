@@ -14,11 +14,11 @@ class ChildrenController extends Controller
     {
         $activeSubscriptions = ActiveSubscription::whereUser(auth()->user()->id)->get()->toArray();
         $activeSubscriptions = array_filter($activeSubscriptions, function ($subscription) {
-            return Carbon::createFromFormat('d.m.Y H:i', $subscription['end_dt'])->gt(Carbon::now());
+            return Carbon::createFromFormat('d.m.Y H:i', $subscription['endDate'])->gt(Carbon::now());
         });
         $maxNumOfChildren = 0;
         foreach ($activeSubscriptions as $i => $subscription) {
-            $device = Subscription::whereName($subscription['name'])->first()->device;
+            $device = Subscription::whereName($subscription['subscribe'])->first()->device;
             if ($device > $maxNumOfChildren) {
                 $maxNumOfChildren = $device;
             }
@@ -28,7 +28,8 @@ class ChildrenController extends Controller
 
     public function index()
     {
-        return Child::whereParent(auth()->user()->id)->limit($this->getDevices())->get();
+        return Child::whereParent(auth()->user()->id)->limit($this->getDevices())->get()
+            ->makeHidden(['allAppsLock', 'allAppsLimit', 'allAppsStartTime', 'allAppsFinishTime', 'parent']);
     }
 
     public function store(Request $request)
@@ -50,12 +51,26 @@ class ChildrenController extends Controller
             'year' => $request->child['year'],
             'parent' => auth()->user()->id,
         ]);
-        return response()->json(Child::find($child->id), 200);
+        return response()->json(
+            Child::find($child->id)->makeHidden(['allAppsLock', 'allAppsLimit', 'allAppsStartTime', 'allAppsFinishTime', 'parent'])
+            , 200);
     }
 
     public function show(Request $request)
     {
-        return Child::whereId($request->header('child'))->whereParent(auth()->user()->id)->first();
+        $child = Child::whereId($request->header('child'))->whereParent(auth()->user()->id)->first()
+            ->makeHidden('parent')->toArray();
+        $child['allApps'] = [
+            'allAppsLock' => $child['allAppsLock'],
+            'allAppsLimit' => $child['allAppsLimit'],
+            'allAppsStartTime' => $child['allAppsStartTime'],
+            'allAppsFinishTime' => $child['allAppsFinishTime'],
+        ];
+        unset($child['allAppsLock']);
+        unset($child['allAppsLimit']);
+        unset($child['allAppsStartTime']);
+        unset($child['allAppsFinishTime']);
+        return $child;
     }
 
     public function update(Request $request)
@@ -76,7 +91,9 @@ class ChildrenController extends Controller
             $existedChild->allowedTimeOfAppsUse = $request->child['allowedTimeOfAppsUse'];
         }
         $existedChild->update();
-        return response()->json($existedChild, 200);
+        return response()->json(
+            $existedChild->makeHidden(['allAppsLock', 'allAppsLimit', 'allAppsStartTime', 'allAppsFinishTime', 'parent'])
+            , 200);
     }
 
     public function destroy(Request $request)
@@ -85,5 +102,34 @@ class ChildrenController extends Controller
         $childCopy = $existedChild;
         $existedChild->delete();
         return response()->json("Ребенок удален", 200);
+    }
+
+    public function updateApps(Request $request)
+    {
+        $existedChild = Child::whereId($request->header('child'))->whereParent(auth()->user()->id)->first();
+        if ($request->has('allAppsLock')) {
+            $request->validate(['allAppsLock' => 'boolean']);
+            $existedChild->allAppsLock = $request->allAppsLock;
+        }
+        if ($request->has('allAppsLimit')) {
+            if (!is_null($request->allAppsLimit)) {
+                $request->validate(['allAppsLimit' => 'integer']);
+            }
+            $existedChild->allAppsLimit = $request->allAppsLimit;
+        }
+        if ($request->has('allAppsStartTime')) {
+            if (!is_null($request->allAppsStartTime)) {
+                $request->validate(['allAppsStartTime' => 'string']);
+            }
+            $existedChild->allAppsStartTime = $request->allAppsStartTime;
+        }
+        if ($request->has('allAppsFinishTime')) {
+            if (!is_null($request->allAppsFinishTime)) {
+                $request->validate(['allAppsFinishTime' => 'string']);
+            }
+            $existedChild->allAppsFinishTime = $request->allAppsFinishTime;
+        }
+        $existedChild->update();
+        return response()->json("Настройки приложений обновлены", 200);
     }
 }
