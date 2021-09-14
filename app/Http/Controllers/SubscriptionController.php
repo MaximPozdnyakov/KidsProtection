@@ -67,6 +67,6 @@ class SubscriptionController extends Controller
             'user' => auth()->user()->id,
         ]);
 
-        return response()->json(['message' => 'Подписка добавлена'], 200);
+        return response()->json('Подписка добавлена', 200);
     }
 }

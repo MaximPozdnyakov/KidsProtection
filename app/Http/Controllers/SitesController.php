@@ -32,16 +32,16 @@ class SitesController extends Controller
             'child' => $request->child,
             'parent' => auth()->user()->id,
         ]);
-        return response()->json(['message' => 'Сайт заблокирован'], 200);
+        return response()->json('Сайт заблокирован', 200);
     }
 
     public function destroy(Request $request)
     {
         $existedSite = Site::whereSite($request->header('site'))->whereChild($request->header('child'))->first();
         if (!$existedSite) {
-            return response()->json(['message' => 'Не удалось найти сайт'], 404);
+            return response()->json('Не удалось найти сайт', 404);
         }
         $existedSite->delete();
-        return response()->json(['message' => 'Сайт разблокирован'], 200);
+        return response()->json('Сайт разблокирован', 200);
     }
 }

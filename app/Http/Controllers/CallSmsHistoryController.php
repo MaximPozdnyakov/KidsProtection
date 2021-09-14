@@ -11,7 +11,7 @@ class CallSmsHistoryController extends Controller
     {
         $d = \DateTime::createFromFormat('d.m.Y', $request->header('date'));
         if (!($d && $d->format('d.m.Y') === $request->header('date'))) {
-            return response()->json(['message' => 'date должен быть датой формата dd.MM.yyyy'], 404);
+            return response()->json('date должен быть датой формата dd.MM.yyyy', 404);
         }
         return CallSmsHistory::whereChild($request->header('child'))->where('date', 'LIKE', $request->header('date') . '%')->get()->makeHidden(['id', 'child']);
     }
@@ -33,6 +33,6 @@ class CallSmsHistoryController extends Controller
             $phones[$index]['child'] = $request->child;
         }
         $geolocation = CallSmsHistory::insert($phones);
-        return response()->json(['message' => 'Звонки и смс добавлены'], 200);
+        return response()->json('Звонки и смс добавлены', 200);
     }
 }

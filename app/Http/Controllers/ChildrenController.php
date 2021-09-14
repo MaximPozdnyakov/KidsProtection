@@ -43,7 +43,7 @@ class ChildrenController extends Controller
             ]);
         $devices = $this->getDevices();
         if (count(Child::whereParent(auth()->user()->id)->get()->toArray()) >= $devices) {
-            return response()->json(['message' => 'Вам можно подключить не более ' . $devices . ' устройств'], 404);
+            return response()->json('Вам можно подключить не более ' . $devices . ' устройств', 404);
         }
         $child = Child::create([
             'name' => $request->child['name'],
@@ -84,6 +84,6 @@ class ChildrenController extends Controller
         $existedChild = Child::whereId($request->header('child'))->whereParent(auth()->user()->id)->first();
         $childCopy = $existedChild;
         $existedChild->delete();
-        return response()->json(["message" => "Ребенок удален"], 200);
+        return response()->json("Ребенок удален", 200);
     }
 }

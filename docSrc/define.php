@@ -22,9 +22,7 @@
  *
  * @apiError (Not your child 404) NotYourChild Указанный ребенок не существует или не принадлежит текущему пользователю
  * @apiErrorExample {json} Not your child 404:
- *     {
- *       "message": "Указанный ребенок вам не принадлежит"
- *     }
+ * "Указанный ребенок вам не принадлежит"
  */
 
 /**
@@ -34,13 +32,9 @@
  *
  * @apiError (No subscription 404) NoSubscription Пользователь не оформил подписку
  * @apiErrorExample {json} No subscription 404:
- *     {
- *       "message": "Оформите подписку"
- *     }
+ * "Оформите подписку"
  *
  * @apiError (Subscription expired 404) SubscriptionExpired Подписка пользователя истекла
  * @apiErrorExample {json} Subscription expired 404:
- *     {
- *       "message": "Действие вашей подписки истекло, оформите новую"
- *     }
+ * "Действие вашей подписки истекло, оформите новую"
  */

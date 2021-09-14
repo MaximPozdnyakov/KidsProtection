@@ -44,9 +44,7 @@
  *
  * @apiSuccess (Success 200) Success Сообщение о добавлении геолокации
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Геолокация добавлена"
- * }
+ * "Геолокация добавлена"
  */
 
 /**
@@ -69,9 +67,7 @@
  *
  * @apiError (Bad request 404) BadRequest Некорректная дата
  * @apiErrorExample {json} Bad request 404:
- * {
- *    "message": "date должен быть датой формата d.m.Y",
- * }
+ * "date должен быть датой формата d.m.Y"
  *
  * @apiSuccess (Success 200) {Array[geolocation]} Success Массив местоположений по указанной дате
  * @apiSuccessExample {json} Success 200:

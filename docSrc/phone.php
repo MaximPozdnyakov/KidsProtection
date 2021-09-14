@@ -54,9 +54,7 @@
  *
  * @apiSuccess (Success 200) Success Сообщение о блокировании телефона
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Телефон заблокирован"
- * }
+ * "Телефон заблокирован"
  */
 
 /**
@@ -70,9 +68,7 @@
  *
  * @apiError (Not Found 404) NotFound Телефон не найден или не принадлежит ребенку пользователя
  * @apiErrorExample {json} Not Found 404:
- * {
- *    "message": "Не удалось найти телефон",
- * }
+ * "Не удалось найти телефон"
  *
  * @apiHeader {String} child Id ребенка
  * @apiHeader {String} phone Заблокированный телефон
@@ -84,7 +80,5 @@
  *
  * @apiSuccess (Success 200) Success Сообщение об разблокировки телефона
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Телефон разблокирован"
- * }
+ * "Телефон разблокирован"
  */

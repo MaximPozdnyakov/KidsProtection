@@ -55,12 +55,12 @@ define({ "api": [
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -232,17 +232,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -357,17 +357,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -442,12 +442,12 @@ define({ "api": [
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -619,17 +619,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -699,17 +699,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -883,17 +883,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -1053,17 +1053,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -1230,17 +1230,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -1359,12 +1359,12 @@ define({ "api": [
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -1567,7 +1567,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Bad request 404:",
-          "content": "{\n   \"message\": \"date должен быть датой формата d.m.Y\",\n}",
+          "content": "\"message\": \"date должен быть датой формата d.m.Y\"",
           "type": "json"
         },
         {
@@ -1577,17 +1577,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -1749,17 +1749,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -1778,7 +1778,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Звонки и смс добавлены\"\n}",
+          "content": "\"Звонки и смс добавлены\"",
           "type": "json"
         }
       ]
@@ -1875,7 +1875,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Ребенок удален\"\n}",
+          "content": "\"Ребенок удален\"",
           "type": "json"
         }
       ]
@@ -1941,17 +1941,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -2054,12 +2054,12 @@ define({ "api": [
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -2185,17 +2185,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -2286,7 +2286,7 @@ define({ "api": [
         },
         {
           "title": "Devices Limit Reached 404:",
-          "content": "{\n   \"message\": \"Вам можно подключить не более 3 устройств\",\n}",
+          "content": "\"Вам можно подключить не более 3 устройств\"",
           "type": "json"
         },
         {
@@ -2296,12 +2296,12 @@ define({ "api": [
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -2509,17 +2509,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -2617,7 +2617,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Bad request 404:",
-          "content": "{\n   \"message\": \"date должен быть датой формата d.m.Y\",\n}",
+          "content": "\"date должен быть датой формата d.m.Y\"",
           "type": "json"
         },
         {
@@ -2627,17 +2627,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -2792,17 +2792,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -2821,7 +2821,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Геолокация добавлена\"\n}",
+          "content": "\"Геолокация добавлена\"",
           "type": "json"
         }
       ]
@@ -2910,7 +2910,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти телефон\",\n}",
+          "content": "\"Не удалось найти телефон\"",
           "type": "json"
         },
         {
@@ -2920,12 +2920,12 @@ define({ "api": [
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -2983,7 +2983,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Телефон разблокирован\"\n}",
+          "content": "\"Телефон разблокирован\"",
           "type": "json"
         }
       ]
@@ -3124,17 +3124,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -3230,17 +3230,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -3259,7 +3259,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Телефон заблокирован\"\n}",
+          "content": "\"Телефон заблокирован\"",
           "type": "json"
         }
       ]
@@ -3348,7 +3348,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти сайт\",\n}",
+          "content": "\"Не удалось найти сайт\"",
           "type": "json"
         },
         {
@@ -3358,12 +3358,12 @@ define({ "api": [
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -3421,7 +3421,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Сайт разблокирован\"\n}",
+          "content": "\"Сайт разблокирован\"",
           "type": "json"
         }
       ]
@@ -3562,17 +3562,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -3668,17 +3668,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -3697,7 +3697,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Сайт заблокирован\"\n}",
+          "content": "\"Сайт заблокирован\"",
           "type": "json"
         }
       ]
@@ -3824,7 +3824,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/user/subscribe",
     "title": "3. Получить подписки, одна из них будет или нет, с признаком активности",
-    "name": "GetSubscription",
+    "name": "GetSubscriptionWithActive",
     "group": "Subscription",
     "version": "1.0.0",
     "success": {
@@ -3917,12 +3917,12 @@ define({ "api": [
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -3997,7 +3997,7 @@ define({ "api": [
         },
         {
           "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не существует подписки с названием Extra Big\",\n}",
+          "content": "\"Не существует подписки с названием Extra Big\"",
           "type": "json"
         },
         {
@@ -4021,7 +4021,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Подписка добавлена\"\n}",
+          "content": "\"Подписка добавлена\"",
           "type": "json"
         }
       ]
@@ -4239,7 +4239,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Спасибо, за обратную связь, мы ответим вам в ближайшее время\"\n}",
+          "content": "\"Спасибо, за обратную связь, мы ответим вам в ближайшее время\"",
           "type": "json"
         }
       ]
@@ -4337,7 +4337,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Код для сброса пароля отправлен на вашу электронную почту\"\n}",
+          "content": "\"Код для сброса пароля отправлен на вашу электронную почту\"",
           "type": "json"
         }
       ]
@@ -4543,7 +4543,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Вы вышли из аккаунта\"\n}",
+          "content": "\"Вы вышли из аккаунта\"",
           "type": "json"
         }
       ]
@@ -4663,7 +4663,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Bad request 404:",
-          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"fio\": [\n           \"Укажите ФИО\"\n       ]\n   }\"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...\"\n}",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"fio\": [\n           \"Укажите ФИО\"\n       ]\n   }\n}",
           "type": "json"
         }
       ]
@@ -4775,7 +4775,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Ваш пароль был успешно изменен\"\n}",
+          "content": "\"Ваш пароль был успешно изменен\"",
           "type": "json"
         }
       ]
@@ -4809,7 +4809,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Код для подтверждения email отправлен на вашу электронную почту\"\n}",
+          "content": "\"Код для подтверждения email отправлен на вашу электронную почту\"",
           "type": "json"
         }
       ]
@@ -4988,7 +4988,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Bad request 404:",
-          "content": "{\n   \"message\": \"Веденный вами код для подтверждения email недействителен\"\n}",
+          "content": "Веденный вами код для подтверждения email недействителен\"",
           "type": "json"
         }
       ]
@@ -5007,7 +5007,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Ваша электронная почта была подтверждена\"\n}",
+          "content": "\"Ваша электронная почта была подтверждена\"",
           "type": "json"
         }
       ]
@@ -5065,7 +5065,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти youtube канал\",\n}",
+          "content": "\"Не удалось найти youtube канал\"",
           "type": "json"
         },
         {
@@ -5075,12 +5075,12 @@ define({ "api": [
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -5138,7 +5138,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Youtube канал разблокирован\"\n}",
+          "content": "\"Youtube канал разблокирован\"",
           "type": "json"
         }
       ]
@@ -5279,17 +5279,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -5385,17 +5385,17 @@ define({ "api": [
         },
         {
           "title": "Not your child 404:",
-          "content": "{\n  \"message\": \"Указанный ребенок вам не принадлежит\"\n}",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
           "type": "json"
         },
         {
           "title": "No subscription 404:",
-          "content": "{\n  \"message\": \"Оформите подписку\"\n}",
+          "content": "\"Оформите подписку\"",
           "type": "json"
         },
         {
           "title": "Subscription expired 404:",
-          "content": "{\n  \"message\": \"Действие вашей подписки истекло, оформите новую\"\n}",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -5414,7 +5414,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Youtube канал заблокирован\"\n}",
+          "content": "\"Youtube канал заблокирован\"",
           "type": "json"
         }
       ]

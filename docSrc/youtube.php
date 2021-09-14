@@ -53,9 +53,7 @@
  *
  * @apiSuccess (Success 200) Success Сообщение о блокировании youtube канала
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Youtube канал заблокирован"
- * }
+ * "Youtube канал заблокирован"
  */
 
 /**
@@ -69,9 +67,7 @@
  *
  * @apiError (Not Found 404) NotFound youtube канал не найден или не принадлежит ребенку пользователя
  * @apiErrorExample {json} Not Found 404:
- * {
- *    "message": "Не удалось найти youtube канал",
- * }
+ * "Не удалось найти youtube канал"
  *
  * @apiHeader {String} child Id ребенка
  * @apiHeader {String} Youtube Заблокированный youtube канал
@@ -83,7 +79,5 @@
  *
  * @apiSuccess (Success 200) Success Сообщение об разблокировки youtube канала
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Youtube канал разблокирован"
- * }
+ * "Youtube канал разблокирован"
  */

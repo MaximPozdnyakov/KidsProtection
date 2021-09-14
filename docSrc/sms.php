@@ -51,9 +51,7 @@
  *
  * @apiSuccess (Success 200) Success Сообщение о добавлении звонков и смс
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Звонки и смс добавлены"
- * }
+ * "Звонки и смс добавлены"
  */
 
 /**
@@ -76,9 +74,7 @@
  *
  * @apiError (Bad request 404) BadRequest Некорректная дата
  * @apiErrorExample {json} Bad request 404:
- * {
- *    "message": "date должен быть датой формата d.m.Y",
- * }
+ * "message": "date должен быть датой формата d.m.Y"
  *
  * @apiSuccess (Success 200) {Array[geolocation]} Success Массив звонков и смс по указанной дате
  * @apiSuccessExample {json} Success 200:

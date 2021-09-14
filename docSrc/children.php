@@ -62,9 +62,7 @@
  *
  * @apiError (Devices Limit Reached 404) DevicesLimitReached Возникает при попытке добавить больше устройств, чем позволяет подписка
  * @apiErrorExample {json} Devices Limit Reached 404:
- * {
- *    "message": "Вам можно подключить не более 3 устройств",
- * }
+ * "Вам можно подключить не более 3 устройств"
  *
  * @apiSuccess (Success 200) Success Новый ребенок
  * @apiSuccessExample {json} Success 200:
@@ -154,7 +152,5 @@
  *
  * @apiSuccess (Success 200) Success Сообщение об удалении ребенка
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Ребенок удален"
- * }
+ * "Ребенок удален"
  */

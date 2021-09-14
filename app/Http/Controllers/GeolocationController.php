@@ -11,7 +11,7 @@ class GeolocationController extends Controller
     {
         $d = \DateTime::createFromFormat('d.m.Y', $request->header('date'));
         if (!($d && $d->format('d.m.Y') === $request->header('date'))) {
-            return response()->json(['message' => 'date должен быть датой формата dd.MM.yyyy'], 404);
+            return response()->json('date должен быть датой формата dd.MM.yyyy', 404);
         }
         return Geolocation::whereChild($request->header('child'))->where('date', 'LIKE', $request->header('date') . '%')->get()->makeHidden(['id', 'child']);
     }
@@ -30,6 +30,6 @@ class GeolocationController extends Controller
                 '*.longitude.regex' => 'Параметр longitude должен быть валидной долготой',
             ]);
         $geolocation = Geolocation::insert($request->all());
-        return response()->json(['message' => 'Геолокация добавлена'], 200);
+        return response()->json('Геолокация добавлена', 200);
     }
 }

@@ -30,16 +30,16 @@ class PhonesController extends Controller
             'parent' => auth()->user()->id,
             'child' => $request->child,
         ]);
-        return response()->json(['message' => 'Телефон заблокирован'], 200);
+        return response()->json('Телефон заблокирован', 200);
     }
 
     public function destroy(Request $request)
     {
         $existedPhone = Phone::wherePhone($request->header('phone'))->whereChild($request->header('child'))->first();
         if (!$existedPhone) {
-            return response()->json(['message' => 'Не удалось найти телефон'], 404);
+            return response()->json('Не удалось найти телефон', 404);
         }
         $existedPhone->delete();
-        return response()->json(['message' => 'Телефон разблокирован'], 200);
+        return response()->json('Телефон разблокирован', 200);
     }
 }

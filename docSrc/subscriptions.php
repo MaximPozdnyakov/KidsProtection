@@ -37,7 +37,7 @@
 
 /**
  * @api {get} /api/user/subscribe 3. Получить подписки, одна из них будет или нет, с признаком активности
- * @apiName GetSubscription
+ * @apiName GetSubscriptionWithActive
  * @apiGroup Subscription
  * @apiVersion 1.0.0
  *
@@ -104,13 +104,9 @@
  *
  * @apiError (Not Found 404) NotFound Возникает, при указании имени не существующей подписки
  * @apiErrorExample {json} Not Found 404:
- * {
- *    "message": "Не существует подписки с названием Extra Big",
- * }
+ * "Не существует подписки с названием Extra Big"
  *
  * @apiSuccess (Success 200) Success Сообщение о создании подписки
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Подписка добавлена"
- * }
+ * "Подписка добавлена"
  */

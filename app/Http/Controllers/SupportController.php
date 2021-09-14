@@ -52,6 +52,6 @@ class SupportController extends Controller
                 $message->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'));
             },
         );
-        return response()->json(["message" => 'Спасибо, за обратную связь, мы ответим вам в ближайшее время'], 200);
+        return response()->json('Спасибо, за обратную связь, мы ответим вам в ближайшее время', 200);
     }
 }

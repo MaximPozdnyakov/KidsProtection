@@ -30,7 +30,7 @@ class YoutubeController extends Controller
             'child' => $request->child,
             'parent' => auth()->user()->id,
         ]);
-        return response()->json(['message' => 'Youtube канал заблокирован'], 200);
+        return response()->json('Youtube канал заблокирован', 200);
     }
 
     public function destroy(Request $request)
@@ -38,9 +38,9 @@ class YoutubeController extends Controller
         $existedYoutube = Youtube::where('channel', 'LIKE', '%/' . $request->header('channel'))->whereChild($request->header('child'))
             ->orWhere('channel', $request->header('channel'))->whereChild($request->header('child'))->first();
         if (!$existedYoutube) {
-            return response()->json(['message' => 'Не удалось найти youtube канал'], 404);
+            return response()->json('Не удалось найти youtube канал', 404);
         }
         $existedYoutube->delete();
-        return response()->json(['message' => 'Youtube канал разблокирован'], 200);
+        return response()->json('Youtube канал разблокирован', 200);
     }
 }

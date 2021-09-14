@@ -49,7 +49,7 @@
  *            "fio": [
  *                "Укажите ФИО"
  *            ]
- *        }"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."
+ *        }
  *     }
  *
  * @apiSuccess (Success 200) Success Новый пользователь
@@ -128,9 +128,7 @@
  *
  * @apiSuccess (Success 200) Success Сообщение о выходе
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Вы вышли из аккаунта"
- * }
+ * "Вы вышли из аккаунта"
  */
 
 /**
@@ -156,9 +154,7 @@
  *
  * @apiSuccess (Success 200) Success Сообщение об отправке шестизначного кода для сброса пароля
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Код для сброса пароля отправлен на вашу электронную почту"
- * }
+ * "Код для сброса пароля отправлен на вашу электронную почту"
  */
 
 /**
@@ -188,9 +184,7 @@
  *
  * @apiSuccess (Success 200) Success Сообщение о успешном изменении пароля
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Ваш пароль был успешно изменен"
- * }
+ * "Ваш пароль был успешно изменен"
  */
 
 /**
@@ -243,9 +237,7 @@
  *
  * @apiSuccess (Success 200) Success Сообщение о успешном подтверждении email
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Код для подтверждения email отправлен на вашу электронную почту"
- * }
+ * "Код для подтверждения email отправлен на вашу электронную почту"
  */
 
 /**
@@ -260,13 +252,9 @@
  *
  * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
  * @apiErrorExample {json} Bad request 404:
- *     {
- *        "message": "Веденный вами код для подтверждения email недействителен"
- *     }
+ * Веденный вами код для подтверждения email недействителен"
  *
  * @apiSuccess (Success 200) Success Сообщение о успешном подтверждении email
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Ваша электронная почта была подтверждена"
- * }
+ * "Ваша электронная почта была подтверждена"
  */

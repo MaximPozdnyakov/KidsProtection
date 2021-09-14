@@ -93,9 +93,7 @@ class AuthController extends Controller
         if (!$request->termsAgree) {
             return response()->json([
                 'message' => 'The given data was invalid.',
-                'errors' => [
-                    'termsAgree' => 'Примите условия использования',
-                ],
+                'errors' => ['termsAgree' => 'Примите условия использования'],
             ], 404);
         }
         $data = $request->all();
@@ -114,7 +112,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
-        return response()->json(['message' => 'Вы вышли из аккаунта'], 200);
+        return response()->json('Вы вышли из аккаунта', 200);
     }
 
     public function forgot(Request $request)
@@ -152,7 +150,7 @@ class AuthController extends Controller
                 $message->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'));
             },
         );
-        return response()->json(["message" => 'Код для сброса пароля отправлен на вашу электронную почту'], 200);
+        return response()->json('Код для сброса пароля отправлен на вашу электронную почту', 200);
     }
 
     public function reset(Request $request)
@@ -183,7 +181,7 @@ class AuthController extends Controller
         $user->password = Hash::make($request->pass);
         $user->update();
         DB::table('password_resets')->whereEmail($user->email)->delete();
-        return response()->json(["message" => 'Ваш пароль был успешно изменен'], 200);
+        return response()->json('Ваш пароль был успешно изменен', 200);
     }
 
     public function update(Request $request)
@@ -223,17 +221,17 @@ class AuthController extends Controller
             $user = User::whereEmail($tokenData->email)->first();
         }
         if (!$user) {
-            return response()->json(['message' => 'Веденный вами код для подтверждения email недействителен'], 404);
+            return response()->json('Веденный вами код для подтверждения email недействителен', 404);
         }
         $user->emailVerified = 1;
         $user->update();
         DB::table('password_resets')->whereEmail($user->email)->delete();
-        return response()->json(["message" => 'Ваша электронная почта была подтверждена'], 200);
+        return response()->json('Ваша электронная почта была подтверждена', 200);
     }
 
     public function send_email_verification_code()
     {
         $this->sendEmailVerificationCode(auth()->user()->email, auth()->user()->fio);
-        return response()->json(["message" => 'Код для подтверждения email отправлен на вашу электронную почту'], 200);
+        return response()->json('Код для подтверждения email отправлен на вашу электронную почту', 200);
     }
 }

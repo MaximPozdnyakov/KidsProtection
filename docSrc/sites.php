@@ -53,9 +53,7 @@
  *
  * @apiSuccess (Success 200) Success Сообщение о блокировании сайта
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Сайт заблокирован"
- * }
+ * "Сайт заблокирован"
  */
 
 /**
@@ -69,9 +67,7 @@
  *
  * @apiError (Not Found 404) NotFound Сайт не найден или не принадлежит ребенку пользователя
  * @apiErrorExample {json} Not Found 404:
- * {
- *    "message": "Не удалось найти сайт",
- * }
+ * "Не удалось найти сайт"
  *
  * @apiHeader {String} child Id ребенка
  * @apiHeader {String} site Заблокированный сайт
@@ -83,7 +79,5 @@
  *
  * @apiSuccess (Success 200) Success Сообщение об разблокировки сайта
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Сайт разблокирован"
- * }
+ * "Сайт разблокирован"
  */
