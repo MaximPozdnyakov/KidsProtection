@@ -1,106 +1,70 @@
 <?php
 /**
- * @api {get} /api/application_history/:child/:package 1. Получить историю использования приложения для указанного ребенка
- * @apiName GetApplicationHistory
- * @apiGroup ApplicationHistory
+ * @api {post} /api/apps/story 2. Фиксация истории приложений
+ * @apiName PostAppHistory
+ * @apiGroup AppHistory
  * @apiVersion 1.0.0
- *
- * @apiDescription child - Id ребенка;
- * package - Идентификатор приложения.
  *
  * @apiUse Authorization
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
- * @apiSuccess (Success 200) {Array[youtube_history]} Success Массив с историей использования приложения и изображение приложения
- * @apiSuccessExample {json} Success 200:
- * /api/youtube_history/1/whatsapp
+ * @apiHeader {String} child Id ребенка
+ * @apiHeaderExample {json} Header:
  * {
- *     "data": {
- *         "history": [
- *             {
- *                 "id": 1,
- *                 "package": "whatsapp",
- *                 "name": "Whatsapp",
- *                 "locked": "0",
- *                 "start_dt": "07.09.2021 19:13",
- *                 "end_dt": "07.09.2021 20:13",
- *                 "user": "1",
- *                 "created_at": "2021-09-08T13:57:22.000000Z",
- *                 "updated_at": "2021-09-08T13:57:22.000000Z"
- *             }
- *         ],
- *         "image": "data:image/png;base64,iVBORw0KG..."
- *     }
+ * "child": "1",
  * }
- */
-
-/**
- * @api {post} /api/youtube_history 2. Добавить историю использования приложения
- * @apiName PostApplicationHistory
- * @apiGroup ApplicationHistory
- * @apiVersion 1.0.0
  *
- * @apiUse Authorization
- * @apiUse WithChild
- * @apiUse WithSubscription
- *
- * @apiParam {String} package Идентификатор канала или ссылка на него. Обязательный.
- * @apiParam {String} user Id ребенка. Обязательный.
- * @apiParam {String} start_dt Дата начала использования приложения в формате d.m.Y H:i. Обязательный.
+ * @apiParam {Integer} time Время использования приложения в минутах. Обязательный.
+ * @apiParam {String} pack Идентификатор приложения. Обязательный.
+ * @apiParam {String} date Дата начала использования приложения в формате d.m.Y H:i:s. Обязательный.
  *
  * @apiParamExample {json} Request:
- * {
- *    "package": "whatsapp",
- *    "user": "1",
- *    "start_dt": "07.09.2021 19:13"
- * }
+ * [
+ *     {
+ *         "time": 120,
+ *         "pack": "com.spotify.android",
+ *         "date": "14.09.2021 00:00:00"
+ *     }, {
+ *         "time": 260,
+ *         "pack": "com.instagram.android",
+ *         "date": "12.09.2021 00:00:00"
+ *     }, {
+ *         "time": 320,
+ *         "pack": "com.facebook.android",
+ *         "date": "12.09.2021 10:00:00"
+ *     }
+ * ]
  *
  * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
  * @apiErrorExample {json} Bad request 404:
  * {
  *    "message": "The given data was invalid.",
  *    "errors": {
- *        "package": [
- *            "Параметр package обязателен"
+ *        "0.pack": [
+ *            "Параметр 0.pack обязателен"
  *        ]
  *    }
  * }
  *
- * @apiError (Not Found 404) NotFound Приложение не найдено в списке приложений ребенка
- * @apiErrorExample {json} Not Found 404:
- * {
- *    "message": "Приложение не существует в списке приложений указанного ребенка",
- * }
- *
- * @apiSuccess (Success 200) Success История использования приложения и сообщение о ее создании
+ * @apiSuccess (Success 200) Success Сообщение о добавлении истории
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "История использования приложения добавлена",
- *     "data": {
- *         "id": 1,
- *         "package": "whatsapp",
- *         "name": "Whatsapp",
- *         "image": "data:image/png;base64,iVBORw0...",
- *         "locked": "0",
- *         "start_dt": "07.09.2021 19:13",
- *         "end_dt": null,
- *         "user": "1",
- *         "created_at": "2021-09-08T13:57:22.000000Z",
- *         "updated_at": "2021-09-08T13:57:22.000000Z"
- *     }
- * }
+ * "Истории приложений зафиксированы"
  */
 
 /**
- * @api {get} /api/youtube_history/:child/:package/:date 3. Получить историю использования приложения для указанного ребенка по дате
- * @apiName GetApplicationHistoryByDate
- * @apiGroup ApplicationHistory
+ * @api {get} /api/apps/story 1. Получить историю приложений по дате
+ * @apiName GetAppHistoryByDate
+ * @apiGroup AppHistory
  * @apiVersion 1.0.0
  *
- * @apiDescription child - Id ребенка;
- * package - Идентификатор приложения;
- * date - дата использования приложения в формате d.m.Y
+ * @apiHeader {String} child Id ребенка
+ * @apiHeader {String} date Дата использования приложения в формате d.m.Y
+ * @apiHeaderExample {json} Header:
+ * {
+ *    "child": "1",
+ *    "date": "12.09.2021"
+ * }
  *
  * @apiUse Authorization
  * @apiUse WithChild
@@ -108,116 +72,28 @@
  *
  * @apiError (Bad request 404) BadRequest Некорректная дата
  * @apiErrorExample {json} Bad request 404:
- * {
- *    "message": "Параметр date должен быть датой формата d.m.Y",
- * }
+ * "date должен быть датой формата d.m.Y"
  *
- * @apiSuccess (Success 200) {Array[youtube_history]} Success Массив с историей использования приложения в указанный день и изображение приложения
+ * @apiSuccess (Success 200) {Array[app_history]} Success Список историй использования приложений по указанной дате
  * @apiSuccessExample {json} Success 200:
- * /api/youtube_history/1/whatsapp/07.09.2021
- * {
- *     "data": {
- *         "history": [
- *             {
- *                 "id": 1,
- *                 "package": "whatsapp",
- *                 "name": "Whatsapp",
- *                 "locked": "0",
- *                 "start_dt": "07.09.2021 19:13",
- *                 "end_dt": "07.09.2021 20:13",
- *                 "user": "1",
- *                 "created_at": "2021-09-08T13:57:22.000000Z",
- *                 "updated_at": "2021-09-08T13:57:22.000000Z"
- *             }
- *         ],
- *         "image": "data:image/png;base64,iVBORw0KG..."
+ * [
+ *     {
+ *         "app": {
+ *             "id": 2,
+ *             "name": "Instagram",
+ *             "pack": "com.instagram.android",
+ *             "icon": "https://website.com/icon.png"
+ *         },
+ *         "time": "260"
+ *     },
+ *     {
+ *         "app": {
+ *             "id": 2,
+ *             "name": "Facebook",
+ *             "pack": "com.facebook.android",
+ *             "icon": "https://website.com/icon.png"
+ *         },
+ *         "time": "320"
  *     }
- * }
- */
-
-/**
- * @api {patch} /api/youtube_history/:youtube_history 4. Обновить историю использования приложения
- * @apiName UpdateApplicationHistory
- * @apiGroup ApplicationHistory
- * @apiVersion 1.0.0
- *
- * @apiDescription youtube_history - Id истории использования приложения
- *
- * @apiUse Authorization
- * @apiUse WithChild
- * @apiUse WithSubscription
- *
- * @apiParam {String} end_dt Дата окончания использования приложения в формате d.m.Y H:i.
- *
- * @apiParamExample {json} Request:
- * {
- *    "end_dt": "07.09.2021 20:13"
- * }
- *
- * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
- * @apiErrorExample {json} Bad request 404:
- * {
- *    "message": "The given data was invalid.",
- *    "errors": {
- *        "end_dt": [
- *            "Параметр end_dt должен быть датой формата d.m.Y H:i"
- *        ]
- *    }
- * }
- *
- * @apiError (Not Found 404) NotFound Приложение не найдено в списке приложений ребенка
- * @apiErrorExample {json} Not Found 404:
- * {
- *    "message": "Приложение не существует в списке приложений указанного ребенка",
- * }
- *
- * @apiSuccess (Success 200) Success История использования приложения и сообщение о ее обновлении
- * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "История использования приложения обновлена",
- *     "data": {
- *         "id": 1,
- *         "package": "whatsapp",
- *         "name": "Whatsapp",
- *         "image": "data:image/png;base64,iVBORw0...",
- *         "locked": "0",
- *         "start_dt": "07.09.2021 19:13",
- *         "end_dt": "07.09.2021 20:13",
- *         "user": "1",
- *         "created_at": "2021-09-08T13:57:22.000000Z",
- *         "updated_at": "2021-09-08T13:57:22.000000Z"
- *     }
- * }
- */
-
-/**
- * @api {delete} /api/youtube_history/:youtube_history 5. Удалить историю использования приложения
- * @apiName DeleteApplicationHistory
- * @apiGroup ApplicationHistory
- * @apiVersion 1.0.0
- *
- * @apiDescription youtube_history - Id истории использования приложения
- *
- * @apiUse Authorization
- * @apiUse WithSubscription
- *
- * @apiError (Not Found 404) NotFound История использования приложения не найдена
- * @apiErrorExample {json} Not Found 404:
- * {
- *    "message": "Не удалось найти историю использования приложения с указанным id",
- * }
- *
- * @apiPermission Пользователь, ребенку которого принадлежит история использования приложения |
- *
- * @apiError (Not belong to your child 403) NotBelongToYourChild Попытка удалить историю использования приложения, не принадлежащую ребенку родителя
- * @apiErrorExample {json} Not belong to your child 403:
- * {
- *   "message": "Эта история использования приложения не принадлежит вашему ребенку"
- * }
- *
- * @apiSuccess (Success 200) Success Сообщение об удалении истории использования приложения
- * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "История использования приложения была удалена"
- * }
+ * ]
  */

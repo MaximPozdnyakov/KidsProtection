@@ -4,117 +4,49 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\ApplicationHistory;
-use App\Models\Child;
+// use App\Models\Child;
 use Illuminate\Http\Request;
 
 class AppHistoryController extends Controller
 {
-    public function index(Request $request, $child, $package)
+    public function index(Request $request)
     {
-        $appHistory = ApplicationHistory::whereUser($child)->wherePackage($package)->get();
-        $image = null;
-        if (count($appHistory)) {
-            $image = 'data:image/png;base64,' . base64_encode($appHistory[0]->image);
+        $d = \DateTime::createFromFormat('d.m.Y', $request->header('date'));
+        if (!($d && $d->format('d.m.Y') === $request->header('date'))) {
+            return response()->json('date должен быть датой формата dd.MM.yyyy', 404);
         }
-        foreach ($appHistory as $index => $appStatistic) {
-            $appStatistic->toArray();
-            unset($appStatistic->image);
+        $records = ApplicationHistory::whereUser($request->header('child'))->where('day', 'LIKE', $request->header('date') . '%')->get()->makeHidden(['id', 'day', 'user']);
+        foreach ($records as $i => $record) {
+            $app = Application::whereUser($request->header('child'))->wherePack($record['app'])->first();
+            $records[$i]['app'] = [
+                'id' => $app['id'],
+                'name' => $app['name'],
+                'pack' => $app['pack'],
+                'icon' => $app['icon'],
+            ];
         }
-        if ($image) {
-            return response()->json([
-                'data' => ['history' => $appHistory, 'image' => $image],
-            ], 200);
-        }
-        return [];
+        return $records;
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'package' => 'required|string',
-            'user' => 'required|string',
-            'start_dt' => 'required|date|date_format:d.m.Y H:i',
+            '*.time' => 'required|integer',
+            '*.pack' => 'required|string',
+            '*.date' => 'required|date|date_format:d.m.Y H:i:s',
         ]);
-        $existedApplication = Application::wherePackage($request->package)->whereUser($request->user)->first();
-        if (!$existedApplication) {
-            return response()->json([
-                'message' => 'The given data was invalid.',
-                'errors' => ['package' => 'Приложение с названием ' . $request->package . ' не существует в списке приложений указанного ребенка'],
-            ], 404);
+        $records = $request->all();
+        foreach ($records as $i => $record) {
+            if (!Application::whereUser($request->header('child'))->wherePack($record['pack'])->first()) {
+                return response()->json('Приложения ' . $record['pack'] . ' не существует в списке приложений указанного ребенка', 404);
+            }
+            $records[$i]['user'] = $request->header('child');
+            $records[$i]['day'] = $record['date'];
+            unset($records[$i]['date']);
+            $records[$i]['app'] = $record['pack'];
+            unset($records[$i]['pack']);
         }
-
-        $appHistory = ApplicationHistory::create([
-            'package' => $request->package,
-            'name' => $existedApplication->name,
-            'image' => $existedApplication->image,
-            'locked' => $existedApplication->locked,
-            'start_dt' => $request->start_dt,
-            'user' => $request->user,
-        ]);
-        $appHistory = ApplicationHistory::find($appHistory->id);
-        $appHistory->image = 'data:image/png;base64,' . base64_encode($appHistory->image);
-
-        return response()->json([
-            'message' => 'История использования приложения добавлена',
-            'data' => $appHistory,
-        ], 200);
-    }
-
-    public function show(Request $request, $child, $package, $date)
-    {
-        $d = \DateTime::createFromFormat('d.m.Y', $date);
-        if (!($d && $d->format('d.m.Y') === $date)) {
-            return response()->json(['message' => 'Параметр date должен быть датой формата dd.MM.yyyy'], 404);
-        }
-        $appHistory = ApplicationHistory::whereUser($child)->wherePackage($package)
-            ->where('start_dt', 'LIKE', $date . '%')->get();
-        $image = null;
-        if (count($appHistory)) {
-            $image = 'data:image/png;base64,' . base64_encode($appHistory[0]->image);
-        }
-        foreach ($appHistory as $index => $appStatistic) {
-            $appStatistic->toArray();
-            unset($appStatistic->image);
-        }
-        if ($image) {
-            return response()->json([
-                'data' => ['history' => $appHistory, 'image' => $image],
-            ], 200);
-        }
-        return [];
-    }
-
-    public function update(Request $request, $application_history)
-    {
-        $existedAppHistory = ApplicationHistory::find($application_history);
-        if (!$existedAppHistory) {
-            return response()->json(['message' => 'Не удалось найти историю приложения с указанным id'], 404);
-        }
-        if (!Child::whereId($existedAppHistory->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 404);
-        }
-        if ($request->end_dt) {
-            $request->validate(['end_dt' => 'date|date_format:d.m.Y H:i']);
-            $existedAppHistory->end_dt = $request->end_dt;
-        }
-        $existedAppHistory->update();
-        $existedAppHistory->image = 'data:image/png;base64,' . base64_encode($existedAppHistory->image);
-        return response()->json([
-            'message' => 'История приложения обновлена',
-            'data' => $existedAppHistory,
-        ], 200);
-    }
-
-    public function destroy(Request $request, $application_history)
-    {
-        $existedAppHistory = ApplicationHistory::find($application_history);
-        if (!$existedAppHistory) {
-            return response()->json(['message' => 'Не удалось найти историю приложения с указанным id'], 404);
-        }
-        if (!Child::whereId($existedAppHistory->user)->whereParent(auth()->user()->id)->first()) {
-            return response()->json(['message' => 'Это приложение не принадлежит вашему ребенку'], 404);
-        }
-        $existedAppHistory->delete();
-        return response()->json(['message' => 'История была удалена'], 200);
+        ApplicationHistory::insert($records);
+        return response()->json('Истории приложений зафиксированы', 200);
     }
 }

@@ -29,11 +29,9 @@ class ApplicationHistory extends Section implements Initializable
     {
         $display = AdminDisplay::datatablesAsync()->setColumns([
             AdminColumn::text('id', 'Id'),
-            AdminColumn::text('package', 'Package'),
-            AdminColumn::text('name', 'Название'),
-            AdminColumn::text('locked', 'Заблокировано'),
-            AdminColumn::text('start_dt', 'Время начала использования'),
-            AdminColumn::text('end_dt', 'Время окончания использования'),
+            AdminColumn::text('app', 'Приложение'),
+            AdminColumn::text('day', 'Дата начала использования'),
+            AdminColumn::text('time', 'Время использования в минутах'),
             AdminColumn::text('user', 'Id ребенка'),
         ]);
         $display->paginate(15);

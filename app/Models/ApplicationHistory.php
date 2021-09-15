@@ -10,12 +10,13 @@ class ApplicationHistory extends Model
     use HasFactory;
     protected $table = 'application_history';
     protected $fillable = [
-        'package',
-        'name',
-        'image',
-        'locked',
-        'start_dt',
-        'end_dt',
+        'app',
+        'day',
+        'time',
         'user',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 }

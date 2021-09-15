@@ -41,11 +41,8 @@ Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(functi
     Route::post('/apps/blocked', [ApplicationsController::class, 'block']);
     Route::delete('/apps/blocked', [ApplicationsController::class, 'unblock']);
 
-    Route::get('/application_history/{child}/{package}', [AppHistoryController::class, 'index']);
-    Route::post('/application_history', [AppHistoryController::class, 'store']);
-    Route::get('/application_history/{child}/{package}/{date}', [AppHistoryController::class, 'show']);
-    Route::patch('/application_history/{application_history}', [AppHistoryController::class, 'update']);
-    Route::delete('/application_history/{application_history}', [AppHistoryController::class, 'destroy']);
+    Route::get('/apps/story', [AppHistoryController::class, 'index']);
+    Route::post('/apps/story', [AppHistoryController::class, 'store']);
 
     Route::get('/websites/blocked', [SitesController::class, 'index']);
     Route::post('/websites/blocked', [SitesController::class, 'store']);
