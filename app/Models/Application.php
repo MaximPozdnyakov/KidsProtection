@@ -10,13 +10,17 @@ class Application extends Model
     use HasFactory;
     protected $table = 'applications';
     protected $fillable = [
-        'package',
+        'pack',
         'name',
-        'image',
-        'locked',
-        'start_dt',
-        'end_dt',
+        'icon',
+        'limit',
+        'from',
+        'to',
         'parent',
         'user',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
     ];
 }

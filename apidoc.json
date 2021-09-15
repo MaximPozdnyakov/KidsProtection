@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "description": "Документация к API приложения Kids Protection",
     "title": "Kids Protection API",
-    "url": "http://localhost:3000",
-    "sampleUrl": "http://localhost:3000",
+    "url": "https://childs.aumagency.ru",
+    "sampleUrl": "https://childs.aumagency.ru",
     "order": [
         "User",
         "Subscription",

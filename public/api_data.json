@@ -1,12 +1,50 @@
 [
   {
     "type": "delete",
-    "url": "/api/applications/:application",
-    "title": "5. Удалить приложение",
+    "url": "/api/apps/blocked",
+    "title": "5. Разблокировать приложение",
     "name": "DeleteApplication",
     "group": "Application",
     "version": "1.0.0",
-    "description": "<p>application - Id приложения</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "app",
+            "description": "<p>Id приложения</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{\n\"child\": \"1\",\n\"app\": \"2\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
     "error": {
       "fields": {
         "Not Found 404": [
@@ -14,7 +52,7 @@
             "group": "Not Found 404",
             "optional": false,
             "field": "NotFound",
-            "description": "<p>Приложение не найден или не принадлежит ребенку пользователя</p>"
+            "description": "<p>Приложение не найдено или не принадлежит ребенку пользователя</p>"
           }
         ],
         "Unauthenticated 404": [
@@ -45,7 +83,7 @@
       "examples": [
         {
           "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти приложений с указанным id\",\n}",
+          "content": "\"Не удалось найти приложений с указанным id\"",
           "type": "json"
         },
         {
@@ -83,14 +121,14 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Сообщение об удалении приложения</p>"
+            "description": "<p>Сообщение о разблокировке приложения</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Приложение удален\"\n}",
+          "content": "\"Приложение разблокировано\"",
           "type": "json"
         }
       ]
@@ -99,12 +137,35 @@
     "groupTitle": "Application",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/applications/:application"
+        "url": "https://childs.aumagency.ru/api/apps/blocked"
       }
-    ],
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/apps/list",
+    "title": "1. Получение списка выбора приложений с подгрузкой",
+    "name": "GetApplication",
+    "group": "Application",
+    "version": "1.0.0",
+    "description": "<p>Возвращает список из 20 элементов приложений. Чтобы получить следующие 20 элементов необходимо передать в заголовке параметр &quot;last&quot; с идентификатором последнего полученного приложения. Запрос с заголовком &quot;last&quot;: &quot;null&quot; вернёт первые 20 элементов таблицы приложений.</p>",
     "header": {
       "fields": {
         "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "last",
+            "description": "<p>Id последнего приложения</p>"
+          },
           {
             "group": "Header",
             "type": "String",
@@ -116,21 +177,17 @@
       },
       "examples": [
         {
+          "title": "Header:",
+          "content": "{\n\"child\": \"1\",\n\"last\": \"2\"\n}",
+          "type": "json"
+        },
+        {
           "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
       ]
-    }
-  },
-  {
-    "type": "get",
-    "url": "/api/applications/:child",
-    "title": "1. Получить список приложений указанного ребенка",
-    "name": "GetApplication",
-    "group": "Application",
-    "version": "1.0.0",
-    "description": "<p>child - Id ребенка</p>",
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -146,7 +203,7 @@
       "examples": [
         {
           "title": "Success 200:",
-          "content": "/api/applications/1\n[\n    {\n        \"id\": 1,\n        \"package\": \"whatsapp\",\n        \"name\": \"Whatsapp\",\n        \"image\": \"data:image/png;base64,iVBORw0KG ...\",\n        \"locked\": \"0\",\n        \"start_dt\": null,\n        \"end_dt\": null,\n        \"parent\": \"1\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-08T13:14:56.000000Z\",\n        \"updated_at\": \"2021-09-08T13:14:56.000000Z\"\n    },\n]",
+          "content": "[\n    {\n        \"id\": 3,\n        \"name\": \"Facebook\",\n        \"pack\": \"com.facebook.android\",\n        \"icon\": \"https://website.com/icon.png\"\n    },\n    {\n        \"id\": 4,\n        \"name\": \"Telegram\",\n        \"pack\": \"com.telegram.android\",\n        \"icon\": \"https://website.com/icon.png\"\n    }\n]",
           "type": "json"
         }
       ]
@@ -155,7 +212,7 @@
     "groupTitle": "Application",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/applications/:child"
+        "url": "https://childs.aumagency.ru/api/apps/list"
       }
     ],
     "permission": [
@@ -169,26 +226,6 @@
         "name": "Пользователь, обладающий активной подпиской"
       }
     ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Authorization Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
     "error": {
       "fields": {
         "Unauthenticated 404": [
@@ -250,12 +287,43 @@
   },
   {
     "type": "get",
-    "url": "/api/applications/:child/:application",
-    "title": "3. Получить приложение",
+    "url": "/api/apps/blocked",
+    "title": "3. Получение списка заблокированных приложений",
     "name": "GetApplicationById",
     "group": "Application",
     "version": "1.0.0",
-    "description": "<p>child - Id ребенка; application - Id приложения</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{\n\"child\": \"1\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -264,14 +332,14 @@
             "type": "Object",
             "optional": false,
             "field": "Success",
-            "description": "<p>Приложение</p>"
+            "description": "<p>Приложения</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "/api/applications/1/1\n{\n    \"id\": 1,\n    \"package\": \"whatsapp\",\n    \"name\": \"Whatsapp\",\n    \"image\": \"data:image/png;base64,iVBORw0KG ...\",\n    \"locked\": \"0\",\n    \"start_dt\": null,\n    \"end_dt\": null,\n    \"parent\": \"1\",\n    \"user\": \"1\",\n    \"created_at\": \"2021-09-08T13:14:56.000000Z\",\n    \"updated_at\": \"2021-09-08T13:14:56.000000Z\"\n}",
+          "content": "[\n    {\n        \"pack\": \"com.instagram.android\",\n        \"limit\": \"120\",\n        \"from\": \"0930\",\n        \"to\": \"1900\"\n    },\n    {\n        \"pack\": \"com.telegram.android\",\n        \"limit\": null,\n        \"from\": \"0930\",\n        \"to\": \"1900\"\n    }\n]",
           "type": "json"
         }
       ]
@@ -280,7 +348,7 @@
     "groupTitle": "Application",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/applications/:child/:application"
+        "url": "https://childs.aumagency.ru/api/apps/blocked"
       }
     ],
     "permission": [
@@ -294,26 +362,6 @@
         "name": "Пользователь, обладающий активной подпиской"
       }
     ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "Authorization",
-            "description": "<p>Bearer $token</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Authorization Header:",
-          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
-          "type": "json"
-        }
-      ]
-    },
     "error": {
       "fields": {
         "Unauthenticated 404": [
@@ -486,7 +534,7 @@
     "groupTitle": "ApplicationHistory",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/youtube_history/:youtube_history"
+        "url": "https://childs.aumagency.ru/api/youtube_history/:youtube_history"
       }
     ],
     "header": {
@@ -542,7 +590,7 @@
     "groupTitle": "ApplicationHistory",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/application_history/:child/:package"
+        "url": "https://childs.aumagency.ru/api/application_history/:child/:package"
       }
     ],
     "permission": [
@@ -738,7 +786,7 @@
     "groupTitle": "ApplicationHistory",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/youtube_history/:child/:package/:date"
+        "url": "https://childs.aumagency.ru/api/youtube_history/:child/:package/:date"
       }
     ],
     "permission": [
@@ -921,7 +969,7 @@
     "groupTitle": "ApplicationHistory",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/youtube_history"
+        "url": "https://childs.aumagency.ru/api/youtube_history"
       }
     ],
     "permission": [
@@ -1091,7 +1139,7 @@
     "groupTitle": "ApplicationHistory",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/youtube_history/:youtube_history"
+        "url": "https://childs.aumagency.ru/api/youtube_history/:youtube_history"
       }
     ],
     "permission": [
@@ -1128,7 +1176,7 @@
   },
   {
     "type": "post",
-    "url": "/api/applications",
+    "url": "/api/apps/object",
     "title": "2. Добавить приложение",
     "name": "PostApplication",
     "group": "Application",
@@ -1140,15 +1188,15 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "package",
+            "field": "pack",
             "description": "<p>Идентификатор приложения. Должен быть уникальным для ребенка. Обязательный.</p>"
           },
           {
             "group": "Parameter",
-            "type": "File",
+            "type": "String",
             "optional": false,
-            "field": "image",
-            "description": "<p>Изображение приложения в формате png, jpg или svg. Обязательный.</p>"
+            "field": "icon",
+            "description": "<p>Ссылка на иконку приложения. Обязательный.</p>"
           },
           {
             "group": "Parameter",
@@ -1161,7 +1209,7 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "user",
+            "field": "child",
             "description": "<p>Id ребенка. Обязательный.</p>"
           }
         ]
@@ -1169,7 +1217,7 @@
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n   \"package\": \"whatsapp\",\n   \"name\": WhatsApp,\n   \"user\": \"1\",\n   \"image\": Иконка WhatsApp\n}",
+          "content": "{\n    \"app\": {\n        \"pack\": \"com.instagram.android\",\n        \"name\": \"Instagram\",\n        \"icon\": \"https://website.com/icon.png\"\n    },\n    \"child\": \"1\"\n}",
           "type": "json"
         }
       ]
@@ -1220,7 +1268,7 @@
       "examples": [
         {
           "title": "Bad request 404:",
-          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"package\": [\n           \"Параметр package обязателен\"\n       ]\n   }\n}",
+          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"app.pack\": [\n           \"Параметр app.pack обязателен\"\n       ]\n   }\n}",
           "type": "json"
         },
         {
@@ -1252,14 +1300,14 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Приложение и сообщение о его добавлении</p>"
+            "description": "<p>Новое приложение</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Мобильное приложение добавлено\",\n    \"data\": {\n        \"id\": 1,\n        \"package\": \"whatsapp\",\n        \"name\": \"Whatsapp\",\n        \"image\": \"data:image/png;base64,iVBORw0KG ...\",\n        \"locked\": \"0\",\n        \"start_dt\": null,\n        \"end_dt\": null,\n        \"parent\": \"1\",\n        \"user\": \"1\",\n        \"created_at\": \"2021-09-08T13:14:56.000000Z\",\n        \"updated_at\": \"2021-09-08T13:14:56.000000Z\"\n    }\n}",
+          "content": "{\n    \"id\": 2,\n    \"name\": \"Instagram\",\n    \"pack\": \"com.instagram.android\",\n    \"icon\": \"https://website.com/icon.png\"\n}",
           "type": "json"
         }
       ]
@@ -1268,7 +1316,7 @@
     "groupTitle": "Application",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/applications"
+        "url": "https://childs.aumagency.ru/api/apps/object"
       }
     ],
     "permission": [
@@ -1305,12 +1353,11 @@
   },
   {
     "type": "post",
-    "url": "/api/applications/:application",
-    "title": "4. Обновить настройки приложения",
+    "url": "/api/apps/blocked",
+    "title": "4. Заблокировать приложения",
     "name": "UpdateApplication",
     "group": "Application",
     "version": "1.0.0",
-    "description": "<p>application - Id приложения</p>",
     "error": {
       "fields": {
         "Not Found 404": [
@@ -1318,7 +1365,7 @@
             "group": "Not Found 404",
             "optional": false,
             "field": "NotFound",
-            "description": "<p>Приложение не найден или не принадлежит ребенку пользователя</p>"
+            "description": "<p>Приложение не найдено или не принадлежит ребенку пользователя</p>"
           }
         ],
         "Unauthenticated 404": [
@@ -1349,7 +1396,7 @@
       "examples": [
         {
           "title": "Not Found 404:",
-          "content": "{\n   \"message\": \"Не удалось найти приложение с указанным id\",\n}",
+          "content": "\"Приложения с таким названием не существует в списке приложений указанного ребенка\"",
           "type": "json"
         },
         {
@@ -1374,45 +1421,45 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "File",
+            "type": "String",
             "optional": false,
-            "field": "image",
-            "description": "<p>Изображение приложения в формате png, jpg или svg.</p>"
+            "field": "child",
+            "description": "<p>Id ребенка. Обязательный.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "name",
-            "description": "<p>Наименование приложения.</p>"
+            "field": "pack",
+            "description": "<p>Идентификатор приложения. Обязательный.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Boolean",
+            "type": "Integer|null",
             "optional": false,
-            "field": "locked",
-            "description": "<p>Является ли приложение заблокированным.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String|null",
-            "optional": false,
-            "field": "start_dt",
-            "description": "<p>Время начала доступа к приложениеу в формате d.m.Y H:i.</p>"
+            "field": "limit",
+            "description": "<p>Лимит в минутах на использование приложения в день.</p>"
           },
           {
             "group": "Parameter",
             "type": "String|null",
             "optional": false,
-            "field": "end_dt",
-            "description": "<p>Время конца доступа к приложениеу в формате d.m.Y H:i.</p>"
+            "field": "from",
+            "description": "<p>Время начала использования приложения.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|null",
+            "optional": false,
+            "field": "to",
+            "description": "<p>Время конца использования приложения.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request:",
-          "content": "{\n    \"locked\": true,\n    \"start_dt\": null,\n    \"end_dt\": \"07.09.2021 19:13\"\n}",
+          "content": "{\n    \"child\": \"1\",\n    \"app\": {\n        \"pack\": \"com.telegram.android\",\n        \"limit\": 120,\n        \"from\": \"0930\",\n        \"to\": \"1900\"\n    }\n}",
           "type": "json"
         }
       ]
@@ -1435,14 +1482,14 @@
             "group": "Success 200",
             "optional": false,
             "field": "Success",
-            "description": "<p>Приложение и сообщение о его обновлении</p>"
+            "description": "<p>Сообщение о блокировании приложения</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success 200:",
-          "content": "{\n    \"message\": \"Настройки приложения обновлены\",\n    \"data\": {\n         \"id\": 1,\n         \"package\": \"whatsapp\",\n         \"name\": \"Whatsapp\",\n         \"image\": \"data:image/png;base64,iVBORw0KG...\",\n         \"locked\": \"1\",\n         \"start_dt\": null,\n         \"end_dt\": \"07.09.2021 19:13\",\n         \"parent\": \"1\",\n         \"user\": \"1\",\n         \"created_at\": \"2021-09-08T13:14:56.000000Z\",\n         \"updated_at\": \"2021-09-08T13:14:56.000000Z\"\n    }\n}",
+          "content": "\"Приложение заблокировано\"",
           "type": "json"
         }
       ]
@@ -1451,7 +1498,7 @@
     "groupTitle": "Application",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/applications/:application"
+        "url": "https://childs.aumagency.ru/api/apps/blocked"
       }
     ],
     "header": {
@@ -1616,7 +1663,7 @@
     "groupTitle": "CallsAndSms",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/numberphones/story"
+        "url": "https://childs.aumagency.ru/api/numberphones/story"
       }
     ],
     "permission": [
@@ -1787,7 +1834,7 @@
     "groupTitle": "CallsAndSms",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/numberphones/story"
+        "url": "https://childs.aumagency.ru/api/numberphones/story"
       }
     ],
     "permission": [
@@ -1884,7 +1931,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/child/object"
+        "url": "https://childs.aumagency.ru/api/child/object"
       }
     ],
     "permission": [
@@ -1988,7 +2035,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/child/list"
+        "url": "https://childs.aumagency.ru/api/child/list"
       }
     ],
     "permission": [
@@ -2128,7 +2175,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/child/object"
+        "url": "https://childs.aumagency.ru/api/child/object"
       }
     ],
     "permission": [
@@ -2329,7 +2376,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/child/object"
+        "url": "https://childs.aumagency.ru/api/child/object"
       }
     ],
     "permission": [
@@ -2432,7 +2479,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/child/object"
+        "url": "https://childs.aumagency.ru/api/child/object"
       }
     ],
     "permission": [
@@ -2628,7 +2675,7 @@
     "groupTitle": "Child",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/child/allapps"
+        "url": "https://childs.aumagency.ru/api/child/allapps"
       }
     ],
     "permission": [
@@ -2842,7 +2889,7 @@
     "groupTitle": "Geolocation",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/gps/story"
+        "url": "https://childs.aumagency.ru/api/gps/story"
       }
     ],
     "permission": [
@@ -3006,7 +3053,7 @@
     "groupTitle": "Geolocation",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/gps/story"
+        "url": "https://childs.aumagency.ru/api/gps/story"
       }
     ],
     "permission": [
@@ -3168,7 +3215,7 @@
     "groupTitle": "Phone",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/numberphones/blocked"
+        "url": "https://childs.aumagency.ru/api/numberphones/blocked"
       }
     ],
     "permission": [
@@ -3243,7 +3290,7 @@
     "groupTitle": "Phone",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/numberphones/blocked"
+        "url": "https://childs.aumagency.ru/numberphones/blocked"
       }
     ],
     "permission": [
@@ -3444,7 +3491,7 @@
     "groupTitle": "Phone",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/numberphones/blocked"
+        "url": "https://childs.aumagency.ru/api/numberphones/blocked"
       }
     ],
     "permission": [
@@ -3606,7 +3653,7 @@
     "groupTitle": "Site",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/websites/blocked"
+        "url": "https://childs.aumagency.ru/api/websites/blocked"
       }
     ],
     "permission": [
@@ -3681,7 +3728,7 @@
     "groupTitle": "Site",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/websites/blocked"
+        "url": "https://childs.aumagency.ru/websites/blocked"
       }
     ],
     "permission": [
@@ -3882,7 +3929,7 @@
     "groupTitle": "Site",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/websites/blocked"
+        "url": "https://childs.aumagency.ru/api/websites/blocked"
       }
     ],
     "permission": [
@@ -3948,7 +3995,7 @@
     "groupTitle": "Subscription",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/subscribes/list"
+        "url": "https://childs.aumagency.ru/api/subscribes/list"
       }
     ],
     "permission": [
@@ -4027,7 +4074,7 @@
     "groupTitle": "Subscription",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/user/subscribe"
+        "url": "https://childs.aumagency.ru/api/user/subscribe"
       }
     ],
     "permission": [
@@ -4206,7 +4253,7 @@
     "groupTitle": "Subscription",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/subscribes/object"
+        "url": "https://childs.aumagency.ru/api/subscribes/object"
       }
     ],
     "permission": [
@@ -4265,7 +4312,7 @@
     "groupTitle": "Support",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/support/themes"
+        "url": "https://childs.aumagency.ru/api/support/themes"
       }
     ],
     "permission": [
@@ -4424,7 +4471,7 @@
     "groupTitle": "Support",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/support/object"
+        "url": "https://childs.aumagency.ru/api/support/object"
       }
     ],
     "permission": [
@@ -4522,7 +4569,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/user/restore"
+        "url": "https://childs.aumagency.ru/api/user/restore"
       }
     ]
   },
@@ -4557,7 +4604,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/user/auth"
+        "url": "https://childs.aumagency.ru/api/user/auth"
       }
     ],
     "permission": [
@@ -4694,7 +4741,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/user/login"
+        "url": "https://childs.aumagency.ru/api/user/login"
       }
     ]
   },
@@ -4728,7 +4775,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/user/logout"
+        "url": "https://childs.aumagency.ru/api/user/logout"
       }
     ],
     "permission": [
@@ -4880,7 +4927,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/user/register"
+        "url": "https://childs.aumagency.ru/api/user/register"
       }
     ]
   },
@@ -4960,7 +5007,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/user/reset"
+        "url": "https://childs.aumagency.ru/api/user/reset"
       }
     ]
   },
@@ -4994,7 +5041,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/user/check"
+        "url": "https://childs.aumagency.ru/api/user/check"
       }
     ]
   },
@@ -5094,7 +5141,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/user/object"
+        "url": "https://childs.aumagency.ru/api/user/object"
       }
     ],
     "permission": [
@@ -5192,7 +5239,7 @@
     "groupTitle": "User",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/user/check"
+        "url": "https://childs.aumagency.ru/api/user/check"
       }
     ]
   },
@@ -5323,7 +5370,7 @@
     "groupTitle": "Youtube",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/youtube/blocked"
+        "url": "https://childs.aumagency.ru/api/youtube/blocked"
       }
     ],
     "permission": [
@@ -5398,7 +5445,7 @@
     "groupTitle": "Youtube",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/youtube/blocked"
+        "url": "https://childs.aumagency.ru/youtube/blocked"
       }
     ],
     "permission": [
@@ -5599,7 +5646,7 @@
     "groupTitle": "Youtube",
     "sampleRequest": [
       {
-        "url": "http://localhost:3000/api/youtube/blocked"
+        "url": "https://childs.aumagency.ru/api/youtube/blocked"
       }
     ],
     "permission": [

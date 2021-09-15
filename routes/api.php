@@ -35,11 +35,11 @@ Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(functi
     Route::delete('/child/object', [ChildrenController::class, 'destroy']);
     Route::post('/child/allapps', [ChildrenController::class, 'updateApps']);
 
-    Route::get('/applications/{child}', [ApplicationsController::class, 'index']);
-    Route::post('/applications', [ApplicationsController::class, 'store']);
-    Route::get('/applications/{child}/{application}', [ApplicationsController::class, 'show']);
-    Route::post('/applications/{application}', [ApplicationsController::class, 'update']);
-    Route::delete('/applications/{application}', [ApplicationsController::class, 'destroy']);
+    Route::get('/apps/list', [ApplicationsController::class, 'index']);
+    Route::post('/apps/object', [ApplicationsController::class, 'store']);
+    Route::get('/apps/blocked', [ApplicationsController::class, 'show']);
+    Route::post('/apps/blocked', [ApplicationsController::class, 'block']);
+    Route::delete('/apps/blocked', [ApplicationsController::class, 'unblock']);
 
     Route::get('/application_history/{child}/{package}', [AppHistoryController::class, 'index']);
     Route::post('/application_history', [AppHistoryController::class, 'store']);

@@ -3,8 +3,8 @@ define({
   "version": "1.0.0",
   "description": "Документация к API приложения Kids Protection",
   "title": "Kids Protection API",
-  "url": "http://localhost:3000",
-  "sampleUrl": "http://localhost:3000",
+  "url": "https://childs.aumagency.ru",
+  "sampleUrl": "https://childs.aumagency.ru",
   "order": [
     "User",
     "Subscription",
@@ -25,7 +25,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-09-14T13:40:23.267Z",
+    "time": "2021-09-15T06:28:23.901Z",
     "url": "https://apidocjs.com",
     "version": "0.29.0"
   }

@@ -1,11 +1,19 @@
 <?php
 /**
- * @api {get} /api/applications/:child 1. Получить список приложений указанного ребенка
+ * @api {get} /api/apps/list 1. Получение списка выбора приложений с подгрузкой
  * @apiName GetApplication
  * @apiGroup Application
  * @apiVersion 1.0.0
  *
- * @apiDescription child - Id ребенка
+ * @apiDescription Возвращает список из 20 элементов приложений. Чтобы получить следующие 20 элементов необходимо передать в заголовке параметр "last" с идентификатором последнего полученного приложения. Запрос с заголовком "last": "null" вернёт первые 20 элементов таблицы приложений.
+ *
+ * @apiHeader {String} child Id ребенка
+ * @apiHeader {String} last Id последнего приложения
+ * @apiHeaderExample {json} Header:
+ * {
+ * "child": "1",
+ * "last": "2"
+ * }
  *
  * @apiUse Authorization
  * @apiUse WithChild
@@ -13,26 +21,24 @@
  *
  * @apiSuccess (Success 200) {Array[applications]} Success Массив приложений
  * @apiSuccessExample {json} Success 200:
- * /api/applications/1
  * [
  *     {
- *         "id": 1,
- *         "package": "whatsapp",
- *         "name": "Whatsapp",
- *         "image": "data:image/png;base64,iVBORw0KG ...",
- *         "locked": "0",
- *         "start_dt": null,
- *         "end_dt": null,
- *         "parent": "1",
- *         "user": "1",
- *         "created_at": "2021-09-08T13:14:56.000000Z",
- *         "updated_at": "2021-09-08T13:14:56.000000Z"
+ *         "id": 3,
+ *         "name": "Facebook",
+ *         "pack": "com.facebook.android",
+ *         "icon": "https://website.com/icon.png"
  *     },
+ *     {
+ *         "id": 4,
+ *         "name": "Telegram",
+ *         "pack": "com.telegram.android",
+ *         "icon": "https://website.com/icon.png"
+ *     }
  * ]
  */
 
 /**
- * @api {post} /api/applications 2. Добавить приложение
+ * @api {post} /api/apps/object 2. Добавить приложение
  * @apiName PostApplication
  * @apiGroup Application
  * @apiVersion 1.0.0
@@ -41,17 +47,19 @@
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
- * @apiParam {String} package Идентификатор приложения. Должен быть уникальным для ребенка. Обязательный.
- * @apiParam {File} image Изображение приложения в формате png, jpg или svg. Обязательный.
+ * @apiParam {String} pack Идентификатор приложения. Должен быть уникальным для ребенка. Обязательный.
+ * @apiParam {String} icon Ссылка на иконку приложения. Обязательный.
  * @apiParam {String} name Наименование приложения. Обязательный.
- * @apiParam {String} user Id ребенка. Обязательный.
+ * @apiParam {String} child Id ребенка. Обязательный.
  *
  * @apiParamExample {json} Request:
  * {
- *    "package": "whatsapp",
- *    "name": WhatsApp,
- *    "user": "1",
- *    "image": Иконка WhatsApp
+ *     "app": {
+ *         "pack": "com.instagram.android",
+ *         "name": "Instagram",
+ *         "icon": "https://website.com/icon.png"
+ *     },
+ *     "child": "1"
  * }
  *
  * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
@@ -59,137 +67,117 @@
  * {
  *    "message": "The given data was invalid.",
  *    "errors": {
- *        "package": [
- *            "Параметр package обязателен"
+ *        "app.pack": [
+ *            "Параметр app.pack обязателен"
  *        ]
  *    }
  * }
  *
- * @apiSuccess (Success 200) Success Приложение и сообщение о его добавлении
+ * @apiSuccess (Success 200) Success Новое приложение
  * @apiSuccessExample {json} Success 200:
  * {
- *     "message": "Мобильное приложение добавлено",
- *     "data": {
- *         "id": 1,
- *         "package": "whatsapp",
- *         "name": "Whatsapp",
- *         "image": "data:image/png;base64,iVBORw0KG ...",
- *         "locked": "0",
- *         "start_dt": null,
- *         "end_dt": null,
- *         "parent": "1",
- *         "user": "1",
- *         "created_at": "2021-09-08T13:14:56.000000Z",
- *         "updated_at": "2021-09-08T13:14:56.000000Z"
- *     }
+ *     "id": 2,
+ *     "name": "Instagram",
+ *     "pack": "com.instagram.android",
+ *     "icon": "https://website.com/icon.png"
  * }
  */
 
 /**
- * @api {get} /api/applications/:child/:application 3. Получить приложение
+ * @api {get} /api/apps/blocked 3. Получение списка заблокированных приложений
  * @apiName GetApplicationById
  * @apiGroup Application
  * @apiVersion 1.0.0
- *
- * @apiDescription child - Id ребенка;
- * application - Id приложения
  *
  * @apiUse Authorization
  * @apiUse WithChild
  * @apiUse WithSubscription
  *
- * @apiSuccess (Success 200) {Object} Success Приложение
- * @apiSuccessExample {json} Success 200:
- * /api/applications/1/1
+ * @apiHeader {String} child Id ребенка
+ * @apiHeaderExample {json} Header:
  * {
- *     "id": 1,
- *     "package": "whatsapp",
- *     "name": "Whatsapp",
- *     "image": "data:image/png;base64,iVBORw0KG ...",
- *     "locked": "0",
- *     "start_dt": null,
- *     "end_dt": null,
- *     "parent": "1",
- *     "user": "1",
- *     "created_at": "2021-09-08T13:14:56.000000Z",
- *     "updated_at": "2021-09-08T13:14:56.000000Z"
+ * "child": "1",
  * }
+ *
+ * @apiSuccess (Success 200) {Object} Success Приложения
+ * @apiSuccessExample {json} Success 200:
+ * [
+ *     {
+ *         "pack": "com.instagram.android",
+ *         "limit": "120",
+ *         "from": "0930",
+ *         "to": "1900"
+ *     },
+ *     {
+ *         "pack": "com.telegram.android",
+ *         "limit": null,
+ *         "from": "0930",
+ *         "to": "1900"
+ *     }
+ * ]
  */
 
 /**
- * @api {post} /api/applications/:application 4. Обновить настройки приложения
+ * @api {post} /api/apps/blocked 4. Заблокировать приложения
  * @apiName UpdateApplication
  * @apiGroup Application
  * @apiVersion 1.0.0
  *
- * @apiDescription application - Id приложения
- *
  * @apiUse Authorization
  * @apiUse WithSubscription
  *
- * @apiError (Not Found 404) NotFound Приложение не найден или не принадлежит ребенку пользователя
+ * @apiError (Not Found 404) NotFound Приложение не найдено или не принадлежит ребенку пользователя
  * @apiErrorExample {json} Not Found 404:
- * {
- *    "message": "Не удалось найти приложение с указанным id",
- * }
+ * "Приложения с таким названием не существует в списке приложений указанного ребенка"
  *
- * @apiParam {File} image Изображение приложения в формате png, jpg или svg.
- * @apiParam {String} name Наименование приложения.
- * @apiParam {Boolean} locked Является ли приложение заблокированным.
- * @apiParam {String|null} start_dt Время начала доступа к приложениеу в формате d.m.Y H:i.
- * @apiParam {String|null} end_dt Время конца доступа к приложениеу в формате d.m.Y H:i.
+ * @apiParam {String} child Id ребенка. Обязательный.
+ * @apiParam {String} pack Идентификатор приложения. Обязательный.
+ * @apiParam {Integer|null} limit Лимит в минутах на использование приложения в день.
+ * @apiParam {String|null} from Время начала использования приложения.
+ * @apiParam {String|null} to Время конца использования приложения.
  *
  * @apiParamExample {json} Request:
  * {
- *     "locked": true,
- *     "start_dt": null,
- *     "end_dt": "07.09.2021 19:13"
+ *     "child": "1",
+ *     "app": {
+ *         "pack": "com.telegram.android",
+ *         "limit": 120,
+ *         "from": "0930",
+ *         "to": "1900"
+ *     }
  * }
  *
  * @apiPermission Пользователь, ребенку которого принадлежит приложение |
  *
- * @apiSuccess (Success 200) Success Приложение и сообщение о его обновлении
+ * @apiSuccess (Success 200) Success Сообщение о блокировании приложения
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Настройки приложения обновлены",
- *     "data": {
- *          "id": 1,
- *          "package": "whatsapp",
- *          "name": "Whatsapp",
- *          "image": "data:image/png;base64,iVBORw0KG...",
- *          "locked": "1",
- *          "start_dt": null,
- *          "end_dt": "07.09.2021 19:13",
- *          "parent": "1",
- *          "user": "1",
- *          "created_at": "2021-09-08T13:14:56.000000Z",
- *          "updated_at": "2021-09-08T13:14:56.000000Z"
- *     }
- * }
+ * "Приложение заблокировано"
  */
 
 /**
- * @api {delete} /api/applications/:application 5. Удалить приложение
+ * @api {delete} /api/apps/blocked 5. Разблокировать приложение
  * @apiName DeleteApplication
  * @apiGroup Application
  * @apiVersion 1.0.0
  *
- * @apiDescription application - Id приложения
- *
  * @apiUse Authorization
  * @apiUse WithSubscription
  *
- * @apiError (Not Found 404) NotFound Приложение не найден или не принадлежит ребенку пользователя
- * @apiErrorExample {json} Not Found 404:
+ * @apiHeader {String} child Id ребенка
+ * @apiHeader {String} app Id приложения
+ * @apiHeaderExample {json} Header:
  * {
- *    "message": "Не удалось найти приложений с указанным id",
+ * "child": "1",
+ * "app": "2"
  * }
+ *
+ * @apiError (Not Found 404) NotFound Приложение не найдено или не принадлежит ребенку пользователя
+ * @apiErrorExample {json} Not Found 404:
+ * "Не удалось найти приложений с указанным id"
  *
  * @apiPermission Пользователь, ребенку которого принадлежит приложение |
  *
- * @apiSuccess (Success 200) Success Сообщение об удалении приложения
+ * @apiSuccess (Success 200) Success Сообщение о разблокировке приложения
  * @apiSuccessExample {json} Success 200:
- * {
- *     "message": "Приложение удален"
- * }
+ * "Приложение разблокировано"
  */

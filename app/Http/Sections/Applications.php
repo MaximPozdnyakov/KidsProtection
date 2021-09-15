@@ -29,12 +29,10 @@ class Applications extends Section implements Initializable
     {
         $display = AdminDisplay::datatablesAsync()->setColumns([
             AdminColumn::text('id', 'Id'),
-            AdminColumn::text('package', 'Package'),
             AdminColumn::text('name', 'Название'),
-            AdminColumn::text('locked', 'Заблокировано'),
-            AdminColumn::text('start_dt', 'Время начала доступа к приложению'),
-            AdminColumn::text('end_dt', 'Время окончания доступа к приложению'),
-            AdminColumn::text('parent', 'Id родителя'),
+            AdminColumn::text('limit', 'Ограничение по времени'),
+            AdminColumn::text('from', 'Время начала доступа'),
+            AdminColumn::text('to', 'Время окончания доступа'),
             AdminColumn::text('user', 'Id ребенка'),
         ]);
         $display->paginate(15);
