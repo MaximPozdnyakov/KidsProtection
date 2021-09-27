@@ -21,4 +21,9 @@ class CallSmsHistory extends Model
         'created_at',
         'updated_at',
     ];
+
+    protected $casts = [
+        'input' => 'boolean',
+        'isCall' => 'boolean',
+    ];
 }

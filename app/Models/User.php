@@ -39,4 +39,10 @@ class User extends Authenticatable
         'role_id',
         'settings',
     ];
+
+    protected $casts = [
+        'termsAgree' => 'boolean',
+        'emailVerified' => 'boolean',
+        'emailNotify' => 'boolean',
+    ];
 }
