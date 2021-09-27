@@ -19,17 +19,21 @@ class GeolocationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            '*.latitude' => ['required', 'string', 'regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/'],
-            '*.longitude' => ['required', 'string', 'regex:/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/'],
-            '*.address' => 'string',
-            '*.date' => 'required|date|date_format:d.m.Y H:i',
-            '*.child' => 'required|string',
+            'gps.*.latitude' => ['required', 'string', 'regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/'],
+            'gps.*.longitude' => ['required', 'string', 'regex:/^[-]?((((1[0-7][0-9])|([0-9]?[0-9]))\.(\d+))|180(\.0+)?)$/'],
+            'gps.*.address' => 'string',
+            'gps.*.date' => 'required|date|date_format:d.m.Y H:i',
+            'child' => 'required|string',
         ],
             [
-                '*.latitude.regex' => 'Параметр latitude должен быть валидной широтой',
-                '*.longitude.regex' => 'Параметр longitude должен быть валидной долготой',
+                'gps.*.latitude.regex' => 'Параметр latitude должен быть валидной широтой',
+                'gps.*.longitude.regex' => 'Параметр longitude должен быть валидной долготой',
             ]);
-        $geolocation = Geolocation::insert($request->all());
+        $gps = $request->gps;
+        foreach ($gps as $i => $gpsRecord) {
+            $gps[$i]['child'] = $request->child;
+        }
+        $geolocation = Geolocation::insert($gps);
         return response()->json('Геолокация добавлена', 200);
     }
 }
