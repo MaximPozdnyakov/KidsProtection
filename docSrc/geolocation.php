@@ -16,27 +16,28 @@
  * @apiParam {String} child Id ребенка. Обязательный.
  *
  * @apiParamExample {json} Request:
- * [
+ * {
+ * "child": 1,
+ * "gps": [
  *     {
  *         "date": "08.09.2021 13:33",
  *         "latitude": "52.2234234",
- *         "longitude": "33.1244433",
- *         "child": "1"
+ *         "longitude": "33.1244433"
  *     },
  *     {
  *         "date": "08.09.2021 14:21",
  *         "latitude": "52.5534234",
- *         "longitude": "33.3344433",
- *         "child": "1"
+ *         "longitude": "33.3344433"
  *     }
  * ]
+ * }
  *
  * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
  * @apiErrorExample {json} Bad request 404:
  * {
  *    "message": "The given data was invalid.",
  *    "errors": {
- *        "0.latitude": [
+ *        "gps.0.latitude": [
  *            "Параметр 0.latitude обязателен"
  *        ]
  *    }
