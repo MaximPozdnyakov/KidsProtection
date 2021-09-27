@@ -97,3 +97,32 @@
  *     }
  * ]
  */
+
+/**
+ * @api {get} /api/apps/story 3. Получить время использования приложения на дату
+ * @apiName GetAppTimeUseByDate
+ * @apiGroup AppHistory
+ * @apiVersion 1.0.0
+ *
+ * @apiHeader {String} child Id ребенка
+ * @apiHeader {String} date Дата использования приложения в формате d.m.Y
+ * @apiHeader {String} app Id приложения
+ * @apiHeaderExample {json} Header:
+ * {
+ *    "child": "1",
+ *    "date": "12.09.2021",
+ *    "app": "18"
+ * }
+ *
+ * @apiUse Authorization
+ * @apiUse WithChild
+ * @apiUse WithSubscription
+ *
+ * @apiError (Bad request 404) BadRequest Некорректная дата
+ * @apiErrorExample {json} Bad request 404:
+ * "date должен быть датой формата d.m.Y"
+ *
+ * @apiSuccess (Success 200) {Integer} Success Время использования приложения в этот день
+ * @apiSuccessExample {json} Success 200:
+ * 480
+ */

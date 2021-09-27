@@ -156,6 +156,169 @@ define({ "api": [
     ]
   },
   {
+    "type": "get",
+    "url": "/api/apps/story",
+    "title": "3. Получить время использования приложения на дату",
+    "name": "GetAppTimeUseByDate",
+    "group": "AppHistory",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Дата использования приложения в формате d.m.Y</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "app",
+            "description": "<p>Id приложения</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{\n   \"child\": \"1\",\n   \"date\": \"12.09.2021\",\n   \"app\": \"18\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Bad request 404": [
+          {
+            "group": "Bad request 404",
+            "optional": false,
+            "field": "BadRequest",
+            "description": "<p>Некорректная дата</p>"
+          }
+        ],
+        "Unauthenticated 404": [
+          {
+            "group": "Unauthenticated 404",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 404": [
+          {
+            "group": "Not your child 404",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 404": [
+          {
+            "group": "No subscription 404",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 404": [
+          {
+            "group": "Subscription expired 404",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Bad request 404:",
+          "content": "\"date должен быть датой формата d.m.Y\"",
+          "type": "json"
+        },
+        {
+          "title": "Unauthenticated 404:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 404:",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 404:",
+          "content": "\"Оформите подписку\"",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 404:",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Время использования приложения в этот день</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "480",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/application_history.php",
+    "groupTitle": "AppHistory",
+    "sampleRequest": [
+      {
+        "url": "https://childs.aumagency.ru/api/apps/story"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ]
+  },
+  {
     "type": "post",
     "url": "/api/apps/story",
     "title": "2. Фиксация истории приложений",
@@ -338,9 +501,143 @@ define({ "api": [
     ]
   },
   {
+    "type": "put",
+    "url": "/api/apps/blocked",
+    "title": "7. Заблокировать несколько приложений",
+    "name": "BlockManyApplications",
+    "group": "Application",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "packs",
+            "description": "<p>Массив идентификаторов приложений. Обязательный.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "{\n    \"child\": \"1\",\n    \"packs\":\n        [\n            \"com.instagram.android\",\n            \"com.test.app\"\n        ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение о блокировании приложений</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "\"Приложения заблокированы\"",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/applications.php",
+    "groupTitle": "Application",
+    "sampleRequest": [
+      {
+        "url": "https://childs.aumagency.ru/api/apps/blocked"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Unauthenticated 404": [
+          {
+            "group": "Unauthenticated 404",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "No subscription 404": [
+          {
+            "group": "No subscription 404",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 404": [
+          {
+            "group": "Subscription expired 404",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 404:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 404:",
+          "content": "\"Оформите подписку\"",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 404:",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "delete",
     "url": "/api/apps/blocked",
-    "title": "5. Разблокировать приложение",
+    "title": "4. Разблокировать приложение",
     "name": "DeleteApplication",
     "group": "Application",
     "version": "1.0.0",
@@ -478,6 +775,142 @@ define({ "api": [
         "url": "https://childs.aumagency.ru/api/apps/blocked"
       }
     ]
+  },
+  {
+    "type": "get",
+    "url": "/api/apps/child",
+    "title": "6. Получение списка всех приложений",
+    "name": "GetAllApplications",
+    "group": "Application",
+    "version": "1.0.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Header:",
+          "content": "{\n\"child\": \"1\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Приложения</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "[\n    {\n        \"id\": 4,\n        \"name\": \"Telegram\",\n        \"pack\": \"com.telegram.android\",\n        \"icon\": \"https://website.com/new-icon.png\"\n    },\n    {\n        \"id\": 15,\n        \"name\": \"Instagram\",\n        \"pack\": \"com.instagram.android\",\n        \"icon\": \"https://website.com/instagram.png\"\n    },\n    {\n        \"id\": 18,\n        \"name\": \"Spotify\",\n        \"pack\": \"com.spotify.android\",\n        \"icon\": \"https://website.com/icon.png\"\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/applications.php",
+    "groupTitle": "Application",
+    "sampleRequest": [
+      {
+        "url": "https://childs.aumagency.ru/api/apps/child"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Unauthenticated 404": [
+          {
+            "group": "Unauthenticated 404",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "Not your child 404": [
+          {
+            "group": "Not your child 404",
+            "optional": false,
+            "field": "NotYourChild",
+            "description": "<p>Указанный ребенок не существует или не принадлежит текущему пользователю</p>"
+          }
+        ],
+        "No subscription 404": [
+          {
+            "group": "No subscription 404",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 404": [
+          {
+            "group": "Subscription expired 404",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 404:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Not your child 404:",
+          "content": "\"Указанный ребенок вам не принадлежит\"",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 404:",
+          "content": "\"Оформите подписку\"",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 404:",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
+          "type": "json"
+        }
+      ]
+    }
   },
   {
     "type": "get",
@@ -626,7 +1059,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/apps/blocked",
-    "title": "3. Получение списка заблокированных приложений",
+    "title": "2. Получение списка заблокированных приложений",
     "name": "GetApplicationById",
     "group": "Application",
     "version": "1.0.0",
@@ -667,7 +1100,7 @@ define({ "api": [
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Object",
+            "type": "Array",
             "optional": false,
             "field": "Success",
             "description": "<p>Приложения</p>"
@@ -677,7 +1110,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success 200:",
-          "content": "[\n    {\n        \"pack\": \"com.instagram.android\",\n        \"limit\": \"120\",\n        \"from\": \"0930\",\n        \"to\": \"1900\"\n    },\n    {\n        \"pack\": \"com.telegram.android\",\n        \"limit\": null,\n        \"from\": \"0930\",\n        \"to\": \"1900\"\n    }\n]",
+          "content": "[\n    {\n        \"id\": 4,\n        \"name\": \"Telegram\",\n        \"pack\": \"com.telegram.android\",\n        \"icon\": \"https://website.com/new-icon.png\"\n    },\n    {\n        \"id\": 15,\n        \"name\": \"Instagram\",\n        \"pack\": \"com.instagram.android\",\n        \"icon\": \"https://website.com/instagram.png\"\n    },\n    {\n        \"id\": 18,\n        \"name\": \"Spotify\",\n        \"pack\": \"com.spotify.android\",\n        \"icon\": \"https://website.com/icon.png\"\n    }\n]",
           "type": "json"
         }
       ]
@@ -760,63 +1193,84 @@ define({ "api": [
     }
   },
   {
-    "type": "post",
-    "url": "/api/apps/object",
-    "title": "2. Добавить приложение",
-    "name": "PostApplication",
+    "type": "get",
+    "url": "/api/apps/child",
+    "title": "8. Получение списка ограниченных приложений",
+    "name": "GetLimitedApplications",
     "group": "Application",
     "version": "1.0.0",
-    "parameter": {
+    "header": {
       "fields": {
-        "Parameter": [
+        "Header": [
           {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "pack",
-            "description": "<p>Идентификатор приложения. Должен быть уникальным для ребенка. Обязательный.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "icon",
-            "description": "<p>Ссылка на иконку приложения. Обязательный.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>Наименование приложения. Обязательный.</p>"
-          },
-          {
-            "group": "Parameter",
+            "group": "Header",
             "type": "String",
             "optional": false,
             "field": "child",
-            "description": "<p>Id ребенка. Обязательный.</p>"
+            "description": "<p>Id ребенка</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer $token</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Request:",
-          "content": "{\n    \"app\": {\n        \"pack\": \"com.instagram.android\",\n        \"name\": \"Instagram\",\n        \"icon\": \"https://website.com/icon.png\"\n    },\n    \"child\": \"1\"\n}",
+          "title": "Header:",
+          "content": "{\n\"child\": \"1\",\n}",
+          "type": "json"
+        },
+        {
+          "title": "Authorization Header:",
+          "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
           "type": "json"
         }
       ]
     },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Приложения</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "[\n    {\n        \"limit\": null,\n        \"from\": \"0930\",\n        \"to\": \"1900\",\n        \"app\": {\n            \"id\": 4,\n            \"name\": \"Telegram\",\n            \"pack\": \"com.telegram.android\",\n            \"icon\": \"https://website.com/new-icon.png\"\n        }\n    },\n    {\n        \"limit\": 60,\n        \"from\": null,\n        \"to\": null,\n        \"app\": {\n            \"id\": 15,\n            \"name\": \"Instagram\",\n            \"pack\": \"com.instagram.android\",\n            \"icon\": \"https://website.com/instagram.png\"\n        }\n    },\n    {\n        \"limit\": 0,\n        \"from\": null,\n        \"to\": null,\n        \"app\": {\n            \"id\": 18,\n            \"name\": \"Spotify\",\n            \"pack\": \"com.spotify.android\",\n            \"icon\": \"https://website.com/icon.png\"\n        }\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/applications.php",
+    "groupTitle": "Application",
+    "sampleRequest": [
+      {
+        "url": "https://childs.aumagency.ru/api/apps/child"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, являющийся родителем указанного ребенка |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
     "error": {
       "fields": {
-        "Bad request 404": [
-          {
-            "group": "Bad request 404",
-            "optional": false,
-            "field": "BadRequest",
-            "description": "<p>Некоторые параметры не прошли валидацию</p>"
-          }
-        ],
         "Unauthenticated 404": [
           {
             "group": "Unauthenticated 404",
@@ -852,11 +1306,6 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Bad request 404:",
-          "content": "{\n   \"message\": \"The given data was invalid.\",\n   \"errors\": {\n       \"app.pack\": [\n           \"Параметр app.pack обязателен\"\n       ]\n   }\n}",
-          "type": "json"
-        },
-        {
           "title": "Unauthenticated 404:",
           "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
           "type": "json"
@@ -877,47 +1326,26 @@ define({ "api": [
           "type": "json"
         }
       ]
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "optional": false,
-            "field": "Success",
-            "description": "<p>Новое приложение</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success 200:",
-          "content": "{\n    \"id\": 2,\n    \"name\": \"Instagram\",\n    \"pack\": \"com.instagram.android\",\n    \"icon\": \"https://website.com/icon.png\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "docSrc/applications.php",
-    "groupTitle": "Application",
-    "sampleRequest": [
-      {
-        "url": "https://childs.aumagency.ru/api/apps/object"
-      }
-    ],
-    "permission": [
-      {
-        "name": "Авторизованный пользователь |"
-      },
-      {
-        "name": "Пользователь, являющийся родителем указанного ребенка |"
-      },
-      {
-        "name": "Пользователь, обладающий активной подпиской"
-      }
-    ],
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/apps/sync",
+    "title": "5. Синхронизация приложений ребёнка",
+    "name": "SyncApplication",
+    "group": "Application",
+    "version": "1.0.0",
+    "description": "<p>Приложение удаляется, если его нет в теле запроса, обновляется, если оно есть в теле запроса. Если в теле запроса есть приложение, которого нет в базе, оно добавляется в базу.</p>",
     "header": {
       "fields": {
         "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "child",
+            "description": "<p>Id ребенка</p>"
+          },
           {
             "group": "Header",
             "type": "String",
@@ -929,8 +1357,126 @@ define({ "api": [
       },
       "examples": [
         {
+          "title": "Header:",
+          "content": "{\n\"child\": \"1\",\n}",
+          "type": "json"
+        },
+        {
           "title": "Authorization Header:",
           "content": "{ \"Authorization\": \"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9eyJhdWQiO\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "pack",
+            "description": "<p>Идентификатор приложения. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Имя приложения. Обязательный.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "icon",
+            "description": "<p>Иконка приложения. Обязательный.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request:",
+          "content": "[\n    {\n        \"name\": \"Kids Protection\",\n        \"pack\": \"kids.protection.app\",\n        \"icon\": \"Base64\"\n    },\n    {\n        \"name\": \"Instagram\",\n        \"pack\": \"com.instagram.android\",\n        \"icon\": \"Base64\"\n    }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "optional": false,
+            "field": "Success",
+            "description": "<p>Сообщение о синхронизации приложений</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success 200:",
+          "content": "\"Приложения синхронизированы\"",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "docSrc/applications.php",
+    "groupTitle": "Application",
+    "sampleRequest": [
+      {
+        "url": "https://childs.aumagency.ru/api/apps/sync"
+      }
+    ],
+    "permission": [
+      {
+        "name": "Авторизованный пользователь |"
+      },
+      {
+        "name": "Пользователь, обладающий активной подпиской"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Unauthenticated 404": [
+          {
+            "group": "Unauthenticated 404",
+            "optional": false,
+            "field": "Unauthenticated",
+            "description": "<p>Не был предоставлен токен авторизации, или же он недействителен</p>"
+          }
+        ],
+        "No subscription 404": [
+          {
+            "group": "No subscription 404",
+            "optional": false,
+            "field": "NoSubscription",
+            "description": "<p>Пользователь не оформил подписку</p>"
+          }
+        ],
+        "Subscription expired 404": [
+          {
+            "group": "Subscription expired 404",
+            "optional": false,
+            "field": "SubscriptionExpired",
+            "description": "<p>Подписка пользователя истекла</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthenticated 404:",
+          "content": "{\n  \"message\": \"Unauthenticated.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "No subscription 404:",
+          "content": "\"Оформите подписку\"",
+          "type": "json"
+        },
+        {
+          "title": "Subscription expired 404:",
+          "content": "\"Действие вашей подписки истекло, оформите новую\"",
           "type": "json"
         }
       ]
@@ -939,7 +1485,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/api/apps/blocked",
-    "title": "4. Заблокировать приложения",
+    "title": "3. Заблокировать приложения",
     "name": "UpdateApplication",
     "group": "Application",
     "version": "1.0.0",

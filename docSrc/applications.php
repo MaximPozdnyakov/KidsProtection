@@ -38,53 +38,7 @@
  */
 
 /**
- * @api {post} /api/apps/object 2. Добавить приложение
- * @apiName PostApplication
- * @apiGroup Application
- * @apiVersion 1.0.0
- *
- * @apiUse Authorization
- * @apiUse WithChild
- * @apiUse WithSubscription
- *
- * @apiParam {String} pack Идентификатор приложения. Должен быть уникальным для ребенка. Обязательный.
- * @apiParam {String} icon Ссылка на иконку приложения. Обязательный.
- * @apiParam {String} name Наименование приложения. Обязательный.
- * @apiParam {String} child Id ребенка. Обязательный.
- *
- * @apiParamExample {json} Request:
- * {
- *     "app": {
- *         "pack": "com.instagram.android",
- *         "name": "Instagram",
- *         "icon": "https://website.com/icon.png"
- *     },
- *     "child": "1"
- * }
- *
- * @apiError (Bad request 404) BadRequest Некоторые параметры не прошли валидацию
- * @apiErrorExample {json} Bad request 404:
- * {
- *    "message": "The given data was invalid.",
- *    "errors": {
- *        "app.pack": [
- *            "Параметр app.pack обязателен"
- *        ]
- *    }
- * }
- *
- * @apiSuccess (Success 200) Success Новое приложение
- * @apiSuccessExample {json} Success 200:
- * {
- *     "id": 2,
- *     "name": "Instagram",
- *     "pack": "com.instagram.android",
- *     "icon": "https://website.com/icon.png"
- * }
- */
-
-/**
- * @api {get} /api/apps/blocked 3. Получение списка заблокированных приложений
+ * @api {get} /api/apps/blocked 2. Получение списка заблокированных приложений
  * @apiName GetApplicationById
  * @apiGroup Application
  * @apiVersion 1.0.0
@@ -99,26 +53,32 @@
  * "child": "1",
  * }
  *
- * @apiSuccess (Success 200) {Object} Success Приложения
+ * @apiSuccess (Success 200) {Array} Success Приложения
  * @apiSuccessExample {json} Success 200:
  * [
  *     {
- *         "pack": "com.instagram.android",
- *         "limit": "120",
- *         "from": "0930",
- *         "to": "1900"
+ *         "id": 4,
+ *         "name": "Telegram",
+ *         "pack": "com.telegram.android",
+ *         "icon": "https://website.com/new-icon.png"
  *     },
  *     {
- *         "pack": "com.telegram.android",
- *         "limit": null,
- *         "from": "0930",
- *         "to": "1900"
+ *         "id": 15,
+ *         "name": "Instagram",
+ *         "pack": "com.instagram.android",
+ *         "icon": "https://website.com/instagram.png"
+ *     },
+ *     {
+ *         "id": 18,
+ *         "name": "Spotify",
+ *         "pack": "com.spotify.android",
+ *         "icon": "https://website.com/icon.png"
  *     }
  * ]
  */
 
 /**
- * @api {post} /api/apps/blocked 4. Заблокировать приложения
+ * @api {post} /api/apps/blocked 3. Заблокировать приложения
  * @apiName UpdateApplication
  * @apiGroup Application
  * @apiVersion 1.0.0
@@ -155,7 +115,7 @@
  */
 
 /**
- * @api {delete} /api/apps/blocked 5. Разблокировать приложение
+ * @api {delete} /api/apps/blocked 4. Разблокировать приложение
  * @apiName DeleteApplication
  * @apiGroup Application
  * @apiVersion 1.0.0
@@ -180,4 +140,166 @@
  * @apiSuccess (Success 200) Success Сообщение о разблокировке приложения
  * @apiSuccessExample {json} Success 200:
  * "Приложение разблокировано"
+ */
+
+/**
+ * @api {post} /api/apps/sync 5. Синхронизация приложений ребёнка
+ * @apiName SyncApplication
+ * @apiGroup Application
+ * @apiVersion 1.0.0
+ *
+ * @apiDescription Приложение удаляется, если его нет в теле запроса, обновляется, если оно есть в теле запроса. Если в теле запроса есть приложение, которого нет в базе, оно добавляется в базу.
+ *
+ * @apiUse Authorization
+ * @apiUse WithSubscription
+ *
+ * @apiHeader {String} child Id ребенка
+ * @apiHeaderExample {json} Header:
+ * {
+ * "child": "1",
+ * }
+ *
+ * @apiParam {String} pack Идентификатор приложения. Обязательный.
+ * @apiParam {String} name Имя приложения. Обязательный.
+ * @apiParam {String} icon Иконка приложения. Обязательный.
+ *
+ * @apiParamExample {json} Request:
+ * [
+ *     {
+ *         "name": "Kids Protection",
+ *         "pack": "kids.protection.app",
+ *         "icon": "Base64"
+ *     },
+ *     {
+ *         "name": "Instagram",
+ *         "pack": "com.instagram.android",
+ *         "icon": "Base64"
+ *     }
+ * ]
+ *
+ * @apiSuccess (Success 200) Success Сообщение о синхронизации приложений
+ * @apiSuccessExample {json} Success 200:
+ * "Приложения синхронизированы"
+ */
+
+/**
+ * @api {get} /api/apps/child 6. Получение списка всех приложений
+ * @apiName GetAllApplications
+ * @apiGroup Application
+ * @apiVersion 1.0.0
+ *
+ * @apiUse Authorization
+ * @apiUse WithChild
+ * @apiUse WithSubscription
+ *
+ * @apiHeader {String} child Id ребенка
+ * @apiHeaderExample {json} Header:
+ * {
+ * "child": "1",
+ * }
+ *
+ * @apiSuccess (Success 200) {Array} Success Приложения
+ * @apiSuccessExample {json} Success 200:
+ * [
+ *     {
+ *         "id": 4,
+ *         "name": "Telegram",
+ *         "pack": "com.telegram.android",
+ *         "icon": "https://website.com/new-icon.png"
+ *     },
+ *     {
+ *         "id": 15,
+ *         "name": "Instagram",
+ *         "pack": "com.instagram.android",
+ *         "icon": "https://website.com/instagram.png"
+ *     },
+ *     {
+ *         "id": 18,
+ *         "name": "Spotify",
+ *         "pack": "com.spotify.android",
+ *         "icon": "https://website.com/icon.png"
+ *     }
+ * ]
+ */
+
+/**
+ * @api {put} /api/apps/blocked 7. Заблокировать несколько приложений
+ * @apiName BlockManyApplications
+ * @apiGroup Application
+ * @apiVersion 1.0.0
+ *
+ * @apiUse Authorization
+ * @apiUse WithSubscription
+ *
+ * @apiParam {String} child Id ребенка. Обязательный.
+ * @apiParam {Array} packs Массив идентификаторов приложений. Обязательный.
+ *
+ * @apiParamExample {json} Request:
+ * {
+ *     "child": "1",
+ *     "packs":
+ *         [
+ *             "com.instagram.android",
+ *             "com.test.app"
+ *         ]
+ * }
+ *
+ * @apiSuccess (Success 200) Success Сообщение о блокировании приложений
+ * @apiSuccessExample {json} Success 200:
+ * "Приложения заблокированы"
+ */
+
+/**
+ * @api {get} /api/apps/child 8. Получение списка ограниченных приложений
+ * @apiName GetLimitedApplications
+ * @apiGroup Application
+ * @apiVersion 1.0.0
+ *
+ * @apiUse Authorization
+ * @apiUse WithChild
+ * @apiUse WithSubscription
+ *
+ * @apiHeader {String} child Id ребенка
+ * @apiHeaderExample {json} Header:
+ * {
+ * "child": "1",
+ * }
+ *
+ * @apiSuccess (Success 200) {Array} Success Приложения
+ * @apiSuccessExample {json} Success 200:
+ * [
+ *     {
+ *         "limit": null,
+ *         "from": "0930",
+ *         "to": "1900",
+ *         "app": {
+ *             "id": 4,
+ *             "name": "Telegram",
+ *             "pack": "com.telegram.android",
+ *             "icon": "https://website.com/new-icon.png"
+ *         }
+ *     },
+ *     {
+ *         "limit": 60,
+ *         "from": null,
+ *         "to": null,
+ *         "app": {
+ *             "id": 15,
+ *             "name": "Instagram",
+ *             "pack": "com.instagram.android",
+ *             "icon": "https://website.com/instagram.png"
+ *         }
+ *     },
+ *     {
+ *         "limit": 0,
+ *         "from": null,
+ *         "to": null,
+ *         "app": {
+ *             "id": 18,
+ *             "name": "Spotify",
+ *             "pack": "com.spotify.android",
+ *             "icon": "https://website.com/icon.png"
+ *         }
+ *     }
+ * ]
  */
