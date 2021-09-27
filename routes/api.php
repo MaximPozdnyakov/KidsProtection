@@ -10,7 +10,6 @@ use App\Http\Controllers\PhonesController;
 use App\Http\Controllers\SitesController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SupportController;
-use App\Http\Controllers\YoutubeController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('user')->group(function () {
@@ -35,22 +34,22 @@ Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(functi
     Route::delete('/child/object', [ChildrenController::class, 'destroy']);
     Route::post('/child/allapps', [ChildrenController::class, 'updateApps']);
 
-    Route::get('/apps/list', [ApplicationsController::class, 'index']);
-    Route::post('/apps/object', [ApplicationsController::class, 'store']);
-    Route::get('/apps/blocked', [ApplicationsController::class, 'show']);
+    Route::get('/apps/child', [ApplicationsController::class, 'getAll']);
+    Route::get('/apps/list', [ApplicationsController::class, 'getAllWithLimit']);
+    Route::get('/apps/blocked', [ApplicationsController::class, 'getBlocked']);
+    Route::get('/apps/limit', [ApplicationsController::class, 'getBlockedWithOptions']);
     Route::post('/apps/blocked', [ApplicationsController::class, 'block']);
+    Route::put('/apps/blocked', [ApplicationsController::class, 'blockMany']);
     Route::delete('/apps/blocked', [ApplicationsController::class, 'unblock']);
+    Route::post('/apps/sync', [ApplicationsController::class, 'sync']);
 
     Route::get('/apps/story', [AppHistoryController::class, 'index']);
     Route::post('/apps/story', [AppHistoryController::class, 'store']);
+    Route::options('/apps/story', [AppHistoryController::class, 'showTimeUse']);
 
     Route::get('/websites/blocked', [SitesController::class, 'index']);
     Route::post('/websites/blocked', [SitesController::class, 'store']);
     Route::delete('/websites/blocked', [SitesController::class, 'destroy']);
-
-    Route::get('/youtube/blocked', [YoutubeController::class, 'index']);
-    Route::post('/youtube/blocked', [YoutubeController::class, 'store']);
-    Route::delete('/youtube/blocked', [YoutubeController::class, 'destroy']);
 
     Route::get('/numberphones/blocked', [PhonesController::class, 'index']);
     Route::post('/numberphones/blocked', [PhonesController::class, 'store']);
