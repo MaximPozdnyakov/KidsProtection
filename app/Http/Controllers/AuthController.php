@@ -118,7 +118,7 @@ class AuthController extends Controller
 
     public function forgot(Request $request)
     {
-        $request->email = $request[0];
+        $request->email = $request->all()[0];
         $request->validate(['0' => 'required|string|email'],
             [
                 '0.required' => 'Укажите email',
@@ -214,9 +214,7 @@ class AuthController extends Controller
 
     public function verify_email(Request $request)
     {
-        $request->token = $request[0];
-        $request->validate(['0' => 'required|string'], ['0.required' => 'Укажите код для подтверждения email']);
-        $tokenData = DB::table('password_resets')->whereToken($request->token)->first();
+        $tokenData = DB::table('password_resets')->whereToken($request->all()[0])->first();
         $user = null;
         if ($tokenData) {
             $user = User::whereEmail($tokenData->email)->first();
