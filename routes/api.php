@@ -68,5 +68,5 @@ Route::middleware(['auth:api', 'checkChild', 'checkSubscription', 'contentTypeJs
 
     Route::get('/subscribes/list', [SubscriptionController::class, 'index'])->withoutMiddleware('checkSubscription');
     Route::post('/subscribes/object', [SubscriptionController::class, 'store'])->withoutMiddleware('checkSubscription');
-    Route::get('/user/subscribe', [SubscriptionController::class, 'getActiveSubscription']);
+    Route::get('/user/subscribe', [SubscriptionController::class, 'getActiveSubscription'])->withoutMiddleware('checkSubscription');
 });
