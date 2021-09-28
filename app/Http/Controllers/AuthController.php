@@ -15,6 +15,7 @@ class AuthController extends Controller
 {
     public function sendEmailVerificationCode($email, $userName)
     {
+        DB::table('password_resets')->whereEmail($email)->delete();
         $token = sprintf('%05d', rand(100000, 999999));
         DB::table('password_resets')->insert([
             'email' => $email,
