@@ -14,18 +14,18 @@ class ApplicationsController extends Controller
         if ($request->header('last') && $request->header('last') != "null") {
             $indexFrom = array_search($request->header('last'), $appsIds) + 1;
         }
-        return array_slice(
+        return $this->jsonResponse(array_slice(
             Application::whereParent(auth()->user()->id)->whereUser($request->header('child'))
                 ->get()->makeHidden(['limit', 'from', 'to', 'parent', 'user'])->toArray()
-            , $indexFrom, 20);
+            , $indexFrom, 20));
     }
 
     public function getBlocked(Request $request)
     {
-        return Application::whereUser($request->header('child'))->whereNotNull('limit')
-            ->orWhere('user', $request->header('child'))->whereNotNull('from')
-            ->orWhere('user', $request->header('child'))->whereNotNull('to')
-            ->get()->makeHidden(['limit', 'from', 'to', 'parent', 'user']);
+        return $this->jsonResponse(Application::whereUser($request->header('child'))->whereNotNull('limit')
+                ->orWhere('user', $request->header('child'))->whereNotNull('from')
+                ->orWhere('user', $request->header('child'))->whereNotNull('to')
+                ->get()->makeHidden(['limit', 'from', 'to', 'parent', 'user']));
     }
 
     public function getBlockedWithOptions(Request $request)
@@ -46,13 +46,13 @@ class ApplicationsController extends Controller
             unset($blockedApps[$i]['pack']);
             unset($blockedApps[$i]['icon']);
         }
-        return $blockedApps;
+        return $this->jsonResponse($blockedApps);
     }
 
     public function getAll(Request $request)
     {
-        return Application::whereUser($request->header('child'))
-            ->get()->makeHidden(['limit', 'from', 'to', 'parent', 'user']);
+        return $this->jsonResponse(Application::whereUser($request->header('child'))
+                ->get()->makeHidden(['limit', 'from', 'to', 'parent', 'user']));
     }
 
     public function block(Request $request)
@@ -66,7 +66,7 @@ class ApplicationsController extends Controller
         ]);
         $existedApplication = Application::wherePack($request->app['pack'])->whereUser($request->child)->first();
         if (!$existedApplication) {
-            return response()->json('Приложение с таким названием не существует в списке приложений указанного ребенка', 404);
+            return $this->jsonResponse('Приложение с таким названием не существует в списке приложений указанного ребенка', 404);
         }
         if (array_key_exists('limit', $request->app)) {
             $existedApplication->limit = $request->app['limit'];
@@ -78,7 +78,7 @@ class ApplicationsController extends Controller
             $existedApplication->to = $request->app['to'];
         }
         $existedApplication->update();
-        return response()->json("Приложение заблокировано", 200);
+        return $this->jsonResponse("Приложение заблокировано", 200);
     }
 
     public function blockMany(Request $request)
@@ -91,24 +91,24 @@ class ApplicationsController extends Controller
         foreach ($packs as $pack) {
             $existedApplication = Application::wherePack($pack)->whereUser($request->child)->first();
             if (!$existedApplication) {
-                return response()->json('Приложение ' . $pack . ' не существует в списке приложений указанного ребенка', 404);
+                return $this->jsonResponse('Приложение ' . $pack . ' не существует в списке приложений указанного ребенка', 404);
             }
             $existedApplication->update(['limit' => 0]);
         }
-        return response()->json("Приложения заблокированы", 200);
+        return $this->jsonResponse("Приложения заблокированы", 200);
     }
 
     public function unblock(Request $request)
     {
         $existedApplication = Application::whereId($request->header('app'))->whereUser($request->header('child'))->first();
         if (!$existedApplication) {
-            return response()->json('Не удалось найти приложение', 404);
+            return $this->jsonResponse('Не удалось найти приложение', 404);
         }
         $existedApplication->limit = null;
         $existedApplication->from = null;
         $existedApplication->to = null;
         $existedApplication->update();
-        return response()->json('Приложение разблокировано', 200);
+        return $this->jsonResponse('Приложение разблокировано', 200);
     }
 
     public function sync(Request $request)
@@ -146,6 +146,6 @@ class ApplicationsController extends Controller
                     ->first()->delete();
             }
         }
-        return response()->json('Приложения синхронизированы', 200);
+        return $this->jsonResponse('Приложения синхронизированы', 200);
     }
 }

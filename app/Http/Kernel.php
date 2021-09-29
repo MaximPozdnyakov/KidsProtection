@@ -65,6 +65,5 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'checkChild' => \App\Http\Middleware\CheckChild::class,
         'checkSubscription' => \App\Http\Middleware\CheckSubscription::class,
-        'contentTypeJson' => \App\Http\Middleware\ContentTypeJson::class,
     ];
 }

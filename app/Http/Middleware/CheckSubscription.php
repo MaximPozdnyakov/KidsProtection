@@ -20,7 +20,12 @@ class CheckSubscription
     {
         $subscriptions = ActiveSubscription::whereUser(auth()->user()->id)->get()->toArray();
         if (!count($subscriptions)) {
-            return response()->json('Оформите подписку', 404);
+            return response()->json(
+                'Оформите подписку',
+                404,
+                ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+                JSON_UNESCAPED_UNICODE
+            );
         }
         $now = Carbon::now();
         $latestSubscriptionDate = Carbon::now();
@@ -31,7 +36,12 @@ class CheckSubscription
             }
         }
         if ($latestSubscriptionDate->format('d.m.Y H:i') == $now->format('d.m.Y H:i')) {
-            return response()->json('Действие вашей подписки истекло, оформите новую', 404);
+            return response()->json(
+                'Действие вашей подписки истекло, оформите новую',
+                404,
+                ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+                JSON_UNESCAPED_UNICODE
+            );
         }
         return $next($request);
     }

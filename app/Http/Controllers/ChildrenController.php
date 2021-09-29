@@ -24,13 +24,13 @@ class ChildrenController extends Controller
                 $maxNumOfChildren = $device;
             }
         }
-        return $maxNumOfChildren;
+        return $this->jsonResponse($maxNumOfChildren);
     }
 
     public function index()
     {
-        return Child::whereParent(auth()->user()->id)->get()
-            ->makeHidden(['allAppsLock', 'allAppsLimit', 'allAppsStartTime', 'allAppsFinishTime', 'parent']);
+        return $this->jsonResponse(Child::whereParent(auth()->user()->id)->get()
+                ->makeHidden(['allAppsLock', 'allAppsLimit', 'allAppsStartTime', 'allAppsFinishTime', 'parent']));
     }
 
     public function store(Request $request)
@@ -48,7 +48,7 @@ class ChildrenController extends Controller
             'year' => $request->child['year'],
             'parent' => auth()->user()->id,
         ]);
-        return response()->json(
+        return $this->jsonResponse(
             Child::find($child->id)->makeHidden(['allAppsLock', 'allAppsLimit', 'allAppsStartTime', 'allAppsFinishTime', 'parent'])
             , 200);
     }
@@ -67,7 +67,7 @@ class ChildrenController extends Controller
         unset($child['allAppsLimit']);
         unset($child['allAppsStartTime']);
         unset($child['allAppsFinishTime']);
-        return $child;
+        return $this->jsonResponse($child);
     }
 
     public function update(Request $request)
@@ -88,7 +88,7 @@ class ChildrenController extends Controller
             $existedChild->allowedTimeOfAppsUse = $request->child['allowedTimeOfAppsUse'];
         }
         $existedChild->update();
-        return response()->json(
+        return $this->jsonResponse(
             $existedChild->makeHidden(['allAppsLock', 'allAppsLimit', 'allAppsStartTime', 'allAppsFinishTime', 'parent'])
             , 200);
     }
@@ -98,7 +98,7 @@ class ChildrenController extends Controller
         $existedChild = Child::whereId($request->header('child'))->whereParent(auth()->user()->id)->first();
         $childCopy = $existedChild;
         $existedChild->delete();
-        return response()->json("Ребенок удален", 200);
+        return $this->jsonResponse("Ребенок удален", 200);
     }
 
     public function updateApps(Request $request)
@@ -127,19 +127,19 @@ class ChildrenController extends Controller
             $existedChild->allAppsFinishTime = $request->allAppsFinishTime;
         }
         $existedChild->update();
-        return response()->json("Настройки приложений обновлены", 200);
+        return $this->jsonResponse("Настройки приложений обновлены", 200);
     }
 
     public function showDevice(Request $request)
     {
         $device = Device::where('deviceId', $request->header('device'))->first();
         if (!$device) {
-            return response()->json('Устройство не найдено', 404);
+            return $this->jsonResponse('Устройство не найдено', 404);
         }
         if ($device->parent != auth()->user()->id) {
-            return response()->json('Устройство не принадлежит вашему ребенку', 404);
+            return $this->jsonResponse('Устройство не принадлежит вашему ребенку', 404);
         }
-        return response()->json('Устройство найдено', 200);
+        return $this->jsonResponse('Устройство найдено', 200);
     }
 
     public function storeDevice(Request $request)
@@ -147,26 +147,26 @@ class ChildrenController extends Controller
         $maxNumOfDevices = $this->getDevices();
         $numOfExistedDevices = count(Device::whereParent(auth()->user()->id)->get()->toArray());
         if ($numOfExistedDevices >= $maxNumOfDevices) {
-            return response()->json('Вам можно подключить не более ' . $maxNumOfDevices . ' устройств', 404);
+            return $this->jsonResponse('Вам можно подключить не более ' . $maxNumOfDevices . ' устройств', 404);
         }
         Device::create([
             'parent' => auth()->user()->id,
             'child' => $request->header('child'),
             'deviceId' => $request->header('device'),
         ]);
-        return response()->json('Устройство добавлено', 200);
+        return $this->jsonResponse('Устройство добавлено', 200);
     }
 
     public function destroyDevice(Request $request)
     {
         $device = Device::where('deviceId', $request->header('device'))->first();
         if (!$device) {
-            return response()->json('Устройство не найдено', 404);
+            return $this->jsonResponse('Устройство не найдено', 404);
         }
         if ($device->parent != auth()->user()->id) {
-            return response()->json('Устройство не принадлежит вашему ребенку', 404);
+            return $this->jsonResponse('Устройство не принадлежит вашему ребенку', 404);
         }
         $device->delete();
-        return response()->json('Устройство удалено', 200);
+        return $this->jsonResponse('Устройство удалено', 200);
     }
 }

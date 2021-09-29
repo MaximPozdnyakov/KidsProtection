@@ -11,7 +11,7 @@ class SubscriptionController extends Controller
 {
     public function index(Request $request)
     {
-        return Subscription::all();
+        return $this->jsonResponse(Subscription::all());
     }
 
     public function getActiveSubscription(Request $request)
@@ -38,7 +38,7 @@ class SubscriptionController extends Controller
                 $subscriptions[$index]['active'] = false;
             }
         }
-        return $subscriptions;
+        return $this->jsonResponse($subscriptions);
     }
 
     public function store(Request $request)
@@ -49,7 +49,7 @@ class SubscriptionController extends Controller
         ]);
         $subscriptionData = Subscription::whereName($request->name)->first();
         if (!$subscriptionData) {
-            return response()->json([
+            return $this->jsonResponse([
                 'message' => 'The given data was invalid.',
                 'errors' => ['name' => 'Не существует подписки с названием ' . $request->name],
             ], 404);
@@ -70,6 +70,6 @@ class SubscriptionController extends Controller
             'user' => auth()->user()->id,
         ]);
 
-        return response()->json('Подписка добавлена', 200);
+        return $this->jsonResponse('Подписка добавлена', 200);
     }
 }

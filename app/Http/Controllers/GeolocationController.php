@@ -11,9 +11,9 @@ class GeolocationController extends Controller
     {
         $d = \DateTime::createFromFormat('d.m.Y', $request->header('date'));
         if (!($d && $d->format('d.m.Y') === $request->header('date'))) {
-            return response()->json('date должен быть датой формата dd.MM.yyyy', 404);
+            return $this->jsonResponse('date должен быть датой формата dd.MM.yyyy', 404);
         }
-        return Geolocation::whereChild($request->header('child'))->where('date', 'LIKE', $request->header('date') . '%')->get()->makeHidden(['id', 'child']);
+        return $this->jsonResponse(Geolocation::whereChild($request->header('child'))->where('date', 'LIKE', $request->header('date') . '%')->get()->makeHidden(['id', 'child']));
     }
 
     public function store(Request $request)
@@ -34,6 +34,6 @@ class GeolocationController extends Controller
             $gps[$i]['child'] = $request->child;
         }
         $geolocation = Geolocation::insert($gps);
-        return response()->json('Геолокация добавлена', 200);
+        return $this->jsonResponse('Геолокация добавлена', 200);
     }
 }

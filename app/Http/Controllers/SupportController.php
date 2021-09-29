@@ -24,7 +24,7 @@ class SupportController extends Controller
             'email' => 'required|string|email',
         ]);
         if (!SupportTopic::whereName($request->theme)->first()) {
-            return response()->json([
+            return $this->jsonResponse([
                 'message' => 'The given data was invalid.',
                 'errors' => ['theme' => 'Нельзя написать в поддержку на эту тему'],
             ], 404);
@@ -52,6 +52,6 @@ class SupportController extends Controller
                 $message->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'));
             },
         );
-        return response()->json('Спасибо, за обратную связь, мы ответим вам в ближайшее время', 200);
+        return $this->jsonResponse('Спасибо, за обратную связь, мы ответим вам в ближайшее время', 200);
     }
 }

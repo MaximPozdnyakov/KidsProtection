@@ -25,7 +25,12 @@ class CheckChild
             $child = $request->child['id'];
         }
         if ($child && is_string($child) && !Child::whereId($child)->whereParent(auth()->user()->id)->first()) {
-            return response()->json('Указанный ребенок вам не принадлежит', 404);
+            return response()->json(
+                'Указанный ребенок вам не принадлежит',
+                404,
+                ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+                JSON_UNESCAPED_UNICODE
+            );
         }
         return $next($request);
     }

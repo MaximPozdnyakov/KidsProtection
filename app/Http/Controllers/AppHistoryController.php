@@ -12,7 +12,7 @@ class AppHistoryController extends Controller
     {
         $d = \DateTime::createFromFormat('d.m.Y', $request->header('date'));
         if (!($d && $d->format('d.m.Y') === $request->header('date'))) {
-            return response()->json('date должен быть датой формата dd.MM.yyyy', 404);
+            return $this->jsonResponse('date должен быть датой формата dd.MM.yyyy', 404);
         }
         $records = ApplicationHistory::whereUser($request->header('child'))->where('day', 'LIKE', $request->header('date') . '%')->get()->makeHidden(['id', 'day', 'user']);
         foreach ($records as $i => $record) {
@@ -24,7 +24,7 @@ class AppHistoryController extends Controller
                 'icon' => $app['icon'],
             ];
         }
-        return $records;
+        return $this->jsonResponse($records);
     }
 
     public function store(Request $request)
@@ -37,7 +37,7 @@ class AppHistoryController extends Controller
         $records = $request->all();
         foreach ($records as $i => $record) {
             if (!Application::whereUser($request->header('child'))->wherePack($record['pack'])->first()) {
-                return response()->json('Приложение ' . $record['pack'] . ' не существует в списке приложений указанного ребенка', 404);
+                return $this->jsonResponse('Приложение ' . $record['pack'] . ' не существует в списке приложений указанного ребенка', 404);
             }
             $records[$i]['user'] = $request->header('child');
             $records[$i]['day'] = $record['date'];
@@ -46,19 +46,19 @@ class AppHistoryController extends Controller
             unset($records[$i]['pack']);
         }
         ApplicationHistory::insert($records);
-        return response()->json('Истории приложений зафиксированы', 200);
+        return $this->jsonResponse('Истории приложений зафиксированы', 200);
     }
 
     public function showTimeUse(Request $request)
     {
         $d = \DateTime::createFromFormat('d.m.Y', $request->header('date'));
         if (!($d && $d->format('d.m.Y') === $request->header('date'))) {
-            return response()->json('date должен быть датой формата dd.MM.yyyy', 404);
+            return $this->jsonResponse('date должен быть датой формата dd.MM.yyyy', 404);
         }
         $app = Application::whereUser($request->header('child'))
             ->whereId($request->header('app'))->first();
         if (!$app) {
-            return response()->json('Приложение не существует в списке приложений указанного ребенка', 404);
+            return $this->jsonResponse('Приложение не существует в списке приложений указанного ребенка', 404);
         }
         $records = ApplicationHistory::whereUser($request->header('child'))
             ->where('day', 'LIKE', $request->header('date') . '%')->whereApp($app->pack)->get()->toArray();
@@ -66,6 +66,6 @@ class AppHistoryController extends Controller
         foreach ($records as $record) {
             $timeUse += $record['time'];
         }
-        return $timeUse;
+        return $this->jsonResponse($timeUse);
     }
 }

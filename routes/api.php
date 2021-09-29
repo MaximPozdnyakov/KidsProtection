@@ -13,22 +13,20 @@ use App\Http\Controllers\SupportController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('user')->group(function () {
-    Route::middleware(['auth:api', 'contentTypeJson'])->group(function () {
+    Route::middleware(['auth:api'])->group(function () {
         Route::get('/auth', [AuthController::class, 'index']);
         Route::post('/object', [AuthController::class, 'update']);
         Route::get('/check', [AuthController::class, 'send_email_verification_code']);
         Route::post('/check', [AuthController::class, 'verify_email']);
         Route::get('/logout', [AuthController::class, 'logout']);
     });
-    Route::middleware('contentTypeJson')->group(function () {
-        Route::post('/login', [AuthController::class, 'login']);
-        Route::post('/register', [AuthController::class, 'register']);
-        Route::post('/restore', [AuthController::class, 'forgot']);
-        Route::post('/reset', [AuthController::class, 'reset'])->name('password.reset');
-    });
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/restore', [AuthController::class, 'forgot']);
+    Route::post('/reset', [AuthController::class, 'reset'])->name('password.reset');
 });
 
-Route::middleware(['auth:api', 'checkChild', 'checkSubscription', 'contentTypeJson'])->group(function () {
+Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(function () {
     Route::get('/child/list', [ChildrenController::class, 'index']);
     Route::post('/child/object', [ChildrenController::class, 'store']);
     Route::get('/child/object', [ChildrenController::class, 'show']);

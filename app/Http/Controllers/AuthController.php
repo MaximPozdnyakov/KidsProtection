@@ -39,7 +39,7 @@ class AuthController extends Controller
 
     public function index(Request $request)
     {
-        return auth()->user();
+        return $this->jsonResponse(auth()->user());
     }
 
     public function login(Request $request)
@@ -56,20 +56,20 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'pass');
         $existedUser = User::whereEmail($credentials['email'])->first();
         if (!$existedUser) {
-            return response()->json([
+            return $this->jsonResponse([
                 'message' => 'The given data was invalid.',
                 'errors' => ['email' => 'Веденный вами электронный адрес не связан ни с одним аккаунтом'],
             ], 404);
         }
         $attempt = Auth::attempt(['email' => $request->email, 'password' => $request->pass]);
         if (!$attempt) {
-            return response()->json([
+            return $this->jsonResponse([
                 'message' => 'The given data was invalid.',
                 'errors' => ['pass' => 'Вы ввели неверный пароль'],
             ], 404);
         }
         $token = auth()->user()->createToken('API Token')->accessToken;
-        return response()->json($existedUser, 200, ['token' => $token]);
+        return $this->jsonResponse($existedUser, 200, ['token' => $token]);
     }
 
     public function register(Request $request)
@@ -92,7 +92,7 @@ class AuthController extends Controller
                 'pass.required' => 'Укажите пароль',
             ]);
         if (!$request->termsAgree) {
-            return response()->json([
+            return $this->jsonResponse([
                 'message' => 'The given data was invalid.',
                 'errors' => ['termsAgree' => 'Примите условия использования'],
             ], 404);
@@ -107,13 +107,13 @@ class AuthController extends Controller
         ]);
         $token = $user->createToken('API Token')->accessToken;
         $this->sendEmailVerificationCode($data['email'], $data['fio']);
-        return response()->json(User::find($user->id), 200, ['token' => $token]);
+        return $this->jsonResponse(User::find($user->id), 200, ['token' => $token]);
     }
 
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
-        return response()->json('Вы вышли из аккаунта', 200);
+        return $this->jsonResponse('Вы вышли из аккаунта', 200);
     }
 
     public function forgot(Request $request)
@@ -126,7 +126,7 @@ class AuthController extends Controller
             ]);
         $user = User::whereEmail($request->email)->first();
         if (!$user) {
-            return response()->json([
+            return $this->jsonResponse([
                 'message' => 'The given data was invalid.',
                 'errors' => ['email' => 'Веденный вами электронный адрес не связан ни с одним аккаунтом'],
             ], 404);
@@ -151,7 +151,7 @@ class AuthController extends Controller
                 $message->from(\Config::get('mail.from.address'), \Config::get('mail.from.name'));
             },
         );
-        return response()->json('Код для сброса пароля отправлен на вашу электронную почту', 200);
+        return $this->jsonResponse('Код для сброса пароля отправлен на вашу электронную почту', 200);
     }
 
     public function reset(Request $request)
@@ -174,7 +174,7 @@ class AuthController extends Controller
             $user = User::whereEmail($tokenData->email)->first();
         }
         if (!$user) {
-            return response()->json([
+            return $this->jsonResponse([
                 'message' => 'The given data was invalid.',
                 'errors' => ['token' => 'Веденный вами код для сброса пароля недействителен'],
             ], 404);
@@ -182,7 +182,7 @@ class AuthController extends Controller
         $user->password = Hash::make($request->pass);
         $user->update();
         DB::table('password_resets')->whereEmail($user->email)->delete();
-        return response()->json('Ваш пароль был успешно изменен', 200);
+        return $this->jsonResponse('Ваш пароль был успешно изменен', 200);
     }
 
     public function update(Request $request)
@@ -209,7 +209,7 @@ class AuthController extends Controller
             $currentUser->password = Hash::make($request->pass);
         }
         $currentUser->update();
-        return response()->json($currentUser, 200);
+        return $this->jsonResponse($currentUser, 200);
     }
 
     public function verify_email(Request $request)
@@ -220,17 +220,17 @@ class AuthController extends Controller
             $user = User::whereEmail($tokenData->email)->first();
         }
         if (!$user) {
-            return response()->json('Веденный вами код для подтверждения email недействителен', 404);
+            return $this->jsonResponse('Веденный вами код для подтверждения email недействителен', 404);
         }
         $user->emailVerified = 1;
         $user->update();
         DB::table('password_resets')->whereEmail($user->email)->delete();
-        return response()->json('Ваша электронная почта была подтверждена', 200);
+        return $this->jsonResponse('Ваша электронная почта была подтверждена', 200);
     }
 
     public function send_email_verification_code()
     {
         $this->sendEmailVerificationCode(auth()->user()->email, auth()->user()->fio);
-        return response()->json('Код для подтверждения email отправлен на вашу электронную почту', 200);
+        return $this->jsonResponse('Код для подтверждения email отправлен на вашу электронную почту', 200);
     }
 }
