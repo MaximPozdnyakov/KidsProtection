@@ -35,6 +35,9 @@ Route::middleware(['auth:api', 'checkChild', 'checkSubscription', 'contentTypeJs
     Route::put('/child/object', [ChildrenController::class, 'update']);
     Route::delete('/child/object', [ChildrenController::class, 'destroy']);
     Route::post('/child/allapps', [ChildrenController::class, 'updateApps']);
+    Route::get('/child/device', [ChildrenController::class, 'showDevice']);
+    Route::post('/child/device', [ChildrenController::class, 'storeDevice']);
+    Route::delete('/child/device', [ChildrenController::class, 'destroyDevice']);
 
     Route::get('/apps/child', [ApplicationsController::class, 'getAll']);
     Route::get('/apps/list', [ApplicationsController::class, 'getAllWithLimit']);

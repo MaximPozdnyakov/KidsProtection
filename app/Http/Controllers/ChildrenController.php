@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActiveSubscription;
 use App\Models\Child;
+use App\Models\Device;
 use App\Models\Subscription;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class ChildrenController extends Controller
 
     public function index()
     {
-        return Child::whereParent(auth()->user()->id)->limit($this->getDevices())->get()
+        return Child::whereParent(auth()->user()->id)->get()
             ->makeHidden(['allAppsLock', 'allAppsLimit', 'allAppsStartTime', 'allAppsFinishTime', 'parent']);
     }
 
@@ -42,10 +43,6 @@ class ChildrenController extends Controller
                 'child.name.required' => 'Укажите имя ребенка',
                 'child.year.required' => 'Укажите год рождения ребенка',
             ]);
-        $devices = $this->getDevices();
-        if (count(Child::whereParent(auth()->user()->id)->get()->toArray()) >= $devices) {
-            return response()->json('Вам можно подключить не более ' . $devices . ' устройств', 404);
-        }
         $child = Child::create([
             'name' => $request->child['name'],
             'year' => $request->child['year'],
@@ -131,5 +128,45 @@ class ChildrenController extends Controller
         }
         $existedChild->update();
         return response()->json("Настройки приложений обновлены", 200);
+    }
+
+    public function showDevice(Request $request)
+    {
+        $device = Device::where('deviceId', $request->header('device'))->first();
+        if (!$device) {
+            return response()->json('Устройство не найдено', 404);
+        }
+        if ($device->parent != auth()->user()->id) {
+            return response()->json('Устройство не принадлежит вашему ребенку', 404);
+        }
+        return response()->json('Устройство найдено', 200);
+    }
+
+    public function storeDevice(Request $request)
+    {
+        $maxNumOfDevices = $this->getDevices();
+        $numOfExistedDevices = count(Device::whereParent(auth()->user()->id)->get()->toArray());
+        if ($numOfExistedDevices >= $maxNumOfDevices) {
+            return response()->json('Вам можно подключить не более ' . $maxNumOfDevices . ' устройств', 404);
+        }
+        Device::create([
+            'parent' => auth()->user()->id,
+            'child' => $request->header('child'),
+            'deviceId' => $request->header('device'),
+        ]);
+        return response()->json('Устройство добавлено', 200);
+    }
+
+    public function destroyDevice(Request $request)
+    {
+        $device = Device::where('deviceId', $request->header('device'))->first();
+        if (!$device) {
+            return response()->json('Устройство не найдено', 404);
+        }
+        if ($device->parent != auth()->user()->id) {
+            return response()->json('Устройство не принадлежит вашему ребенку', 404);
+        }
+        $device->delete();
+        return response()->json('Устройство удалено', 200);
     }
 }
