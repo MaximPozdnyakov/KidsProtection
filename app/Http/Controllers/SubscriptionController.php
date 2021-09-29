@@ -27,6 +27,9 @@ class SubscriptionController extends Controller
                 $activeSubscription = $subscription;
             }
         }
+        if (!$activeSubscription) {
+            $activeSubscription = ['subscribe' => ''];
+        }
         $subscriptions = Subscription::all()->toArray();
         foreach ($subscriptions as $index => $subscription) {
             if ($subscription['name'] == $activeSubscription['subscribe']) {
