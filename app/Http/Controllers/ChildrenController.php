@@ -24,7 +24,7 @@ class ChildrenController extends Controller
                 $maxNumOfChildren = $device;
             }
         }
-        return $this->jsonResponse($maxNumOfChildren);
+        return $maxNumOfChildren;
     }
 
     public function index()
