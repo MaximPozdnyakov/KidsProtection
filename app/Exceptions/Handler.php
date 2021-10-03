@@ -34,8 +34,18 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e, $request) {
+            if ($e->getMessage() == "The given data was invalid.") {
+                return response()->json(
+                    [
+                        'message' => $e->getMessage(),
+                        'errors' => $e->errors(),
+                    ],
+                    404,
+                    ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+                    JSON_UNESCAPED_UNICODE
+                );
+            }
         });
     }
 }
