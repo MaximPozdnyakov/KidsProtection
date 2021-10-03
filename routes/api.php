@@ -27,41 +27,46 @@ Route::prefix('user')->group(function () {
 });
 
 Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(function () {
-    Route::get('/child/list', [ChildrenController::class, 'index']);
-    Route::post('/child/object', [ChildrenController::class, 'store']);
-    Route::get('/child/object', [ChildrenController::class, 'show']);
-    Route::put('/child/object', [ChildrenController::class, 'update']);
-    Route::delete('/child/object', [ChildrenController::class, 'destroy']);
-    Route::post('/child/allapps', [ChildrenController::class, 'updateApps']);
+    Route::get('/child/list', [ChildrenController::class, 'index'])->withoutMiddleware('checkSubscription');
+    Route::post('/child/object', [ChildrenController::class, 'store'])->withoutMiddleware('checkSubscription');
+    Route::get('/child/object', [ChildrenController::class, 'show'])->withoutMiddleware('checkSubscription');
+    Route::put('/child/object', [ChildrenController::class, 'update'])->withoutMiddleware('checkSubscription');
+    Route::delete('/child/object', [ChildrenController::class, 'destroy'])->withoutMiddleware('checkSubscription');
+    Route::post('/child/allapps', [ChildrenController::class, 'updateApps'])->withoutMiddleware('checkSubscription');
     Route::get('/child/device', [ChildrenController::class, 'showDevice']);
     Route::post('/child/device', [ChildrenController::class, 'storeDevice']);
     Route::delete('/child/device', [ChildrenController::class, 'destroyDevice']);
 
-    Route::get('/apps/child', [ApplicationsController::class, 'getAll']);
+    Route::get('/apps/child', [ApplicationsController::class, 'getAll'])->withoutMiddleware('checkSubscription');
     Route::get('/apps/list', [ApplicationsController::class, 'getAllWithLimit']);
-    Route::get('/apps/blocked', [ApplicationsController::class, 'getBlocked']);
-    Route::get('/apps/limit', [ApplicationsController::class, 'getBlockedWithOptions']);
+    Route::post('/apps/sync', [ApplicationsController::class, 'sync']);
+
+    Route::get('/apps/blocked', [ApplicationsController::class, 'getBlocked'])->withoutMiddleware('checkSubscription');
     Route::post('/apps/blocked', [ApplicationsController::class, 'block']);
     Route::put('/apps/blocked', [ApplicationsController::class, 'blockMany']);
     Route::delete('/apps/blocked', [ApplicationsController::class, 'unblock']);
-    Route::post('/apps/sync', [ApplicationsController::class, 'sync']);
 
-    Route::get('/apps/story', [AppHistoryController::class, 'index']);
+    Route::get('/apps/limit', [ApplicationsController::class, 'getLimited'])->withoutMiddleware('checkSubscription');
+    Route::post('/apps/limit', [ApplicationsController::class, 'limit']);
+    Route::put('/apps/limit', [ApplicationsController::class, 'limitMany']);
+    Route::delete('/apps/limit', [ApplicationsController::class, 'unLimit']);
+
+    Route::get('/apps/story', [AppHistoryController::class, 'index'])->withoutMiddleware('checkSubscription');
     Route::post('/apps/story', [AppHistoryController::class, 'store']);
     Route::options('/apps/story', [AppHistoryController::class, 'showTimeUse']);
 
-    Route::get('/websites/blocked', [SitesController::class, 'index']);
+    Route::get('/websites/blocked', [SitesController::class, 'index'])->withoutMiddleware('checkSubscription');
     Route::post('/websites/blocked', [SitesController::class, 'store']);
     Route::delete('/websites/blocked', [SitesController::class, 'destroy']);
 
-    Route::get('/numberphones/blocked', [PhonesController::class, 'index']);
+    Route::get('/numberphones/blocked', [PhonesController::class, 'index'])->withoutMiddleware('checkSubscription');
     Route::post('/numberphones/blocked', [PhonesController::class, 'store']);
     Route::delete('/numberphones/blocked', [PhonesController::class, 'destroy']);
 
-    Route::get('/numberphones/story', [CallSmsHistoryController::class, 'index']);
+    Route::get('/numberphones/story', [CallSmsHistoryController::class, 'index'])->withoutMiddleware('checkSubscription');
     Route::post('/numberphones/story', [CallSmsHistoryController::class, 'store']);
 
-    Route::get('/gps/story', [GeolocationController::class, 'index']);
+    Route::get('/gps/story', [GeolocationController::class, 'index'])->withoutMiddleware('checkSubscription');
     Route::post('/gps/story', [GeolocationController::class, 'store']);
 
     Route::get('/support/themes', [SupportController::class, 'index'])->withoutMiddleware(['auth:api', 'checkSubscription']);

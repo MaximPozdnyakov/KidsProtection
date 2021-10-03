@@ -22,15 +22,13 @@ class ApplicationsController extends Controller
 
     public function getBlocked(Request $request)
     {
-        return $this->jsonResponse(Application::whereUser($request->header('child'))->whereNotNull('limit')
-                ->orWhere('user', $request->header('child'))->whereNotNull('from')
-                ->orWhere('user', $request->header('child'))->whereNotNull('to')
+        return $this->jsonResponse(Application::whereUser($request->header('child'))->whereLimit(0)
                 ->get()->makeHidden(['limit', 'from', 'to', 'parent', 'user']));
     }
 
-    public function getBlockedWithOptions(Request $request)
+    public function getLimited(Request $request)
     {
-        $blockedApps = Application::whereUser($request->header('child'))->whereNotNull('limit')
+        $blockedApps = Application::whereUser($request->header('child'))->whereNotNull('limit')->where('limit', '!=', 0)
             ->orWhere('user', $request->header('child'))->whereNotNull('from')
             ->orWhere('user', $request->header('child'))->whereNotNull('to')
             ->get()->makeHidden(['parent', 'user'])->toArray();
@@ -58,25 +56,14 @@ class ApplicationsController extends Controller
     public function block(Request $request)
     {
         $request->validate([
-            'app.pack' => 'required|string',
-            'app.limit' => 'integer|nullable',
-            'app.from' => 'string|nullable',
-            'app.to' => 'string|nullable',
+            'pack' => 'required|string',
             'child' => 'required|string',
         ]);
-        $existedApplication = Application::wherePack($request->app['pack'])->whereUser($request->child)->first();
+        $existedApplication = Application::wherePack($request->pack)->whereUser($request->child)->first();
         if (!$existedApplication) {
             return $this->jsonResponse('Приложение с таким названием не существует в списке приложений указанного ребенка', 404);
         }
-        if (array_key_exists('limit', $request->app)) {
-            $existedApplication->limit = $request->app['limit'];
-        }
-        if (array_key_exists('from', $request->app)) {
-            $existedApplication->from = $request->app['from'];
-        }
-        if (array_key_exists('to', $request->app)) {
-            $existedApplication->to = $request->app['to'];
-        }
+        $existedApplication->limit = 0;
         $existedApplication->update();
         return $this->jsonResponse("Приложение заблокировано", 200);
     }
@@ -105,8 +92,6 @@ class ApplicationsController extends Controller
             return $this->jsonResponse('Не удалось найти приложение', 404);
         }
         $existedApplication->limit = null;
-        $existedApplication->from = null;
-        $existedApplication->to = null;
         $existedApplication->update();
         return $this->jsonResponse('Приложение разблокировано', 200);
     }
@@ -115,23 +100,29 @@ class ApplicationsController extends Controller
     {
         $request->validate([
             '*.pack' => 'required|string',
-            '*.name' => 'required|string',
-            '*.icon' => 'required|string',
+            '*.name' => 'string',
+            '*.icon' => 'string',
         ]);
         $newApps = $request->all();
         foreach ($newApps as $newApp) {
             $currentApp = Application::whereUser($request->header('child'))
                 ->wherePack($newApp['pack'])->first();
             if ($currentApp) {
-                $currentApp->update([
-                    'name' => $newApp['name'],
-                    'icon' => $newApp['icon'],
-                ]);
+                if (array_key_exists('name', $newApp)) {
+                    $currentApp->update(['name' => $newApp['name']]);
+                }
+                if (array_key_exists('icon', $newApp)) {
+                    $path = '/icons/uploads/' . $currentApp->name . '-' . time() . '.png';
+                    file_put_contents(public_path() . $path, base64_decode($newApp['icon']));
+                    $currentApp->update(['icon' => url($path)]);
+                }
             } else {
+                $path = '/icons/uploads/' . $newApp['name'] . '-' . time() . '.png';
+                file_put_contents(public_path() . $path, base64_decode($newApp['icon']));
                 Application::create([
                     'pack' => $newApp['pack'],
                     'name' => $newApp['name'],
-                    'icon' => $newApp['icon'],
+                    'icon' => url($path),
                     'parent' => auth()->user()->id,
                     'user' => $request->header('child'),
                 ]);
@@ -147,5 +138,72 @@ class ApplicationsController extends Controller
             }
         }
         return $this->jsonResponse('Приложения синхронизированы', 200);
+    }
+
+    public function limit(Request $request)
+    {
+        $request->validate([
+            'app.pack' => 'required|string',
+            'app.limit' => 'integer|nullable',
+            'app.from' => 'string|nullable',
+            'app.to' => 'string|nullable',
+            'child' => 'required|string',
+        ]);
+        $existedApplication = Application::wherePack($request->app['pack'])->whereUser($request->child)->first();
+        if (!$existedApplication) {
+            return $this->jsonResponse('Приложение с таким названием не существует в списке приложений указанного ребенка', 404);
+        }
+        if (array_key_exists('limit', $request->app)) {
+            $existedApplication->limit = $request->app['limit'];
+        }
+        if (array_key_exists('from', $request->app)) {
+            $existedApplication->from = $request->app['from'];
+        }
+        if (array_key_exists('to', $request->app)) {
+            $existedApplication->to = $request->app['to'];
+        }
+        $existedApplication->update();
+        return $this->jsonResponse("Приложение ограничено", 200);
+    }
+
+    public function limitMany(Request $request)
+    {
+        $request->validate([
+            'packs.*' => 'required|string',
+            'limit' => 'integer|nullable',
+            'from' => 'string|nullable',
+            'to' => 'string|nullable',
+            'child' => 'required|string',
+        ]);
+        foreach ($request->packs as $pack) {
+            $existedApplication = Application::wherePack($pack)->whereUser($request->child)->first();
+            if (!$existedApplication) {
+                return $this->jsonResponse('Приложение с названием ' . $pack . ' не существует в списке приложений указанного ребенка', 404);
+            }
+            if ($request->has('limit')) {
+                $existedApplication->limit = $request->limit;
+            }
+            if ($request->has('from')) {
+                $existedApplication->from = $request->from;
+            }
+            if ($request->has('to')) {
+                $existedApplication->to = $request->to;
+            }
+            $existedApplication->update();
+        }
+        return $this->jsonResponse("Приложения ограничены", 200);
+    }
+
+    public function unLimit(Request $request)
+    {
+        $existedApplication = Application::whereId($request->header('app'))->whereUser($request->header('child'))->first();
+        if (!$existedApplication) {
+            return $this->jsonResponse('Не удалось найти приложение', 404);
+        }
+        $existedApplication->limit = null;
+        $existedApplication->from = null;
+        $existedApplication->to = null;
+        $existedApplication->update();
+        return $this->jsonResponse('Ограничения сняты с приложения', 200);
     }
 }
