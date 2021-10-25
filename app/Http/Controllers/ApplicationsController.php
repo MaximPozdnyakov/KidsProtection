@@ -22,13 +22,13 @@ class ApplicationsController extends Controller
 
     public function getBlocked(Request $request)
     {
-        return $this->jsonResponse(Application::whereUser($request->header('child'))->whereLimit(0)
+        return $this->jsonResponse(Application::whereUser($request->header('child'))->whereLimit(-1)
                 ->get()->makeHidden(['limit', 'from', 'to', 'parent', 'user']));
     }
 
     public function getLimited(Request $request)
     {
-        $blockedApps = Application::whereUser($request->header('child'))->whereNotNull('limit')->where('limit', '!=', 0)
+        $blockedApps = Application::whereUser($request->header('child'))->whereNotNull('limit')->where('limit', '!=', -1)
             ->orWhere('user', $request->header('child'))->whereNotNull('from')
             ->orWhere('user', $request->header('child'))->whereNotNull('to')
             ->get()->makeHidden(['parent', 'user'])->toArray();
@@ -63,7 +63,9 @@ class ApplicationsController extends Controller
         if (!$existedApplication) {
             return $this->jsonResponse('Приложение с таким названием не существует в списке приложений указанного ребенка', 404);
         }
-        $existedApplication->limit = 0;
+        $existedApplication->limit = -1;
+        $existedApplication->from = null;
+        $existedApplication->to = null;
         $existedApplication->update();
         return $this->jsonResponse("Приложение заблокировано", 200);
     }
@@ -80,7 +82,7 @@ class ApplicationsController extends Controller
             if (!$existedApplication) {
                 return $this->jsonResponse('Приложение ' . $pack . ' не существует в списке приложений указанного ребенка', 404);
             }
-            $existedApplication->update(['limit' => 0]);
+            $existedApplication->update(['limit' => -1, 'from' => null, 'to' => null]);
         }
         return $this->jsonResponse("Приложения заблокированы", 200);
     }
@@ -92,6 +94,8 @@ class ApplicationsController extends Controller
             return $this->jsonResponse('Не удалось найти приложение', 404);
         }
         $existedApplication->limit = null;
+        $existedApplication->from = null;
+        $existedApplication->to = null;
         $existedApplication->update();
         return $this->jsonResponse('Приложение разблокировано', 200);
     }
@@ -155,6 +159,8 @@ class ApplicationsController extends Controller
         }
         if (array_key_exists('limit', $request->app)) {
             $existedApplication->limit = $request->app['limit'];
+        } else {
+            $existedApplication->limit = null;
         }
         if (array_key_exists('from', $request->app)) {
             $existedApplication->from = $request->app['from'];
@@ -182,6 +188,8 @@ class ApplicationsController extends Controller
             }
             if ($request->has('limit')) {
                 $existedApplication->limit = $request->limit;
+            } else {
+                $existedApplication->limit = null;
             }
             if ($request->has('from')) {
                 $existedApplication->from = $request->from;

@@ -98,6 +98,7 @@ class ChildrenController extends Controller
         $existedChild = Child::whereId($request->header('child'))->whereParent(auth()->user()->id)->first();
         $childCopy = $existedChild;
         $existedChild->delete();
+        Device::whereChild($request->header('child'))->delete();
         return $this->jsonResponse("Ребенок удален", 200);
     }
 
@@ -144,6 +145,10 @@ class ChildrenController extends Controller
 
     public function storeDevice(Request $request)
     {
+        $device = Device::where('deviceId', $request->header('device'))->whereParent(auth()->user()->id)->first();
+        if ($device) {
+            $device->delete();
+        }
         $maxNumOfDevices = $this->getDevices();
         $numOfExistedDevices = count(Device::whereParent(auth()->user()->id)->get()->toArray());
         if ($numOfExistedDevices >= $maxNumOfDevices) {

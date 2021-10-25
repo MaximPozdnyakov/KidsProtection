@@ -20,12 +20,13 @@ class CallSmsHistoryController extends Controller
     {
         $request->validate([
             'child' => 'required|string',
-            'phones.*.phone' => ['required', 'string', 'regex:/^\+[0-9]{11}$/'],
+            'phones' => 'nullable',
+            'phones.*.phone' => ['required', 'string'],
             'phones.*.message' => 'string',
             'phones.*.input' => 'required|boolean',
             'phones.*.isCall' => 'required|boolean',
             'phones.*.date' => 'required|date|date_format:d.m.Y H:i:s',
-        ], ['phones.*.regex' => 'Параметр phone должен быть валидным номером телефона без спец символов начинающийся с кода страны']);
+        ]);
         $phones = $request->all()['phones'];
         foreach ($phones as $index => $phone) {
             $phones[$index]['message'] = $phone['msg'];

@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CallSmsHistoryController;
 use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\GeolocationController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PhonesController;
 use App\Http\Controllers\SitesController;
 use App\Http\Controllers\SubscriptionController;
@@ -19,6 +20,7 @@ Route::prefix('user')->group(function () {
         Route::get('/check', [AuthController::class, 'send_email_verification_code']);
         Route::post('/check', [AuthController::class, 'verify_email']);
         Route::get('/logout', [AuthController::class, 'logout']);
+        Route::post('/token', [AuthController::class, 'storeFirebaseToken']);
     });
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
@@ -75,4 +77,7 @@ Route::middleware(['auth:api', 'checkChild', 'checkSubscription'])->group(functi
     Route::get('/subscribes/list', [SubscriptionController::class, 'index'])->withoutMiddleware('checkSubscription');
     Route::post('/subscribes/object', [SubscriptionController::class, 'store'])->withoutMiddleware('checkSubscription');
     Route::get('/user/subscribe', [SubscriptionController::class, 'getActiveSubscription'])->withoutMiddleware('checkSubscription');
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->withoutMiddleware(['checkSubscription', 'checkChild']);
+    Route::post('/notifications', [NotificationController::class, 'store'])->withoutMiddleware(['checkSubscription', 'checkChild']);
 });

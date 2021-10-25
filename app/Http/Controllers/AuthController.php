@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FirebaseToken;
 use App\Models\User;
 use App\Rules\IsValidPassword;
 use DB;
@@ -39,7 +40,9 @@ class AuthController extends Controller
 
     public function index(Request $request)
     {
-        return $this->jsonResponse(auth()->user());
+        $response = auth()->user();
+        $response->tokens = FirebaseToken::whereUser(auth()->user()->id)->get()->pluck('token');
+        return $this->jsonResponse($response);
     }
 
     public function login(Request $request)
@@ -232,5 +235,14 @@ class AuthController extends Controller
     {
         $this->sendEmailVerificationCode(auth()->user()->email, auth()->user()->fio);
         return $this->jsonResponse('Код для подтверждения email отправлен на вашу электронную почту', 200);
+    }
+
+    public function storeFirebaseToken(Request $request)
+    {
+        FirebaseToken::create([
+            'token' => $request->all()[0],
+            'user' => auth()->user()->id,
+        ]);
+        return $this->jsonResponse('Firebase токен записан в базу данных', 200);
     }
 }
